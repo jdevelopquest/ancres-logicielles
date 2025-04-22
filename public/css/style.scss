@@ -1,0 +1,221 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
+  url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
+  url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+$font-title: "Montserrat-Bold", sans-serif;
+$font-main: "Lato", serif;
+$font-title-size: 3.2rem;
+
+$breakpoint-tablet: 810px;
+$breakpoint-desktop: 1410px;
+
+$min-width: 375px;
+$max-width: 1440px;
+
+$min-margin: 32px;
+$button-min-width: 64px;
+$button-min-height: 64px;
+
+@mixin theme($theme: "light") {
+
+  $color-font: #000000;
+  $color-background-primary: #ffffff;
+  $color-background-secondary: #ffffff;
+  $color-background-highlight: #ffffff;
+
+  @if ($theme == "ligth") {
+    $color-font: #2e3436;
+    $color-background-primary: #ffffff;
+    $color-background-secondary: #fce94f;
+    $color-background-highlight: #2e3436;
+  }
+
+  @if ($theme == "dark") {
+    $color-font: #ce5c00;
+    $color-background-primary: #000000;
+    $color-background-secondary: #2e3436;
+    $color-background-highlight: #ce5c00;
+  }
+
+  color: $color-font;
+  background-color: $color-background-primary;
+
+  a {
+    color: $color-font;
+  }
+
+  .button {
+    color: $color-font;
+    background-color: $color-background-secondary;
+  }
+
+  .panel {
+    &-primary {
+      background-color: $color-background-primary;
+    }
+
+    &-secondary {
+      background-color: $color-background-secondary;
+    }
+  }
+
+  .button-hamburger,
+  .button-switch-theme {
+    fill: $color-background-highlight;
+    stroke: none;
+  }
+}
+
+.light-theme {
+  @include theme("ligth");
+}
+
+.dark-theme {
+  @include theme("dark");
+}
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+.container {
+  min-width: $min-width;
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+.panel {
+  width: 100%;
+  height: $button-min-height;
+  font-family: $font-title;
+  font-size: $font-title-size;
+}
+
+.button {
+  width: 100%;
+  height: $button-min-height;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.header {
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  margin: $min-margin;
+  padding: 0;
+
+  .panel {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    &-part-0 {
+      font-size: $font-title-size * 2;
+      align-self: baseline;
+    }
+
+    &-part-2 {
+      padding-left: $font-title-size * 1.5;
+      align-self: start;
+    }
+  }
+}
+
+.button-hamburger,
+.button-switch-theme {
+  margin-left: auto;
+  width: $button-min-width;
+  height: $button-min-height;
+}
+
+.menu-hamburger {
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  margin-top: $min-margin;
+  display: none;
+
+  &__navbar {
+    .panel {
+      margin: 0 0 $min-margin;
+
+      &last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $breakpoint-tablet) {
+}
+
+@media screen and (min-width: $breakpoint-desktop) {
+  .button-hamburger {
+    display: none;
+  }
+
+  .menu-hamburger {
+    position: initial;
+    display: flex;
+    align-items: center;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    &__navbar {
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    &__action {
+      margin-left: auto;
+      .ul {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
