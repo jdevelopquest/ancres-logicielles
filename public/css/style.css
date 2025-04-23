@@ -1,174 +1,140 @@
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"), url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
+  src: url("/public/fonts/Montserrat-VariableFont_wght.woff2") format("woff2"), url("/public/fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
   font-display: swap;
 }
-@font-face {
-  font-family: "Montserrat-Bold";
-  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"), url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-.light-theme {
-  color: #2e3436;
-  background-color: #ffffff;
-}
-.light-theme a {
-  color: #2e3436;
-}
-.light-theme .button {
-  color: #2e3436;
-  background-color: #fce94f;
-}
-.light-theme .panel-primary {
-  background-color: #ffffff;
-}
-.light-theme .panel-secondary {
-  background-color: #fce94f;
-}
-.light-theme .button-hamburger,
-.light-theme .button-switch-theme {
-  fill: #2e3436;
-  stroke: none;
-}
-
-.dark-theme {
-  color: #ce5c00;
-  background-color: #000000;
-}
-.dark-theme a {
-  color: #ce5c00;
-}
-.dark-theme .button {
-  color: #ce5c00;
-  background-color: #2e3436;
-}
-.dark-theme .panel-primary {
-  background-color: #000000;
-}
-.dark-theme .panel-secondary {
-  background-color: #2e3436;
-}
-.dark-theme .button-hamburger,
-.dark-theme .button-switch-theme {
-  fill: #ce5c00;
-  stroke: none;
-}
-
 html {
   font-size: 62.5%;
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-}
-
-ul {
   margin: 0;
   padding: 0;
-  list-style: none;
+  border: none;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-  display: inline-block;
+body {
+  color: #2e3436;
+  background-color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-size: 1.6rem;
+}
+body .panel {
+  color: #2e3436;
+  background-color: #eeeeec;
+}
+body .tool {
+  color: #2e3436;
+  background-color: #eeeeec;
+}
+body .tool:hover {
+  color: #2e3436;
+  background-color: #d3d7cf;
+}
+
+.theme-dark {
+  color: #ffffff;
+  background-color: #000000;
+}
+.theme-dark .panel {
+  color: #ffffff;
+  background-color: #2e3436;
+}
+.theme-dark .tool {
+  color: #ffffff;
+  background-color: #2e3436;
+}
+.theme-dark .tool:hover {
+  color: #ffffff;
+  background-color: #555753;
 }
 
 .container {
+  margin: 0 auto;
   min-width: 375px;
   max-width: 1440px;
-  margin: 0 auto;
+  min-height: fit-content;
+  display: flex;
+  flex-flow: row wrap;
 }
 
-.panel {
+header,
+footer {
   width: 100%;
-  height: 64px;
-  font-family: "Montserrat-Bold", sans-serif;
-  font-size: 3.2rem;
+  margin: 16px auto;
 }
 
-.button {
-  width: 100%;
-  height: 64px;
-  border: none;
+footer {
+  position: absolute;
+  bottom: 0;
 }
-.button:hover {
+
+main {
+  width: 100%;
+  position: relative;
+}
+
+h1,
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.8rem;
+  width: auto;
+  height: 64px;
+  line-height: 64px;
+}
+
+.sidebar {
+  min-width: 375px;
+  height: 64px;
+}
+
+.tool:hover {
   cursor: pointer;
 }
 
-.header {
-  display: flex;
-  flex-flow: column nowrap;
-  position: relative;
-  margin: 32px;
+.panel {
+  margin: 0;
   padding: 0;
-}
-.header .panel {
+  min-width: 375px;
+  height: 64px;
   display: flex;
   align-items: center;
 }
-.header .logo-part-0 {
-  font-size: 6.4rem;
-  align-self: baseline;
+.panel .text,
+.panel .icon {
+  display: inline-block;
 }
-.header .logo-part-2 {
-  padding-left: 4.8rem;
-  align-self: start;
+.panel .text {
+  width: auto;
+  height: 64px;
+  line-height: 64px;
+  padding-left: 16px;
 }
-
-.button-hamburger,
-.button-switch-theme {
-  margin-left: auto;
+.panel .icon {
   width: 64px;
   height: 64px;
 }
+.panel .icon:last-child {
+  margin-left: auto;
+}
+
+.button-previous-page {
+  visibility: hidden;
+}
 
 .menu-hamburger {
-  width: 100%;
-  position: absolute;
-  top: 100%;
-  margin-top: 32px;
   display: none;
-}
-.menu-hamburger__navbar .panel {
-  margin: 0 0 32px;
-}
-.menu-hamburger__navbar .panellast-child {
-  margin-bottom: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-@media screen and (min-width: 1410px) {
-  .button-hamburger {
-    display: none;
-  }
-  .menu-hamburger {
-    position: initial;
-    display: flex;
-    align-items: center;
-  }
-  .menu-hamburger li {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-  .menu-hamburger__navbar ul {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .menu-hamburger__action {
-    margin-left: auto;
-  }
-  .menu-hamburger__action .ul {
-    display: flex;
-    align-items: center;
-  }
+.menu-admin {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 /*# sourceMappingURL=style.css.map */
