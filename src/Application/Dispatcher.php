@@ -4,24 +4,39 @@ namespace App\Application;
 
 class Dispatcher
 {
-    public function __construct(private Router $router)
-    {
+    protected Router $router;
+    protected Request $request;
 
+    public function __construct()
+    {
+        $this->router = new Router();
+        $this->request = new Request();
     }
 
-    public function handle(string $path): void
+    public function run(): void
     {
-        $params = $this->router->match($path);
+        $route = $this->router->match($this->request->getPath());
 
-        if ($params === false)
-        {
-            exit("404 Not Found");
+        if (!$route) {
+            $route = $this->router->match("/error/404");
         }
 
-        $action = $params['action'];
-        $controller = 'App\\Controllers\\' . $params['controller'];
+        $response = new Response();
 
-        $controller_object = new $controller(new Viewer());
-        $controller_object->$action();
+        if (!class_exists($route["controller"])) {
+            $response->send();
+            exit();
+        }
+
+        $controller = new $route["controller"]();
+
+        if (!method_exists($controller, $route["action"])) {
+            $response->send();
+            exit();
+        }
+
+        $response = $controller->{$route["action"]}();
+
+        $response->send();
     }
 }
