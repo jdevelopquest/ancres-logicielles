@@ -15,7 +15,7 @@
 </head>
 <body class="size-md theme-light">
 <div>
-    <header class="menu">
+    <header class="menu" id="page-top">
         <div class="menu__submenu menu__submenu-h">
             <h1 class="menu__item prominent__text">Ancres Logicielles</h1>
             <button class="menu__item menu__item-clickable prominent button-menu-hamburger" title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon"></span></button>
@@ -29,7 +29,7 @@
         {{content}}
         {{menu-tiny}}
     </main>
-    <footer class="menu menu-info">
+    <footer class="menu menu-info" id="page-bot">
             <nav class="menu__submenu">
                 <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=about"><span class="prominent__text">À propos</span></a>
                 <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=policies"><span class="prominent__text">Chartes</span></a>
