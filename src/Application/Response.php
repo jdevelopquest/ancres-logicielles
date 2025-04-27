@@ -4,23 +4,19 @@ namespace App\Application;
 
 class Response
 {
-    protected int $code = 505;
-    protected array $headers = [
-        'Content-Type' => 'text/html',
-    ];
-    protected string $body = "Une erreur est survenue";
+    protected array $headers = [];
+    protected int $code = 200;
+    protected string $body = "";
 
-    public function __construct()
+    public function __construct(bool $bigFail = false)
     {
-
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        return $this->valid;
+        if ($bigFail) {
+            $this->setHeaders([
+                'Content-Type' => 'text/html',
+            ]);
+            $this->setCode(500);
+            $this->setBody("Une erreur est survenue");
+        }
     }
 
     /**

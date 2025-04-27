@@ -8,9 +8,10 @@ class Router
 
     public function __construct()
     {
-        $this->add("all", "all", "/error/404", "App\Controllers\ErrorsController", "404", null);
-        $this->add("all", "all", "/error/505", "App\Controllers\ErrorsController", "505", null);
+        $this->add("all", "all", "/error/404", "App\Controllers\ErrorsController", "error404", null);
+        $this->add("all", "all", "/error/505", "App\Controllers\ErrorsController", "error500", null);
         $this->add("all", "GET", "/", "App\Controllers\ArticlesController", "index", null);
+        $this->add("all", "GET", "/articles/index", "App\Controllers\ArticlesController", "index", null);
     }
 
     private function add(string $role, string $method, string $path, string $controller, string $action, ?array $params = null): void

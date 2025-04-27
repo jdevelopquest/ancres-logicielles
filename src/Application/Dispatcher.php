@@ -21,9 +21,8 @@ class Dispatcher
             $route = $this->router->match("/error/404");
         }
 
-        $response = new Response();
-
         if (!class_exists($route["controller"])) {
+            $response = new Response(true);
             $response->send();
             exit();
         }
@@ -31,6 +30,7 @@ class Dispatcher
         $controller = new $route["controller"]();
 
         if (!method_exists($controller, $route["action"])) {
+            $response = new Response(true);
             $response->send();
             exit();
         }
