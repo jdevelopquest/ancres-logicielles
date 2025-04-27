@@ -3,7 +3,8 @@
 session_start();
 
 define("ROOT", dirname(__DIR__));
-define("VIEWS", ROOT  . str_replace("/", DIRECTORY_SEPARATOR, "/src/Views/"));
+define("VIEWS", ROOT . str_replace("/", DIRECTORY_SEPARATOR, "/src/Views/"));
+define("LOG", ROOT . str_replace("/", DIRECTORY_SEPARATOR, "/log/"));
 
 spl_autoload_register(
     function ($class) {
@@ -17,11 +18,29 @@ spl_autoload_register(
 );
 
 use App\Application\Dispatcher;
+use App\Application\Response;
 
-if (!isset($_SESSION["user"])) {
-    $_SESSION["user"] = [];
-    $_SESSION["user"]["role"] = "guest";
-}
+set_exception_handler(
+    function ($exception) {
+        $file = LOG . "messages.log";
+        $message = sprintf("%s on line %s in %s\n", $exception->message, $exception->getLine(), $exception->getFile());
+        error_log($message, 3, $file);
+        $response = new Response(true);
+        $response->send();
+        exit();
+    }
+);
+
+set_error_handler(
+    function ($errno, $errstr, $errfile, $errline) {
+        $file = LOG . "messages.log";
+        $message = sprintf("%s %s on line %s in %s\n", $errno, $errstr, $errline, $errfile);
+        error_log($message, 3, $file);
+        $response = new Response(true);
+        $response->send();
+        exit();
+    }
+);
 
 $dispatcher = new Dispatcher();
 $dispatcher->run();

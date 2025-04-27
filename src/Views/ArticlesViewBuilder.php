@@ -4,13 +4,17 @@ namespace App\Views;
 
 use App\Application\ViewBuilder;
 
-class ErrorsViewBuilder extends ViewBuilder
+class ArticlesViewBuilder extends ViewBuilder
 {
-    public function render404(): string
+    public function index(): string
     {
-        $this->files["contentLayout"] = $this->constructFilePath("errors/error404");
+        $this->files["contentLayout"] = $this->constructFilePath("articles/index");
 
         if (file_exists($this->files["contentLayout"])) {
+            if (isset($this->vars["content"])) {
+                extract($this->vars["content"]);
+            }
+
             ob_start();
 
             include_once $this->files["contentLayout"];
@@ -21,11 +25,15 @@ class ErrorsViewBuilder extends ViewBuilder
         return $this->renderTextHTML();
     }
 
-    public function render500(): string
+    public function show(): string
     {
-        $this->files["contentLayout"] = $this->constructFilePath("errors/error500");
+        $this->files["contentLayout"] = $this->constructFilePath("articles/show");
 
         if (file_exists($this->files["contentLayout"])) {
+            if (isset($this->vars["content"])) {
+                extract($this->vars["content"]);
+            }
+
             ob_start();
 
             include_once $this->files["contentLayout"];

@@ -18,7 +18,7 @@ class SupportsViewBuilder extends ViewBuilder
             $this->parts["content"] = ob_get_clean();
         }
 
-        return $this->render();
+        return $this->renderTextHTML();
     }
 
     public function policies(): string
@@ -33,6 +33,6 @@ class SupportsViewBuilder extends ViewBuilder
             $this->parts["content"] = ob_get_clean();
         }
 
-        return $this->render();
+        return $this->renderTextHTML();
     }
 }

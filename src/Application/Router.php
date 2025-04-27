@@ -2,8 +2,11 @@
 
 namespace App\Application;
 
+use App\Application\Utils\SessionManager;
+
 class Router
 {
+    use SessionManager;
     private array $routes = [];
 
     public function __construct()
@@ -23,6 +26,30 @@ class Router
 //            "app\Controllers\ErrorsController",
 //            "error500"
 //        );
+
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\ArticlesController",
+            "index"
+        );
+
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=articles&act=index$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\ArticlesController",
+            "index"
+        );
+
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=articles&act=show&id=\d+$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\ArticlesController",
+            "show"
+        );
 
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=about$/",
@@ -60,7 +87,7 @@ class Router
 //                continue;
 //            }
 
-            if (!preg_match($route['queryPattern'], $request->getQuery())) {
+            if (!preg_match($route['queryPattern'], $request->getQuery() ?? "")) {
                 continue;
             }
 
@@ -68,7 +95,7 @@ class Router
                 continue;
             }
 
-            if (!preg_match($route['rolePattern'], $_SESSION["user"]["role"])) {
+            if (!preg_match($route['rolePattern'], $this->getUserRole())) {
                 continue;
             }
 

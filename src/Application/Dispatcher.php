@@ -2,15 +2,18 @@
 
 namespace App\Application;
 
+use App\Application\Utils\SessionManager;
 use App\Controllers\ErrorsController;
 
 class Dispatcher
 {
+    use SessionManager;
     protected Router $router;
     protected Request $request;
 
     public function __construct()
     {
+        $this->initSession();
         $this->router = new Router();
         $this->request = new Request();
     }
@@ -23,6 +26,9 @@ class Dispatcher
             $controller = new ErrorsController();
         } else {
             if (!class_exists($route["controller"])) {
+                $file = LOG . "messages.log";
+                $message = sprintf("%s on line %s in %s\n", "class not exists", "29", "Dispatcher.php");
+                error_log($message, 3, $file);
                 $response = new Response(true);
                 $response->send();
                 exit();
@@ -31,6 +37,9 @@ class Dispatcher
             $controller = new $route["controller"]();
 
             if (!method_exists($controller, $route["action"])) {
+                $file = LOG . "messages.log";
+                $message = sprintf("%s on line %s in %s\n", "method not exists", "40", "Dispatcher.php");
+                error_log($message, 3, $file);
                 $response = new Response(true);
                 $response->send();
                 exit();
