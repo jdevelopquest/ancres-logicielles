@@ -4,23 +4,36 @@ namespace App\Controllers;
 
 use App\Application\Controller;
 use App\Application\Response;
+use App\Views\ErrorsViewBuilder;
 
 class ErrorsController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct("errors/error404");
-    }
-
     public function error404(): Response
     {
+        $errorsViewBuilder = new ErrorsViewBuilder();
+
         $this->response->setHeaders([
             "Content-Type" => "text/html",
         ]);
 
         $this->response->setCode(404);
 
-        $this->response->setBody($this->viewBuilder->render());
+        $this->response->setBody($errorsViewBuilder->render404());
+
+        return $this->response;
+    }
+
+    public function error500(): Response
+    {
+        $errorsViewBuilder = new ErrorsViewBuilder();
+
+        $this->response->setHeaders([
+            "Content-Type" => "text/html",
+        ]);
+
+        $this->response->setCode(500);
+
+        $this->response->setBody($errorsViewBuilder->render500());
 
         return $this->response;
     }

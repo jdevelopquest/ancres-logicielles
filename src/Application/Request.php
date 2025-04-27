@@ -11,10 +11,10 @@ class Request
 
     public function __construct()
     {
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $this->query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-        $this->body = file_get_contents('php://input');
+        $this->method = $_SERVER["REQUEST_METHOD"];
+        $this->path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+        $this->query = parse_url($_SERVER["REQUEST_URI"], PHP_URL_QUERY);
+        $this->body = file_get_contents("php://input");
     }
 
     /**

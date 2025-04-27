@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/svg" href="/public/img/al-favicon.svg">
+    <link rel="icon" type="image/svg" href="public/img/al-favicon.svg">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap">
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <title>Ancres Logicielles</title>
     <meta name="description" content="Organisez, partagez et découvrez des liens web pour vos logiciels favoris.">
@@ -54,11 +54,11 @@
     </main>
     <footer class="menu menu-info">
             <nav class="menu__submenu">
-                <a class="menu__item menu__item-clickable prominent"><span class="prominent__text">À propos</span></a>
-                <a class="menu__item menu__item-clickable prominent"><span class="prominent__text">Chartes</span></a>
+                <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=about"><span class="prominent__text">À propos</span></a>
+                <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=policies"><span class="prominent__text">Chartes</span></a>
             </nav>
     </footer>
 </div>
-<script src="/public/js/main.js" type="module"></script>
+<script src="public/js/main.js" type="module"></script>
 </body>
 </html>

@@ -5,15 +5,18 @@
 $size-variant: (
         "xs": (
                 "size-unit": 1px,
-                "font-size-unit": 1.4rem
+                "font-size-unit": 1.4rem,
+                "line-height-unit": 1.2,
         ),
         "md": (
                 "size-unit": 2px,
-                "font-size-unit": 1.5rem
+                "font-size-unit": 1.5rem,
+                "line-height-unit": 1.5,
         ),
         "xl": (
                 "size-unit": 3px,
-                "font-size-unit": 1.6rem
+                "font-size-unit": 1.6rem,
+                "line-height-unit": 2,
         )
 );
 
@@ -27,6 +30,9 @@ $size-variant: (
   $font-size-unit: map-get(map-get($size-variant, $variant), "font-size-unit");
   --font-size-md: #{$font-size-unit};
   --font-size-lg: #{$font-size-unit + 0.8};
+  $line-height-unit: map-get(map-get($size-variant, $variant), "line-height");
+  --line-height-md: #{$line-height-unit};
+  --line-height-lg: #{$line-height-unit + 0.8};
 }
 
 //
@@ -156,6 +162,15 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
 }
 
 body {
@@ -343,7 +358,7 @@ main {
   &__text {
     @extend %font-regular;
 
-    line-height: var(--size-md);
+    line-height: var(--line-height-md);
 
     &:not(:first-of-type) {
       margin-top: var(--size-sm);

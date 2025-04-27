@@ -8,30 +8,71 @@ class Router
 
     public function __construct()
     {
-        $this->add("all", "all", "/error/404", "App\Controllers\ErrorsController", "error404", null);
-        $this->add("all", "all", "/error/505", "App\Controllers\ErrorsController", "error500", null);
-        $this->add("all", "GET", "/", "App\Controllers\ArticlesController", "index", null);
-        $this->add("all", "GET", "/articles/index", "App\Controllers\ArticlesController", "index", null);
+//        $this->add("/^(\/|\/public\/index\.php)$/",
+//            "/ctr=errors&act=error404/",
+//            "/^(GET|POST)$/",
+//            "/(guest|regular|moderator|admin)/",
+//            "app\Controllers\ErrorsController",
+//            "error404"
+//        );
+//
+//        $this->add("/^(\/|\/public\/index\.php)$/",
+//            "/ctr=errors&act=error500/",
+//            "/^(GET|POST)$/",
+//            "/(guest|regular|moderator|admin)/",
+//            "app\Controllers\ErrorsController",
+//            "error500"
+//        );
+
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=supports&act=about$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\SupportsController",
+            "about"
+        );
+
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=supports&act=policies$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\SupportsController",
+            "policies"
+        );
     }
 
-    private function add(string $role, string $method, string $path, string $controller, string $action, ?array $params = null): void
+    private function add(string $pathPattern, string $queryPattern, string $methodPattern, string $rolePattern, string $controller, string $action): void
     {
         $this->routes[] = [
-            "role" => $role,
-            "method" => $method,
-            "path" => $path,
+            "pathPattern" => $pathPattern,
+            "queryPattern" => $queryPattern,
+            "methodPattern" => $methodPattern,
+            "rolePattern" => $rolePattern,
             "controller" => $controller,
-            "action" => $action,
-            "params" => $params
+            "action" => $action
         ];
     }
 
-    public function match(string $path): array|bool
+    public function match(Request $request): array|bool
     {
         foreach ($this->routes as $route) {
-            if ($route["path"] === $path) {
-                return $route;
+//            if (!preg_match($route['pathPattern'], $request->getPath())) {
+//                continue;
+//            }
+
+            if (!preg_match($route['queryPattern'], $request->getQuery())) {
+                continue;
             }
+
+            if (!preg_match($route['methodPattern'], $request->getMethod())) {
+                continue;
+            }
+
+            if (!preg_match($route['rolePattern'], $_SESSION["user"]["role"])) {
+                continue;
+            }
+
+            return $route;
         }
 
         return false;
