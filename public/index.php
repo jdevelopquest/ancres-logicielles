@@ -19,7 +19,6 @@ spl_autoload_register(
 
 use App\Application\Dispatcher;
 use App\Application\Request;
-use App\Application\Response;
 use App\Controllers\ErrorsController;
 
 //

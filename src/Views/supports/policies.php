@@ -95,9 +95,7 @@
                 </ul>
             </li>
         </ol>
-    </article>
 
-    <article class="content__subcontent">
         <div class="prominent">
             <h3 class="prominent__text">Modération</h3>
         </div>
@@ -136,9 +134,7 @@
                 </ul>
             </li>
         </ul>
-    </article>
 
-    <article class="content__subcontent">
         <div class="prominent">
             <h3 class="prominent__text">Responsabilité</h3>
         </div>
@@ -149,9 +145,7 @@
                 La modération ne saurait être tenue responsable des propos tenus par les utilisateurs.
             </p>
         </div>
-    </article>
 
-    <article class="content__subcontent">
         <div class="prominent">
             <h3 class="prominent__text">Évolution de la charte</h3>
         </div>
@@ -162,9 +156,7 @@
                 retours des utilisateurs. Les modifications seront portées à la connaissance des membres.
             </p>
         </div>
-    </article>
 
-    <article class="content__subcontent">
         <div class="prominent">
             <h3 class="prominent__text">Acceptation de la charte</h3>
         </div>

@@ -11,7 +11,6 @@ use Exception;
 
 class PostsController extends Controller
 {
-    use SessionManager;
     use ConstructHref;
 
     public function indexSoftwares(): Response
@@ -90,7 +89,7 @@ class PostsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->viewBuilder->renderTextHTML("Ancres Logicielles", "posts/indexSoftwares", $contentParams));
+        $this->response->setBody($this->renderTextHTML("Ancres Logicielles", "posts/indexSoftwares", $contentParams));
 
         return $this->response;
     }
@@ -161,7 +160,9 @@ class PostsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->viewBuilder->renderTextHTML("Ancres Logicielles", "posts/showSoftware", $contentParams));
+        $title = $software["softwareName"];
+
+        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : $title", "posts/showSoftware", $contentParams));
 
         return $this->response;
     }

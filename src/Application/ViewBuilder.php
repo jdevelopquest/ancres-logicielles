@@ -3,11 +3,13 @@
 namespace App\Application;
 
 use App\Application\Utils\ConstructMenu;
+use App\Application\Utils\SessionManager;
 
 class ViewBuilder
 {
     use ConstructMenu;
 
+    protected array $pageParams = [];
     protected array $partNames = [];
     protected array $partParams = [];
     protected array $partLayouts = [];
@@ -30,9 +32,9 @@ class ViewBuilder
         $this->partRenders[$partName] = "";
     }
 
-    public function set(string $key, mixed $value): void
+    public function setPageParam(string $key, mixed $value): void
     {
-        $this->partParams[$key] = $value;
+        $this->pageParams[$key] = $value;
     }
 
     public function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", mixed $contentParams = []): string
@@ -40,9 +42,13 @@ class ViewBuilder
         $this->setupPart("page", "layouts/page", []);
         $this->setupPart("menu-hamburger", "layouts/menu-hamburger", $this->constructMenuHamburger());
         $this->setupPart("menu-tiny", "layouts/menu-tiny", $this->constructMenuTiny());
-        $this->setupPart("content", $contentLayout, $contentParams);
+        $this->setupPart("content", $contentLayout, $contentParams ?? []);
 
         $this->partParams["page"]["title"] = $pageTitle;
+
+        if (!empty($this->pageParams)) {
+            $this->partParams["page"] = array_merge($this->partParams["page"], $this->pageParams);
+        }
 
         // rendre la page en premier
         $this->renderPart("page");

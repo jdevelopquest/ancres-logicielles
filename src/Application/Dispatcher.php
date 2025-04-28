@@ -9,6 +9,7 @@ use Exception;
 class Dispatcher
 {
     use SessionManager;
+
     protected Router $router;
     protected Request $request;
 
@@ -21,9 +22,10 @@ class Dispatcher
 
     public function run(): void
     {
-        $controller = null;
-
         $route = $this->router->match($this->request);
+
+        // todo
+        // il faut une response erreur en json pour les requêtes ajax
 
         if (!$route) {
             $controller = new ErrorsController($this->request);
@@ -51,7 +53,7 @@ class Dispatcher
 
         // Tout est bon, si la méthode néssécite un argument
         // l'argument est récupéré depuis $_GET
-        $response = isset($_GET["id"]) ? $controller->$action($_GET["id"]) :  $controller->$action();
+        $response = isset($_GET["id"]) ? $controller->$action($_GET["id"]) : $controller->$action();
 
         $response->send();
     }

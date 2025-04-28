@@ -8,6 +8,7 @@ class Request
     protected string|array|int|null|false $path;
     protected string|array|int|null|false $query;
     protected string|false $body;
+    protected array $headers;
 
     public function __construct()
     {
@@ -15,6 +16,7 @@ class Request
         $this->path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $this->query = parse_url($_SERVER["REQUEST_URI"], PHP_URL_QUERY);
         $this->body = file_get_contents("php://input");
+        $this->headers = getallheaders();
     }
 
     /**
@@ -47,5 +49,15 @@ class Request
     public function getBody(): false|string
     {
         return $this->body;
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    public function isAjax(): bool
+    {
+            return isset($this->headers["X-Requested-With"]) && $this->headers["X-Requested-With"] === 'XMLHttpRequest';
     }
 }
