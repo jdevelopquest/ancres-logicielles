@@ -142,7 +142,29 @@ class PostModel
             postIsPublished,
             postIsBanned
         FROM Posts
-        JOIN Softwares on Posts.idPost = Softwares.idPost";
+        JOIN Softwares on Posts.idPost = Softwares.idPost
+        WHERE postIsPublished = 1";
+
+        return Database::fetchAll($request);
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getSoftwaresPublishedAndPending(): array
+    {
+        $request =
+            "SELECT
+            Posts.idPost,
+            idSoftware,
+            softwareName,
+            softwareSummary,
+            postIsPublished,
+            postIsBanned
+        FROM Posts
+        JOIN Softwares on Posts.idPost = Softwares.idPost
+        WHERE postIsBanned = 0";
 
         return Database::fetchAll($request);
     }

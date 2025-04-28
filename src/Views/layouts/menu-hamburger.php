@@ -5,11 +5,14 @@
 
     <?php if(isset($menu)): ?>
         <?php foreach($menu as $submenu): ?>
-            <?= "<nav class=\"menu__submenu menu__submenu-v\">" ?>
+            <nav class="menu__submenu menu__submenu-v">
             <?php foreach($submenu as $item): ?>
-                <?= "<a class=\"menu__item menu__item-clickable prominent\" href=\"{$item['href']}\"><span class=\"prominent__text\">{$item['text']}</span><span class=\"prominent__icon icon-{$item['icon']}\"></span></a>" ?>
+                <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>">
+                    <span class="prominent__text"><?= $item["text"] ?></span>
+                    <span class="prominent__icon icon-<?= $item["icon"] ?>"></span>
+                </a>
             <?php endforeach; ?>
-            <?= "</nav>" ?>
+            </nav>
         <?php endforeach; ?>
     <?php endif; ?>
 

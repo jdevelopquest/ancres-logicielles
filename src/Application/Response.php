@@ -8,17 +8,6 @@ class Response
     protected int $code = 200;
     protected string $body = "";
 
-    public function __construct(bool $bigFail = false)
-    {
-        if ($bigFail) {
-            $this->setHeaders([
-                'Content-Type' => 'text/html',
-            ]);
-            $this->setCode(500);
-            $this->setBody("<p>Une erreur est survenue.</p><a href='index.php'>Ancres Logicielles</a>");
-        }
-    }
-
     /**
      * @return int
      */

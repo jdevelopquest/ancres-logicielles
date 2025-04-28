@@ -4,11 +4,11 @@
     </div>
     <article class="content__subcontent">
         <div class="prominent">
-            <h3 class="prominent__text">Erreur 404</h3>
+            <h3 class="prominent__text">Erreur 503</h3>
             <span class="prominent__icon"></span>
         </div>
         <div class="regular">
-            <p class="regular__text">La ressource demandée n'a pas été trouvée sur le serveur.</p>
+            <p class="regular__text">Le serveur est temporairement incapable de traiter la requête.</p>
         </div>
     </article>
 </section>

@@ -18,15 +18,18 @@ spl_autoload_register(
 );
 
 use App\Application\Dispatcher;
+use App\Application\Request;
 use App\Application\Response;
+use App\Controllers\ErrorsController;
 
+//
 set_exception_handler(
     function ($exception) {
         $file = LOG . "messages.log";
         $message = sprintf("%s on line %s in %s\n", $exception->getMessage(), $exception->getLine(), $exception->getFile());
         error_log($message, 3, $file);
-        $response = new Response(true);
-        $response->send();
+        $errorsController = new ErrorsController(new Request());
+        $errorsController->error503()->send();
         exit();
     }
 );
@@ -36,8 +39,8 @@ set_error_handler(
         $file = LOG . "messages.log";
         $message = sprintf("%s %s on line %s in %s\n", $errno, $errstr, $errline, $errfile);
         error_log($message, 3, $file);
-        $response = new Response(true);
-        $response->send();
+        $errorsController = new ErrorsController(new Request());
+        $errorsController->error503()->send();
         exit();
     }
 );

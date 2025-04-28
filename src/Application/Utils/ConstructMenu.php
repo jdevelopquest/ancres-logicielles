@@ -5,18 +5,14 @@ namespace App\Application\Utils;
 trait ConstructMenu
 {
     use SessionManager;
-
-    protected function constructHref(string $controller, string $action, ?string $id = null): string
-    {
-        return "index.php?ctr=$controller&act=$action" . (!is_null($id) ? "&id=$id" : "");
-    }
+    use ConstructHref;
 
     protected function constructMenuHamburger(): array
     {
         $menuHamburger = [];
 
         $submenu = [];
-        $submenu[] = $this->addMenuItem($this->constructHref("articles", "index"), "Accueil", "Accueil", "go-home");
+        $submenu[] = $this->addMenuItem($this->constructHref("posts", "indexSoftwares"), "Accueil", "Accueil", "go-home");
         $menuHamburger[] = $submenu;
 
         $submenu = [];

@@ -5,7 +5,6 @@
     <article class="content__subcontent">
         <div class="prominent">
             <h3 class="prominent__text">Présentation</h3>
-            <span class="prominent__icon"></span>
         </div>
         <div class="regular">
             <p class="regular__text">
@@ -20,7 +19,6 @@
         </div>
         <div class="prominent">
             <h3 class="prominent__text">Objectifs</h3>
-            <span class="prominent__icon"></span>
         </div>
         <div class="regular">
             <p class="regular__text">
@@ -35,7 +33,6 @@
         </div>
         <div class="prominent">
             <h3 class="prominent__text">Valeurs</h3>
-            <span class="prominent__icon"></span>
         </div>
         <div class="regular">
             <p class="regular__text">
