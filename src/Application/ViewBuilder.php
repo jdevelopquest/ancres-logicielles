@@ -7,22 +7,14 @@ use App\Application\Utils\ConstructMenu;
 class ViewBuilder
 {
     use ConstructMenu;
-    protected array $vars = [];
-    protected array $files = [];
-    protected array $parts = [];
+
+    protected array $partNames = [];
+    protected array $partParams = [];
+    protected array $partLayouts = [];
+    protected array $partRenders = [];
 
     public function __construct()
     {
-        $this->vars["page"] = [];
-
-        $this->files["page"] = $this->constructFilePath("layouts/page");
-        $this->files["menu-hamburger"] = $this->constructFilePath("layouts/menu-hamburger");
-        $this->files["menu-tiny"] = $this->constructFilePath("layouts/menu-tiny");
-
-        $this->parts["content"] = "";
-        $this->parts["menu-hamburger"] = "";
-        $this->parts["menu-tiny"] = "";
-        $this->parts["page"] = "";
     }
 
     protected function constructFilePath(string $layout): string
@@ -30,61 +22,55 @@ class ViewBuilder
         return VIEWS . str_replace("/", DIRECTORY_SEPARATOR, $layout . ".php");
     }
 
-    public function addTitle(string $title): void
+    protected function setupPart(string $partName, string $partLayout, mixed $partParams): void
     {
-        $this->vars["page"]["title"] = $title;
+        $this->partNames[] = $partName;
+        $this->partParams[$partName] = $partParams;
+        $this->partLayouts[$partName] = $this->constructFilePath($partLayout);
+        $this->partRenders[$partName] = "";
     }
 
     public function set(string $key, mixed $value): void
     {
-        $this->vars[$key] = $value;
+        $this->partParams[$key] = $value;
     }
 
-    public function renderTextHTML(): string
+    public function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", mixed $contentParams = []): string
     {
-        $this->set("menu-hamburger", $this->constructMenuHamburger());
-        $this->set("menu-tiny", $this->constructMenuTiny());
+        $this->setupPart("page", "layouts/page", []);
+        $this->setupPart("menu-hamburger", "layouts/menu-hamburger", $this->constructMenuHamburger());
+        $this->setupPart("menu-tiny", "layouts/menu-tiny", $this->constructMenuTiny());
+        $this->setupPart("content", $contentLayout, $contentParams);
 
-        if (file_exists($this->files["page"])) {
-            extract($this->vars["page"]);
+        $this->partParams["page"]["title"] = $pageTitle;
 
-            ob_start();
+        // rendre la page en premier
+        $this->renderPart("page");
 
-            include_once $this->files["page"];
+        foreach ($this->partNames as $partName) {
+            if ($partName === "page") {
+                continue;
+            }
 
-            $this->parts["page"] = ob_get_clean();
+            $this->renderPart($partName);
+            $this->partRenders["page"] = str_replace("{{ $partName }}", $this->partRenders[$partName], $this->partRenders["page"]);
         }
 
-        $page = $this->parts["page"];
+        return $this->partRenders["page"];
+    }
 
-        if (file_exists($this->files["menu-hamburger"])) {
-            if (isset($this->vars["menu-hamburger"])) {
-                extract($this->vars["menu-hamburger"]);
+    protected function renderPart(string $partName): void
+    {
+        if (file_exists($this->partLayouts[$partName])) {
+            if (isset($this->partParams[$partName])) {
+                extract($this->partParams[$partName]);
             }
 
             ob_start();
 
-            include_once $this->files["menu-hamburger"];
+            include_once $this->partLayouts[$partName];
 
-            $this->parts["menu-hamburger"] = ob_get_clean();
+            $this->partRenders[$partName] = ob_get_clean();
         }
-
-        $page = str_replace("{{menu-hamburger}}", $this->parts["menu-hamburger"], $page);
-
-        if (file_exists($this->files["menu-tiny"])) {
-            if (isset($this->vars["menu-tiny"])) {
-                extract($this->vars["menu-tiny"]);
-            }
-
-            ob_start();
-
-            include_once $this->files["menu-tiny"];
-
-            $this->parts["menu-tiny"] = ob_get_clean();
-        }
-
-        $page = str_replace("{{menu-tiny}}", $this->parts["menu-tiny"], $page);
-
-        return str_replace("{{content}}", $this->parts["content"], $page);
     }
 }
