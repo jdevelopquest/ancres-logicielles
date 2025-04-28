@@ -24,8 +24,8 @@ trait ConstructMenu
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "show", $this->getUserId()), "Profil", "Profil", "go-profile");
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "logout"), "Déconnexion", "Déconnexion", "go-logout");
         } else {
-            $submenu[] = $this->addMenuItem($this->constructHref("accounts", "logint"), "Connexion", "Connexion", "go-login");
-            $submenu[] = $this->addMenuItem($this->constructHref("accounts", "signin"), "Inscription", "Inscription", "go-signin");
+            $submenu[] = $this->addMenuItem($this->constructHref("accounts", "login"), "Connexion", "Connexion", "go-login");
+            $submenu[] = $this->addMenuItem($this->constructHref("accounts", "signup"), "Inscription", "Inscription", "go-signup");
         }
         $menuHamburger[] = $submenu;
 

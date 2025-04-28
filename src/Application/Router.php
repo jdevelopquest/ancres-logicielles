@@ -72,20 +72,20 @@ class Router
             "policies"
         );
 
-        // accounts signin
+        // accounts signup
         $this->add("/^(\/|\/public\/index\.php)$/",
-            "/^ctr=accounts&act=signin$/",
-            "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
+            "/^ctr=accounts&act=signup$/",
+            "/^(GET|POST)$/",
+            "/^(guest)$/",
             "App\Controllers\AccountsController",
-            "signin"
+            "signup"
         );
 
         // accounts login
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=login$/",
-            "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
+            "/^(GET|POST)$/",
+            "/^(guest)$/",
             "App\Controllers\AccountsController",
             "login"
         );
@@ -93,8 +93,8 @@ class Router
         // accounts logout
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=logout$/",
-            "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
+            "/^(POST)$/",
+            "/^(regular|moderator|admin)$/",
             "App\Controllers\AccountsController",
             "logout"
         );

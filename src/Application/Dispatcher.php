@@ -23,7 +23,7 @@ class Dispatcher
         $route = $this->router->match($this->request);
 
         if (!$route) {
-            $controller = new ErrorsController();
+            $controller = new ErrorsController($this->request);
         } else {
             if (!class_exists($route["controller"])) {
                 $file = LOG . "messages.log";
@@ -34,7 +34,7 @@ class Dispatcher
                 exit();
             }
 
-            $controller = new $route["controller"]();
+            $controller = new $route["controller"]($this->request);
 
             if (!method_exists($controller, $route["action"])) {
                 $file = LOG . "messages.log";
