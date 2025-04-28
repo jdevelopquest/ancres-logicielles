@@ -51,9 +51,8 @@ class Dispatcher
 
         $action = $controller instanceof ErrorsController ? "error404" : $route["action"];
 
-        // Tout est bon, si la méthode néssécite un argument
-        // l'argument est récupéré depuis $_GET
-        $response = isset($_GET["id"]) ? $controller->$action($_GET["id"]) : $controller->$action();
+        // Tout est bon, si la méthode néssécite un argument, il faut lui passer
+        $response = isset($this->request->getParams()["id"]) ? $controller->$action($this->request->getParams()["id"]) : $controller->$action();
 
         $response->send();
     }

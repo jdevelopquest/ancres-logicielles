@@ -23,6 +23,10 @@
   --color-background-global: #ffffff;
   --color-background-specific: #ffffff;
   --color-background-highlight: #e9b96e;
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #cc0000;
+  --color-background-succes: #73d216;
 }
 
 :root .theme-dark {
@@ -33,6 +37,10 @@
   --color-background-global: #2e3436;
   --color-background-specific: #2e3436;
   --color-background-highlight: #ce5c00;
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #cc0000;
+  --color-background-succes: #73d216;
 }
 
 .form__item-clickable, .menu__item-clickable {
@@ -258,6 +266,14 @@ main {
   flex-flow: row nowrap;
   gap: 0;
   justify-content: right;
+}
+.prominent-error {
+  color: var(--color-text-error);
+  background-color: var(--color-background-error);
+}
+.prominent-success {
+  color: var(--color-text-success);
+  background-color: var(--color-background-succes);
 }
 .prominent__text {
   width: max-content;

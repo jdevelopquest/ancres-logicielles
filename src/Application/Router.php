@@ -7,6 +7,7 @@ use App\Application\Utils\SessionManager;
 class Router
 {
     use SessionManager;
+
     private array $routes = [];
 
     public function __construct()
@@ -93,7 +94,7 @@ class Router
         // accounts logout
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=logout$/",
-            "/^(POST)$/",
+            "/^(GET|POST)$/",
             "/^(registered|moderator|admin)$/",
             "App\Controllers\AccountsController",
             "logout"
