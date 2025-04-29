@@ -2,19 +2,23 @@
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Logiciel</h2>
     </div>
+
     <article class="content__subcontent">
+
         <?php if (isset($software)): ?>
 
             <div class="prominent">
                 <h3 class="prominent__text">
                     <span class="prominent__text"><?= $software["softwareName"] ?></span>
                 </h3>
+
                 <div class="postbox postbox-status postbox-status-<?= $software["idPost"] ?>">
                     <?php foreach ($software["status"] as $status): ?>
                         <span class="prominent__icon icon-<?= $status["icon"] ?>"
                               title="<?= $status["title"] ?>"></span>
                     <?php endforeach; ?>
                 </div>
+
             </div>
 
             <div class="regular">
@@ -42,5 +46,52 @@
                 <p class="regular__text">Fiche vide !</p>
             </div>
         <?php endif ?>
+
     </article>
+
+    <div class="content__subcontent prominent">
+        <h2 class="prominent__text">Ancres</h2>
+    </div>
+
+    {{ notification }}
+
+    <?php if (isset($anchors)): ?>
+
+        <?php foreach ($anchors as $anchor): ?>
+
+            <article class="content__subcontent">
+
+                <div class="prominent">
+                    <h3 class="prominent__text"><a class="anchor" href="<?= $anchor["anchorUrl"] ?>"
+                                                   target="_blank"><?= $anchor["anchorUrl"] ?></a></h3>
+
+                    <div class="postbox postbox-status postbox-status-<?= $anchor["idPost"] ?>">
+                        <?php foreach ($anchor["status"] as $status): ?>
+                            <span class="prominent__icon icon-<?= $status["icon"] ?>"
+                                  title="<?= $status["title"] ?>"></span>
+                        <?php endforeach; ?>
+                    </div>
+
+                </div>
+
+                <div class="regular">
+                    <p class="regular__text"><?= $anchor["anchorContent"] ?></p>
+                </div>
+
+            </article>
+
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <article class="content__subcontent">
+
+            <div class="regular">
+                <p class="regular__text">Aucunes ancres associées.</p>
+            </div>
+
+        </article>
+
+    <?php endif ?>
+
 </section>

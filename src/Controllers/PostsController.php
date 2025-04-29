@@ -74,12 +74,12 @@ class PostsController extends Controller
         return $this->response;
     }
 
-    public function showSoftware(string $idPost): Response
+    public function showSoftware(string $idPostSoftware): Response
     {
         $postModel = new PostModel();
 
         try {
-            $software = $postModel->getSoftwareByIdPost($idPost);
+            $software = $postModel->getSoftwareByIdPost($idPostSoftware);
 
             // idPost est inexistant
             if (!$software) {
@@ -119,6 +119,51 @@ class PostsController extends Controller
             $contentParams["softwareModTools"] = $this->getPostModToolsParams($software);
         }
 
+        // récupérer les liens associés à la fiche
+        $anchors = [];
+        $notification = [];
+
+        if ($this->userIsGuest()) {
+            try {
+                $anchors = $postModel->getPublishedAnchorsByIdPostSoftware($idPostSoftware);
+            } catch (Exception $e) {
+                $notification["error"] = "Impossible de récupérer les ancres associées.";
+            }
+        }
+
+        if ($this->userIsRegistered()) {
+            try {
+                $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware($idPostSoftware);
+            } catch (Exception $e) {
+                $notification["error"] = "Impossible de récupérer les ancres associées.";
+            }
+        }
+
+        if ($this->userIsModerator() || $this->userIsAdmin()) {
+            try {
+                $anchors = $postModel->getAnchorsByIdPostSoftware($idPostSoftware);
+            } catch (Exception $e) {
+                $notification["error"] = "Impossible de récupérer les ancres associées.";
+            }
+        }
+
+        if (!empty($anchors)) {
+            $contentParams["anchors"] = [];
+
+            foreach ($anchors as $anchor) {
+                $this->htmlspecialcharsWalking($anchor);
+
+                $article = [];
+                $article["idPost"] = $anchor["idPost"];
+                $article["href"] = $this->constructHref("posts", "showAnchor", $anchor["idPost"]);
+                $article["anchorUrl"] = $anchor["anchorUrl"];
+                $article["anchorContent"] = $anchor["anchorContent"];
+                $article["status"] = $this->getPostStatusParams($anchor);
+
+                $contentParams["anchors"][] = $article;
+            }
+        }
+
         $this->response->setHeaders([
             "Content-Type" => "text/html",
         ]);
@@ -127,7 +172,7 @@ class PostsController extends Controller
 
         $title = $software["softwareName"];
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : $title", "posts/showSoftware", $contentParams));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : $title", "posts/showSoftware", $contentParams, $notification));
 
         return $this->response;
     }
