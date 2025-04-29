@@ -306,17 +306,17 @@ class PostsController extends Controller
 
         if ($post["postIsPublished"]) {
             $status[] = [
-                "icon" => "published",
+                "icon" => "post-published",
                 "title" => "publiée"
             ];
         } else if ($post["postIsBanned"]) {
             $status[] = [
-                "icon" => "banned",
+                "icon" => "post-banned",
                 "title" => "banni"
             ];
         } else {
             $status[] = [
-                "icon" => "pending",
+                "icon" => "post-pending",
                 "title" => "en attente"
             ];
         }
@@ -331,7 +331,7 @@ class PostsController extends Controller
         if ($post["postIsBanned"]) {
             $tools[] = [
                 "action" => "unban",
-                "icon" => "unban",
+                "icon" => "post-unban",
                 "title" => "Rétirer le bannissement"
             ];
 
@@ -341,20 +341,20 @@ class PostsController extends Controller
         if ($post["postIsPublished"]) {
             $tools[] = [
                 "action" => "unpublish",
-                "icon" => "pending",
+                "icon" => "post-unpublish",
                 "title" => "Rétirer la publication"
             ];
         } else {
             $tools[] = [
                 "action" => "publish",
-                "icon" => "publish",
+                "icon" => "post-publish",
                 "title" => "Mettre en publication"
             ];
         }
 
         $tools[] = [
             "action" => "ban",
-            "icon" => "ban",
+            "icon" => "post-ban",
             "title" => "Mettre en bannissement"
         ];
 

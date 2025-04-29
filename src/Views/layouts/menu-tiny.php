@@ -18,13 +18,13 @@
 
     <div class="menu__submenu menu__submenu-v">
         <button class="menu__item menu__item-clickable prominent button-switch-theme" title="Changer de thème"><span
-                    class="prominent__icon icon-theme"></span></button>
+                    class="prominent__icon icon-switch-theme"></span></button>
         <button class="menu__item menu__item-clickable prominent button-menu-tiny" title="Fermer ce menu"><span
-                    class="prominent__icon icon-menu"></span></button>
+                    class="prominent__icon icon-close"></span></button>
     </div>
 
     <div class="menu__submenu menu__submenu-v">
         <a class="menu__item menu__item-clickable prominent" title="Aller au bas de la page" href="#page-bot"><span
-                    class="prominent__icon icon-go-bot"></span></a>
+                    class="prominent__icon icon-go-bottom"></span></a>
     </div>
 </aside>

@@ -17,7 +17,7 @@
     <?php endif; ?>
 
     <div class="menu__submenu menu__submenu-v">
-        <button class="menu__item menu__item-clickable prominent button-switch-theme"><span class="prominent__text">Thème</span><span class="prominent__icon icon-theme"></span></button>
-        <button class="menu__item menu__item-clickable prominent button-menu-tiny"><span class="prominent__text">Petit menu</span><span class="prominent__icon icon-menu"></span></button>
+        <button class="menu__item menu__item-clickable prominent button-switch-theme"><span class="prominent__text">Thème</span><span class="prominent__icon icon-switch-theme"></span></button>
+        <button class="menu__item menu__item-clickable prominent button-menu-tiny"><span class="prominent__text">Menu flottant</span><span class="prominent__icon icon-switch-on-off"></span></button>
     </div>
 </aside>

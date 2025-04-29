@@ -261,6 +261,139 @@ main {
   color: var(--color-text);
   background-color: var(--color-background-specific);
 }
+.icon {
+  background-image: url(../img/icons-tango-scalable/image-missing.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-menu {
+  background-image: url(../img/icons-tango-scalable/menu.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-menu-hamburger {
+  background-image: url(../img/icons-tango-scalable/menu-hamburger.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-switch-on-off {
+  background-image: url(../img/icons-tango-scalable/switch-on-off.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-close {
+  background-image: url(../img/icons-tango-scalable/close.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-previous-page {
+  background-image: url(../img/icons-tango-scalable/status/image-missing.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-home {
+  background-image: url(../img/icons-tango-scalable/go-home.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-bottom {
+  background-image: url(../img/icons-tango-scalable/go-bottom.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-top {
+  background-image: url(../img/icons-tango-scalable/go-top.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-profile {
+  background-image: url(../img/icons-tango-scalable/go-profile.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-logout {
+  background-image: url(../img/icons-tango-scalable/go-logout.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-login {
+  background-image: url(../img/icons-tango-scalable/go-login.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-signup {
+  background-image: url(../img/icons-tango-scalable/go-signup.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-admin {
+  background-image: url(../img/icons-tango-scalable/go-admin.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-switch-theme {
+  background-image: url(../img/icons-tango-scalable/switch-theme.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-published {
+  background-image: url(../img/icons-tango-scalable/post-published.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-pending {
+  background-image: url(../img/icons-tango-scalable/post-pending.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-banned {
+  background-image: url(../img/icons-tango-scalable/post-banned.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-unpublish {
+  background-image: url(../img/icons-tango-scalable/post-unpublish.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-publish {
+  background-image: url(../img/icons-tango-scalable/post-publish.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-ban {
+  background-image: url(../img/icons-tango-scalable/post-ban.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-post-unban {
+  background-image: url(../img/icons-tango-scalable/post-unban.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
 .prominent {
   display: flex;
   flex-flow: row nowrap;
@@ -286,12 +419,8 @@ main {
 .prominent__icon {
   width: var(--size-xl);
   height: var(--size-xl);
-  margin-left: var(--size-xs);
-  margin-right: var(--size-xs);
+  margin: var(--size-xs);
   display: inline-block;
-  background-image: url("../img/icons-tango-scalable/status/image-missing.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .regular {

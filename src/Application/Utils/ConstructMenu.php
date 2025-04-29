@@ -4,6 +4,7 @@ namespace App\Application\Utils;
 
 trait ConstructMenu
 {
+    // todo il faut que cette construction se fasse par un contrôleur
     use SessionManager;
     use ConstructHref;
 
