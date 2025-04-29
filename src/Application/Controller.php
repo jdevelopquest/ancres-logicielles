@@ -17,17 +17,27 @@ class Controller
     }
 
     protected function htmlspecialcharsWalking(string|array &$data): void {
-        array_walk($data, function (&$value) {
-            if (is_string($value)) {
-                $value = htmlspecialchars($value);
-            }
-        });
+        if (is_string($data)) {
+            $data = htmlspecialchars($data);
+        } else if (is_array($data)) {
+            array_walk($data, function (&$value) {
+                if (is_string($value)) {
+                    $value = htmlspecialchars($value);
+                }
+            });
+        }
     }
 
-    protected function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", array $contentParams = [], array $notification = []): string
+    protected function renderPage(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", array $contentParams = [], array $notification = []): string
     {
+        $this->viewBuilder->setPageParam("title", $pageTitle);
         $this->viewBuilder->setPageParam("theme", $this->getUserTheme());
 
-        return $this->viewBuilder->renderTextHTML($pageTitle, $contentLayout, $contentParams, $notification);
+        return $this->viewBuilder->renderPage($contentLayout, $contentParams, $notification);
+    }
+
+    protected function renderPart(string $partLayout, array $partParams): string
+    {
+        return $this->viewBuilder->renderPart($partLayout, $partParams);
     }
 }

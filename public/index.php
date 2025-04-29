@@ -27,6 +27,7 @@ set_exception_handler(
         $file = LOG . "messages.log";
         $message = sprintf("%s on line %s in %s\n", $exception->getMessage(), $exception->getLine(), $exception->getFile());
         error_log($message, 3, $file);
+        // todo il faut pouvoir gérer les requête ajax
         $errorsController = new ErrorsController(new Request());
         $errorsController->error503()->send();
         exit();
@@ -38,6 +39,7 @@ set_error_handler(
         $file = LOG . "messages.log";
         $message = sprintf("%s %s on line %s in %s\n", $errno, $errstr, $errline, $errfile);
         error_log($message, 3, $file);
+        // todo il faut pouvoir gérer les requête ajax
         $errorsController = new ErrorsController(new Request());
         $errorsController->error503()->send();
         exit();

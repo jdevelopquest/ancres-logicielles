@@ -21,7 +21,7 @@ class AccountsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Inscription", "accounts/signup"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Inscription", "accounts/signup"));
 
         return $this->response;
     }
@@ -68,7 +68,7 @@ class AccountsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Connexion", "accounts/login", $contentParams, $notification));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Connexion", "accounts/login", $contentParams, $notification));
 
         return $this->response;
     }
@@ -88,7 +88,7 @@ class AccountsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Déconnexion", "accounts/logout"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Déconnexion", "accounts/logout"));
 
         return $this->response;
     }

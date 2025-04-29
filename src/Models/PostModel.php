@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Application\Config\AppSettings;
 use App\Application\Database;
+use Exception;
 
 /**
  *
@@ -16,12 +17,12 @@ class PostModel
     /**
      * @param $idPost
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function banPost($idPost): bool
     {
         $request =
-            "UPDATE Posts SET postIsBanned = 1 WHERE idPost = :idPost";
+            "UPDATE Posts SET postIsBanned = 1, postIsPublished = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
         return Database::execute($request, $params);
     }
@@ -29,12 +30,12 @@ class PostModel
     /**
      * @param $idPost
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function unbanPost($idPost): bool
     {
         $request =
-            "UPDATE Posts SET postIsBanned = 0 WHERE idPost = :idPost";
+            "UPDATE Posts SET postIsBanned = 0, postIsPublished = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
         return Database::execute($request, $params);
     }
@@ -42,12 +43,12 @@ class PostModel
     /**
      * @param $idPost
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function publishPost($idPost): bool
     {
         $request =
-            "UPDATE Posts SET postIsPublished = 1 WHERE idPost = :idPost";
+            "UPDATE Posts SET postIsPublished = 1, postIsBanned = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
         return Database::execute($request, $params);
     }
@@ -55,20 +56,20 @@ class PostModel
     /**
      * @param $idPost
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function unpublishPost($idPost): bool
     {
         $request =
-            "UPDATE Posts SET postIsPublished = 0 WHERE idPost = :idPost";
+            "UPDATE Posts SET postIsPublished = 0, postIsBanned = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
         return Database::execute($request, $params);
     }
 
     /**
      * @param mixed $idPost
-     * @return void
-     * @throws \Exception
+     * @return mixed
+     * @throws Exception
      */
     public function getPostStatus(mixed $idPost): mixed
     {
@@ -88,7 +89,7 @@ class PostModel
     /**
      * @param $idPost
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSoftwareByIdPost($idPost): mixed
     {
@@ -109,7 +110,7 @@ class PostModel
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSoftwares(): array
     {
@@ -129,7 +130,7 @@ class PostModel
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSoftwaresPublished(): array
     {
@@ -150,7 +151,7 @@ class PostModel
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSoftwaresPublishedAndPending(): array
     {
@@ -174,7 +175,7 @@ class PostModel
      * @param string $softwareName
      * @param string $softwareSummary
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function registerSoftware(int $idAccount, string $softwareName, string $softwareSummary): bool
     {
@@ -243,7 +244,7 @@ class PostModel
     /**
      * @param int $idPostSoftware
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAnchorsByIdPostSoftware(int $idPostSoftware): array
     {
@@ -267,7 +268,7 @@ class PostModel
      * @param string $anchorUrl
      * @param string $anchorContent
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function registerAnchor(int $idAccount, int $idPostSoftware, string $anchorUrl, string $anchorContent): bool
     {

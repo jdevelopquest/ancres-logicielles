@@ -17,7 +17,7 @@ class Request
     {
         $this->method = $_SERVER["REQUEST_METHOD"];
         $this->path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-        $this->query = parse_url($_SERVER["REQUEST_URI"], PHP_URL_QUERY);
+        $this->query = parse_url($_SERVER["REQUEST_URI"], PHP_URL_QUERY) ?? "";
         $this->params = array_merge($_GET, $_POST);
         $this->body = file_get_contents("php://input");
         $this->files = $_FILES;

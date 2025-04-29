@@ -15,7 +15,7 @@ class ErrorsController extends Controller
 
         $this->response->setCode(400);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Erreur", "errors/error400"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error400"));
 
         return $this->response;
     }
@@ -28,7 +28,7 @@ class ErrorsController extends Controller
 
         $this->response->setCode(403);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Erreur", "errors/error403"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error403"));
 
         return $this->response;
     }
@@ -41,7 +41,7 @@ class ErrorsController extends Controller
 
         $this->response->setCode(404);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Erreur", "errors/error404"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error404"));
 
         return $this->response;
     }
@@ -54,7 +54,7 @@ class ErrorsController extends Controller
 
         $this->response->setCode(500);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Erreur", "errors/error500"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error500"));
 
         return $this->response;
     }
@@ -67,7 +67,29 @@ class ErrorsController extends Controller
 
         $this->response->setCode(503);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Erreur", "errors/error503"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error503"));
+
+        return $this->response;
+    }
+
+    public function error404ByAjax(): Response
+    {
+        $this->response->setHeaders([
+            "Content-Type: application/json",
+        ]);
+
+        $this->response->setCode(404);
+
+        return $this->response;
+    }
+
+    public function error503ByAjax(): Response
+    {
+        $this->response->setHeaders([
+            "Content-Type: application/json",
+        ]);
+
+        $this->response->setCode(503);
 
         return $this->response;
     }
