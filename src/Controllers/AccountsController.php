@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Request;
 use App\Application\Response;
+use App\Application\Utils\ConstructMenu;
 use App\Application\Utils\SessionManager;
 use App\Models\AccountModel;
 use Exception;
@@ -12,24 +13,22 @@ use Exception;
 class AccountsController extends Controller
 {
     use SessionManager;
+    use ConstructMenu;
 
+    // todo : finir la fonction !!!
     public function signup(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Inscription");
 
-        $this->response->setCode(200);
+        $this->setPartConfig("content", "account/signup", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Inscription", "accounts/signup"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
     public function login(): Response
     {
         $contentParams = [];
-        $notification = [];
+        $notificationParams = [];
 
         if ($this->request->isPost()) {
             $username = $this->request->getParams()["accountUsername"] ?? "";
@@ -45,32 +44,29 @@ class AccountsController extends Controller
             }
 
             if (empty($account)) {
-                $notification["error"] = "Pseudo ou Mot de passe incorrect.";
+                $notificationParams["error"] = "Pseudo ou Mot de passe incorrect.";
                 $contentParams["accountUsername"] = htmlspecialchars($username);
             } else {
                 if ($account["accountIsBanned"]) {
-                    $notification["error"] = "Compte bannis.";
+                    $notificationParams["error"] = "Compte bannis.";
                 } else {
-                    $notification["success"] = "Connexion réussie.";
+                    $notificationParams["success"] = "Connexion réussie.";
 
                     $contentParams["success"] = true;
 
-                    $this->htmlspecialcharsWalking($account);
+                    $this->escapeHtmlRecursive($account);
 
                     $this->setupUserSession($account);
                 }
             }
         }
 
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Connexion");
 
-        $this->response->setCode(200);
+        $this->setPartConfig("notification", "layouts/notification", $notificationParams, "content");
+        $this->setPartConfig("content", "accounts/login", $contentParams, "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Connexion", "accounts/login", $contentParams, $notification));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
     public function logout(): Response
@@ -82,14 +78,10 @@ class AccountsController extends Controller
             return $postsController->indexSoftwares();
         }
 
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Déconnexion");
 
-        $this->response->setCode(200);
+        $this->setPartConfig("content", "accounts/logout", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Déconnexion", "accounts/logout"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage());
     }
 }

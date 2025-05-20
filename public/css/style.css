@@ -267,12 +267,6 @@ main {
   background-size: contain;
   background-position: center;
 }
-.icon-menu {
-  background-image: url(../img/icons-tango-scalable/menu.svg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
 .icon-menu-hamburger {
   background-image: url(../img/icons-tango-scalable/menu-hamburger.svg);
   background-repeat: no-repeat;
@@ -475,6 +469,9 @@ main {
   }
 }
 @media screen and (min-width: 1440px) {
+  body > div {
+    max-width: fit-content(1440px);
+  }
   header.menu {
     display: flex;
     flex-flow: row nowrap;
@@ -491,7 +488,7 @@ main {
     gap: var(--size-md);
   }
   .content {
-    width: 100%-var(--size-xl);
+    width: 100%;
   }
   .menu-hamburger {
     color: var(--color-text);

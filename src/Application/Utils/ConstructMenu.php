@@ -4,11 +4,10 @@ namespace App\Application\Utils;
 
 trait ConstructMenu
 {
-    // todo il faut que cette construction se fasse par un contrôleur
     use SessionManager;
     use ConstructHref;
 
-    protected function constructMenuHamburger(): array
+    protected function constructMenuHamburgerParams(): array
     {
         $menuHamburger = [];
 
@@ -17,6 +16,7 @@ trait ConstructMenu
         $menuHamburger[] = $submenu;
 
         $submenu = [];
+
         if ($this->userIsLoggedIn()) {
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "show", $this->getUserId()), "Profil", "Profil", "go-profile");
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "logout"), "Déconnexion", "Déconnexion", "go-logout");
@@ -24,6 +24,7 @@ trait ConstructMenu
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "login"), "Connexion", "Connexion", "go-login");
             $submenu[] = $this->addMenuItem($this->constructHref("accounts", "signup"), "Inscription", "Inscription", "go-signup");
         }
+
         $menuHamburger[] = $submenu;
 
         if ($this->userIsAdmin()) {
@@ -35,9 +36,9 @@ trait ConstructMenu
         return ["menu" => $menuHamburger];
     }
 
-    protected function constructMenuTiny(): array
+    protected function constructMenuTinyParams(): array
     {
-        return $this->constructMenuHamburger();
+        return $this->constructMenuHamburgerParams();
     }
 
     protected function addMenuItem(string $href = "", string $title = "", string $text = "", string $icon = ""): array

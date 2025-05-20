@@ -2,7 +2,6 @@
 
 namespace App\Application;
 
-use App\Application\Config\DatabasesSettings;
 use Exception;
 use PDO;
 use Throwable;
@@ -15,16 +14,18 @@ class Database
     private static PDO $pdo;
 
     /**
-     * @param string $request
-     * @param array $params
-     * @return mixed
+     * Fetches a single record from the database based on the provided SQL request and parameters.
+     *
+     * @param string $request The SQL query to execute.
+     * @param array $params An associative array of key-value pairs to bind to the query.
+     * @return mixed The fetched result or an empty array if no results are found.
      * @throws Exception
      */
     public static function fetch(string $request, array $params = []): mixed
     {
         try {
             if (!self::isPdoCanBeUsed()) {
-                throw new Exception();
+                throw new Exception("Unable to connect to the database.");
             }
 
             $query = self::$pdo->prepare($request);
@@ -49,14 +50,25 @@ class Database
     }
 
     /**
+     * Determines if the PDO connection can be successfully established and used.
+     *
      * @return bool
      * @throws Exception
      */
     private static function isPdoCanBeUsed(): bool
     {
-        if (empty(self::$pdo)) {
+        if (!isset(self::$pdo)) {
             try {
-                extract(DatabasesSettings::DB_CONNECTION_PARAMS);
+                $connectionParams = [];
+                // le fichier databases.php doit returner un tableau associatif
+                // avec les clefs db_driver, db_host, db_name, db_username et db_password
+                if (file_exists(CONFIG . "databases.php")) {
+                    $connectionParams = require CONFIG . "databases.php";
+                } else {
+                    throw new Exception("Missing database configuration file.");
+                }
+
+                extract($connectionParams);
 
                 self::$pdo = new PDO(
                     $db_driver . ":host=" . $db_host . ";dbname=" . $db_name,
@@ -73,10 +85,12 @@ class Database
     }
 
     /**
-     * @param string $request
-     * @param array $params
-     * @return bool
-     * @throws Exception
+     * Executes a prepared SQL statement with the given parameters.
+     *
+     * @param string $request The SQL query to be executed.
+     * @param array $params An associative array of parameters to bind to the query.
+     * @return bool Returns true if the statement was executed successfully, otherwise false.
+     * @throws Exception If there is an issue with the PDO connection or query execution.
      */
     public static function execute(string $request, array $params = []): bool
     {
@@ -102,16 +116,18 @@ class Database
     }
 
     /**
-     * @param string $request
-     * @param array $params
-     * @return array
-     * @throws Exception
+     * Executes a database query and fetches all results.
+     *
+     * @param string $request The SQL query string to be executed.
+     * @param array $params An optional associative array of parameters to bind to the query.
+     * @return array An array containing all fetched results. Returns an empty array if the query fails or no results are found.
+     * @throws Exception If the PDO instance is unavailable, or if an error occurs during query execution.
      */
     public static function fetchAll(string $request, array $params = []): array
     {
         try {
             if (!self::isPdoCanBeUsed()) {
-                throw new Exception();
+                throw new Exception("Unable to connect to the database.");
             }
 
             $query = self::$pdo->prepare($request);
