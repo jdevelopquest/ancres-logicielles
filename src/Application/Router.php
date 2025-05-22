@@ -173,7 +173,7 @@ class Router
             "/^ctr=users&act=saveTheme$/",
             "/^(POST)$/",
             "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\UsersApiController",
+            "App\Controllers\SessionsController",
             "saveTheme"
         );
     }

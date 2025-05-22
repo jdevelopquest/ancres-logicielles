@@ -38,7 +38,7 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublished();
             } catch (Exception $e) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
         }
@@ -47,7 +47,7 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublishedAndPending();
             } catch (Exception $e) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
         }
@@ -56,7 +56,7 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwares();
             } catch (Exception $e) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
         }
@@ -100,21 +100,21 @@ class PostsController extends Controller
 
             // idPost est inexistant
             if (!$software) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error404();
             }
         } catch (Exception $e) {
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503();
         }
 
         if ($this->userIsGuest() && !$software["postIsPublished"]) {
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error403();
         }
 
         if ($this->userIsRegistered() && $software["postIsBanned"]) {
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error403();
         }
 
@@ -253,7 +253,7 @@ class PostsController extends Controller
         $postModel = new PostModel();
 
         if (!method_exists($postModel, $action)) {
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
@@ -261,11 +261,11 @@ class PostsController extends Controller
             $result = $postModel->$action($idPost);
 
             if (!$result) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
@@ -295,14 +295,14 @@ class PostsController extends Controller
                 $this->logMessage("updatePostboxModTool idPost doit être inexistant");
                 $this->logData($idPost);
 
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
             $this->logMessage("updatePostboxModTool problème avec la bd");
             $this->logData($idPost);
 
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
@@ -321,7 +321,7 @@ class PostsController extends Controller
             $this->logData($idPost);
             $this->logData($partParams);
 
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
@@ -355,14 +355,14 @@ class PostsController extends Controller
                 $this->logMessage("updateSoftwareStatus idPost doit être inexistant");
                 $this->logData($idPost);
 
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
             $this->logMessage("updateSoftwareStatus problème avec la bd");
             $this->logData($idPost);
 
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
@@ -381,7 +381,7 @@ class PostsController extends Controller
             $this->logData($idPost);
             $this->logData($partParams);
 
-            $errorsController = new ErrorsController($this->request);
+            $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
