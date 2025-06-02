@@ -13,7 +13,7 @@ class ViewBuilder
      */
     protected function constructFilePath(string $layout): string
     {
-        return VIEWS . str_replace("/", DIRECTORY_SEPARATOR, $layout . ".php");
+        return VIEWS_PATH . str_replace("/", DIRECTORY_SEPARATOR, $layout . ".php");
     }
 
     /**

@@ -62,8 +62,8 @@ class Database
                 $connectionParams = [];
                 // le fichier databases.php doit returner un tableau associatif
                 // avec les clefs db_driver, db_host, db_name, db_username et db_password
-                if (file_exists(CONFIG . "databases.php")) {
-                    $connectionParams = require CONFIG . "databases.php";
+                if (file_exists(CONFIG_PATH . "databases.php")) {
+                    $connectionParams = require CONFIG_PATH . "databases.php";
                 } else {
                     throw new Exception("Missing database configuration file.");
                 }
