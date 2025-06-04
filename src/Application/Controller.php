@@ -14,7 +14,7 @@ class Controller
 
     protected ViewBuilder $viewBuilder;
     protected array $pageParams = [];
-    private array $pageParts = [];
+    private array $pagePartials = [];
 
     public function __construct(protected Request $request, protected Response $response)
     {
@@ -60,18 +60,17 @@ class Controller
     }
 
     /**
-     * Configures and sets a part of the page with the specified parameters.
+     * Configures a page partial with the specified parameters and stores it for rendering.
      *
-     * @param string $name The name identifier for the page part.
-     * @param string $layout The layout template associated with the page part.
-     * @param array $params An associative array of parameters to configure the page part.
-     * @param string|null $writeIn Optional parameter specifying the target section for the part. Defaults to an empty string.
-     *
+     * @param string $name The name of the partial to identify it.
+     * @param string $layout The layout template associated with the partial.
+     * @param array $params An array of parameters to be passed to the partial.
+     * @param string|null $writeIn Optional target area for rendering the partial. Defaults to an empty string.
      * @return void
      */
-    protected function setPartConfig(string $name, string $layout, array $params, ?string $writeIn = ""): void
+    protected function setPagePartial(string $name, string $layout, array $params, ?string $writeIn = ""): void
     {
-        $this->pageParts[$name] = [
+        $this->pagePartials[$name] = [
             "name" => $name,
             "layout" => $layout,
             "params" => $params,
@@ -81,72 +80,30 @@ class Controller
     }
 
     /**
-     * Renders the complete HTML page by preparing and assembling its parts.
+     * Renders the complete HTML page by combining defined page partials into the final output.
      *
-     * This method processes all defined page parts, generates their HTML using the
-     * specified layouts and parameters, and combines them into the final page output.
-     *
-     * @return string The fully rendered HTML content of the page.
+     * @return string The fully rendered HTML page as a string.
      */
     protected function renderHtmlPage(): string
     {
         $this->prepareHtmlPageForRender();
 
-        $this->setPartConfig("page", "layouts/page", $this->pageParams, null);
-
-        foreach ($this->pageParts as &$part) {
-            $part["html"] = $this->renderHtmlPart($part["layout"], $part["params"]);
+        foreach ($this->pagePartials as $name => $part) {
+            $this->viewBuilder->setPagePartial(
+                $part["name"],
+                $part["layout"],
+                $part["params"],
+                $part["writeIn"]
+            );
         }
 
-        $this->processNestedTemplates("page");
-
-        return $this->pageParts["page"]["html"];
-    }
-
-    /**
-     * Processes nested templates by resolving and embedding the HTML content
-     * of child templates into their parent template specified by the destination.
-     *
-     * @param string $dest The name identifier of the destination template where
-     * nested templates are embedded.
-     *
-     * @return void
-     */
-    private function processNestedTemplates(string $dest): void
-    {
-        $sources = array_keys(array_filter($this->pageParts, function ($part) use ($dest) {
-            return $part["writeIn"] === $dest;
-        }));
-
-        foreach ($sources as $src) {
-            $name = $this->pageParts[$src]["name"];
-
-            $this->processNestedTemplates($this->pageParts[$src]["name"]);
-
-            $this->pageParts[$dest]["html"] = str_replace(
-                "{{ $name }}",
-                $this->pageParts[$src]["html"],
-                $this->pageParts[$dest]["html"]);
-        }
-    }
-
-    /**
-     * Renders a specific HTML part using the provided layout and parameters.
-     *
-     * @param string $partLayout The layout template to use for rendering the HTML part.
-     * @param array $partParams An associative array of parameters to be passed to the layout for rendering.
-     *
-     * @return string The rendered HTML content as a string.
-     */
-    protected function renderHtmlPart(string $partLayout, array $partParams): string
-    {
-        return $this->viewBuilder->renderPart($partLayout, $partParams);
+        return $this->viewBuilder->renderHtmlPage($this->pageParams);
     }
 
     /**
      * Recursively escapes HTML special characters in a string or array.
      *
-     * @param string|array &$data The input data to be escaped. Can be a string or an array.
+     * @param array|string|float|int|bool|null $data The input data to be escaped. Can be a string or an array.
      *                            Strings are directly escaped, and arrays are processed recursively.
      *
      * @return void
@@ -234,8 +191,8 @@ class Controller
         $menuHamburgerParams = $this->constructMenuHamburgerParams();
         $menuTinyParams = $this->constructMenuTinyParams();
 
-        $this->setPartConfig("menu-hamburger", "layouts/menu-hamburger", $menuHamburgerParams, "page");
-        $this->setPartConfig("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
+        $this->setPagePartial("menu-hamburger", "layouts/menu-hamburger", $menuHamburgerParams, "page");
+        $this->setPagePartial("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
 
     }
 }
