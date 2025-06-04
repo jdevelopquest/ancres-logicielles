@@ -6,6 +6,8 @@ use Exception;
 
 trait SessionManager
 {
+    // todo : faire un logout en base de données
+    // todo : supprimer les appels aux instances response et request
     /**
      * Initializes the session by setting default values for the "user" session data
      * if it is not already defined. This includes the user's role, ID, and theme
@@ -164,7 +166,7 @@ trait SessionManager
     protected function userLogout(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
-            
+
             // todo : faire un logout en base de données
             // todo : traiter les cookies de la session
 
@@ -205,6 +207,7 @@ trait SessionManager
     protected function isValidToken(): bool
     {
         if (!isset($_SESSION["token"]) || !isset($this->request->getCookies()["token"])) {
+            $this->logMessage("Pas de token dans la session ou dans les cookies");
             return false;
         }
 
@@ -216,11 +219,13 @@ trait SessionManager
      *
      * @return void
      */
-    protected function iniToken(): void
+    protected function setSessionToken(): void
     {
         $_SESSION["token"] = $this->generateToken();
-
-        if ($_SESSION["token"] !== "") {
+        if (empty($_SESSION["token"])) {
+            $this->logMessage("Impossible de générer un jeton de session");
+        } else {
+            $this->logMessage("Jeton de session généré");
             $this->response->addCookie(
                 'token',
                 $_SESSION["token"],

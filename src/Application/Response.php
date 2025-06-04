@@ -2,8 +2,11 @@
 
 namespace App\Application;
 
+use App\Application\Utils\LogPrinter;
+
 class Response
 {
+    use LogPrinter;
     protected array $headers = [];
     protected array $cookies = [];
     protected int $code = 200;
@@ -87,7 +90,7 @@ class Response
         }
 
         foreach ($this->cookies as $cookie) {
-            setcookie(
+            $result = setcookie(
                 $cookie["name"],
                 $cookie["value"],
                 $cookie["expires_or_options"],

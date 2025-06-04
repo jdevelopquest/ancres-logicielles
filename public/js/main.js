@@ -57,7 +57,11 @@ function sendPostModAction(params) {
             // Il n'y a pas de données à récupérer,
             // mettre à jour les status et la barre d'outils
             getUpdatePostboxModTool(idPost);
-            getUpdateSoftwareStatus(idPost);
+            // Ajout d'un temps d'attente pour mettre à jour le cookie token parce que l'enchaîne des actions ne permet pas de mettre à jour le cookie token par le navigateur
+            // todo : régler le problème de mise à jour du cookie token
+            setTimeout(() => {
+                getUpdateSoftwareStatus(idPost);
+            }, 100);
         })
         .catch(error => {
             // console.error('Il y a eu un problème avec la requête fetch:', error);
