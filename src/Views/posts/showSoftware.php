@@ -13,10 +13,7 @@
                 </h3>
 
                 <div class="postbox postbox-status postbox-status-<?= $software["idPost"] ?>">
-                    <?php foreach ($software["status"] as $status): ?>
-                        <span class="prominent__icon icon-<?= $status["icon"] ?>"
-                              title="<?= $status["title"] ?>"></span>
-                    <?php endforeach; ?>
+                    <?= $this->renderPartial("layouts/postbox-status", ["software" => $software]) ?>
                 </div>
 
             </div>
@@ -30,13 +27,7 @@
             <?php if (isset($softwareModTools)): ?>
                 <aside class="menu">
                     <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= $software["idPost"] ?>">
-                        <?php foreach ($softwareModTools as $tool): ?>
-                            <button class="menu__item menu__item-clickable prominent button-post-<?= $tool["action"] ?>"
-                                    title="<?= $tool["title"] ?>"
-                                    data-id-post="<?= $software["idPost"] ?>">
-                                <span class="prominent__icon icon-<?= $tool["icon"] ?>"></span>
-                            </button>
-                        <?php endforeach; ?>
+                        <?= $this->renderPartial("layouts/postbox-mod-tools", ["software" => $software, "softwareModTools" => $softwareModTools]) ?>
                     </div>
                 </aside>
             <?php endif; ?>
