@@ -33,9 +33,10 @@ class ViewBuilder
                 extract($parameters);
             }
 
+            // Start output buffering (if not already started)
             ob_start();
 
-            include_once $filePath;
+            require $filePath;
 
             return ob_get_clean();
         }

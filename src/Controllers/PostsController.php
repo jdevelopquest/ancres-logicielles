@@ -369,24 +369,18 @@ class PostsController extends Controller
         $idPost = htmlspecialchars($idPost);
         $this->escapeHtmlRecursive($postStatus);
 
-        $partParams = [];
-        $partParams["software"] = [];
-        $partParams["software"]["idPost"] = $idPost;
-        $partParams["software"]["status"] = $this->getPostStatusParams($postStatus);
-
-        $part = $this->renderHtmlPartial("layouts/postbox-status", $partParams);
+        $part = $this->renderHtmlPartial("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
 
         if (empty($part)) {
             $this->logMessage("updateSoftwareStatus le rendu est vide");
             $this->logData($idPost);
-            $this->logData($partParams);
+            $this->logData($postStatus);
 
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
         return $this->getJsonResponse($part, 200);
-
     }
 
     /**
