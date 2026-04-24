@@ -130,7 +130,6 @@ $color-jet-black: #000000;
 $icon-img-path: (
         "image-missing": "../img/icons-tango-scalable/image-missing.svg",
 
-        "menu": "../img/icons-tango-scalable/menu.svg",
         "menu-hamburger": "../img/icons-tango-scalable/menu-hamburger.svg",
         "switch-on-off": "../img/icons-tango-scalable/switch-on-off.svg",
         "close": "../img/icons-tango-scalable/close.svg",
@@ -421,10 +420,6 @@ main {
 
 .icon {
   @include set-icon-img("image-missing");
-
-  &-menu {
-    @include set-icon-img("menu");
-  }
 
   &-menu-hamburger {
     @include set-icon-img("menu-hamburger");
