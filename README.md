@@ -53,7 +53,6 @@ Ancres Logicielles est une application web communautaire francophone dédiée au
 - **Développement du backoffice**
 
     Construction d'un backoffice complet pour faciliter l'administration de l'application web.
-    Prise en compte des situations de handicap des équipes utilisant le backoffice (typographie, accessibilité).
 
 - **Sécurité**
 
