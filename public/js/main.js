@@ -1,3 +1,7 @@
+function constructUrl(controller, action, id = null) {
+    return `/${controller}/${action}` + (id !== null && id !== undefined ? `?id=${encodeURIComponent(id)}` : "");
+}
+
 function initMenuButtons(menuTag) {
     const buttonSelector = '.button-menu-' + menuTag;
     const menuSelector = '.menu-' + menuTag;
@@ -59,12 +63,13 @@ function initPostboxMod() {
 }
 
 function sendPostModAction(params) {
+    const posts = 'posts';
     const action = params.action;
     const idPost = params.idPost;
     const data = {
         'idPost': idPost,
     };
-    const url = `index.php?ctr=posts&act=${action}`;
+    const url = constructUrl(posts, action);
     fetch(
         url,
         {
@@ -90,10 +95,12 @@ function sendPostModAction(params) {
 }
 
 async function getUpdatePostboxModTool(idPost) {
+    const posts = 'posts';
+    const action = 'updatePostboxModTool';
     const body = {
         'idPost': idPost,
     };
-    const url = `index.php?ctr=posts&act=updatePostboxModTool`;
+    const url = constructUrl(posts, action);
     await fetch(
         url,
         {
@@ -120,10 +127,12 @@ async function getUpdatePostboxModTool(idPost) {
 }
 
 async function getUpdateSoftwareStatus(idPost) {
+    const posts = 'posts';
+    const action = 'updateSoftwareStatus';
     const body = {
         'idPost': idPost,
     };
-    const url = `index.php?ctr=posts&act=updateSoftwareStatus`;
+    const url = constructUrl(posts, action);
     await fetch(
         url,
         {

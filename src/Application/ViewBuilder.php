@@ -2,6 +2,8 @@
 
 namespace App\Application;
 
+use App\Application\Utils\Logger;
+
 /**
  * Class responsible for building and rendering views, managing components,
  * and processing nested layouts for generating dynamic HTML content.
@@ -28,30 +30,52 @@ class ViewBuilder
      * @param array $parameters An associative array of parameters to pass to the template. Default is an empty array.
      * @return string The rendered output of the template. Returns an empty string if the template file does not exist.
      */
-    public function renderComponent(string $templatePath = "", array $parameters = []): string
+    public function renderComponent(string $templatePath = "errors/errors503", array $parameters = []): string
     {
         $filePath = $this->constructFilePath($templatePath);
 
         if (file_exists($filePath)) {
-            if (isset($parameters)) {
-                // sanitize
-                array_walk_recursive($parameters, function (&$value) {
-                    if (is_string($value)) {
-                        $value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                    }
-                });
+            if ($parameters !== []) {
+                $this->sanitizeParameters($parameters);
                 extract($parameters);
             }
 
-            // Start output buffering (if not already started)
+            $output = false;
             ob_start();
+            try {
+                require $filePath;
+                $output = ob_get_contents();
+            } catch (\Throwable $e) {
+                $log = new Logger();
+                $log->debug("Fail to render component", ["exception message" => $e->getMessage()]);
+            } finally {
+                ob_end_clean();
+            }
 
-            require $filePath;
-
-            return ob_get_clean();
+            return $output !== false ? $output : "";
         }
 
+        $log = new Logger();
+        $log->debug("Fail to render component", ["file path" => $filePath]);
+
         return "";
+    }
+
+    private function sanitizeParameters(array $parameters): array
+    {
+        array_walk_recursive($parameters, function (&$value): void {
+            if (is_int($value)) {
+                $value = (string)$value;
+            } elseif (is_bool($value)) {
+                $value = $value ? "true" : "false";
+            } elseif ($value === null) {
+                $value = "null";
+            } elseif (is_string($value)) {
+                $value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
+            }
+        });
+
+        return $parameters;
     }
 
     /**

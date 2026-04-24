@@ -55,11 +55,6 @@ class Request
         $this->files = $_FILES;
         $this->headers = getallheaders();
         $this->cookies = $_COOKIE;
-
-//        if (preg_match("#/id=\d+$#", $this->path)) {
-//            $id = explode("=", $this->path)[1];
-//            $this->params = array_merge($this->params, ["id" => $id]);
-//        }
     }
 
     /**
