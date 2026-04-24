@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Application\Config\AppSettings;
+use App\Application\Configure;
 use App\Application\Database;
 use Exception;
 
@@ -226,7 +226,7 @@ class PostModel
      */
     public function isValidSoftwareName(string $softwareName): bool
     {
-        return preg_match(AppSettings::SOFTWARE_NAME_PATTERN, $softwareName) === 1;
+        return preg_match(Configure::get("software_name_pattern"), $softwareName) === 1;
     }
 
     /**
@@ -235,7 +235,7 @@ class PostModel
      */
     public function isValidSoftwareSummary(string $softwareDescription): bool
     {
-        return preg_match(AppSettings::SOFTWARE_SUMMARY_PATTERN, $softwareDescription) === 1;
+        return preg_match(Configure::get("software_summary_pattern"), $softwareDescription) === 1;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +367,7 @@ class PostModel
      */
     public function isValidAnchorUrl(string $softwareName): bool
     {
-        return preg_match(AppSettings::ANCHOR_URL_PATTERN, $softwareName) === 1;
+        return preg_match(Configure::get("anchor_url_pattern"), $softwareName) === 1;
     }
 
     /**
@@ -376,6 +376,6 @@ class PostModel
      */
     public function isValidAnchorContent(string $softwareDescription): bool
     {
-        return preg_match(AppSettings::ANCHOR_CONTENT_PATTERN, $softwareDescription) === 1;
+        return preg_match(Configure::get("anchor_content_pattern"), $softwareDescription) === 1;
     }
 }

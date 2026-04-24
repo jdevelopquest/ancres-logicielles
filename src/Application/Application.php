@@ -26,7 +26,18 @@ class Application
     {
         $this->request = new Request();
         $this->response = new Response();
+
         $this->initSession();
+
+        $configurations = require CONFIG_PATH . "config.php";
+        if (is_array($configurations)) {
+            foreach ($configurations as $key => $value) {
+                Configure::set($key, $value);
+            }
+        } else {
+            throw new Exception("Config file is not an array");
+        }
+
         $routeDefinitions = require CONFIG_PATH . "routes.php";
         if (is_array($routeDefinitions)) {
             $this->router = new Router($routeDefinitions);

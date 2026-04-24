@@ -1,0 +1,33 @@
+<?php
+return [
+    "account_suspension_duration" => 3600 * 24,
+    "account_suspension_duration_hours" => 24,
+    "account_max_login_attempts" => 5,
+    "token_short_duration" => 360, // 6 minutes
+    "token_long_duration" => 3600, // 60 minutes
+    "username_min_length" => 3,
+    "username_max_length" => 200,
+    "username_pattern" => "/^[a-zA-Z0-9]{3,200}$/",
+    "username_pattern_html" => "^[a-zA-Z0-9]{3,200}$",
+    "password_min_length" => 12,
+    "password_pattern" => "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$/",
+    "password_pattern_html" => "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$",
+    "password_algo" => "PASSWORD_BCRYPT",
+    "password_max_bytes" => 72,
+    "contact_message_min_length" => 10,
+    "contact_message_max_length" => 1000,
+    "contact_message_pattern" => "/^[\p{L}\p{N}\s\p{P}\p{S}]{10,1000}$/u",
+    "software_name_min_length" => 1,
+    "software_name_max_length" => 100,
+    "software_summary_min_length" => 10,
+    "software_summary_max_length" => 2000,
+    "software_name_pattern" => "/^[\p{L}\p{N}\s\p{P}\p{S}]{1,100}$/u",
+    "software_summary_pattern" => "/^[\p{L}\p{N}\s\p{P}\p{S}]{10,2000}$/u",
+    "anchor_url_min_length" => 10,
+    "anchor_url_max_length" => 400,
+    "anchor_content_min_length" => 10,
+    "anchor_content_max_length" => 400,
+    "anchor_url_pattern" => "/^http[s]?:[\p{L}\p{N}\s\p{P}\p{S}]{10,400}$/u",
+    "anchor_url_pattern_html" => "^http[s]?:[\p{L}\p{N}\s\p{P}\p{S}]{10,400}$",
+    "anchor_content_pattern" => "/^[\p{L}\p{N}\s\p{P}\p{S}]{10,400}$/u",
+];

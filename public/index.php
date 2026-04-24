@@ -2,8 +2,7 @@
 
 session_start();
 
-define("ROOT_PATH", dirname(__DIR__));
-require_once ROOT_PATH . "/src/Application/Config/paths.php";
+require_once dirname(__DIR__) . "/config/paths.php";
 
 spl_autoload_register(
     function ($class) {

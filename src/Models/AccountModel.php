@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Application\Config\AppSettings;
+use App\Application\Configure;
 use App\Application\Database;
 use Exception;
 
@@ -122,7 +122,7 @@ class AccountModel
      * @return mixed The account ID if found, or null if no matching account exists.
      * @throws Exception
      */
-    private function getAccountIdByUsername($username): mixed
+    private function getAccountIdByUsername(string $username): mixed
     {
         $request =
             "SELECT 
@@ -146,6 +146,7 @@ class AccountModel
      *
      * @param int $idAccount The unique identifier of the account to be checked.
      * @return void
+     * @throws Exception
      */
     private function checkSuspendedDurationByIdAccount(int $idAccount): void
     {
@@ -176,6 +177,7 @@ class AccountModel
      *
      * @param int $idAccount The unique identifier of the account whose suspension is to be canceled.
      * @return bool Returns true if the operation was successful, otherwise false.
+     * @throws Exception
      */
     public function cancelSuspendAccount(int $idAccount): bool
     {
@@ -185,7 +187,7 @@ class AccountModel
             SET accountIsSuspended = 0, suspensionEndTime = NULL, failedLoginAttempts = :failedLoginAttempts
             WHERE idAccount = :idAccount";
 
-        $params = ["idAccount" => $idAccount, "failedLoginAttempts" => AppSettings::ACCOUNT_MAX_LOGIN_ATTEMPTS];
+        $params = ["idAccount" => $idAccount, "failedLoginAttempts" => Configure::get("account_max_login_attempts")];
 
         return Database::execute($request, $params);
     }
@@ -196,6 +198,7 @@ class AccountModel
      * @param string $username The username of the account to be retrieved.
      * @return array An associative array containing account details such as ID, username, password, ban status,
      *               administrative and moderator roles, suspension status, failed login attempts, and suspension end time.
+     * @throws Exception
      */
     private function getAccountByUsername(string $username): array
     {
@@ -240,7 +243,7 @@ class AccountModel
             return false;
         }
 
-        $accountPassword = password_hash($accountPassword, AppSettings::PASSWORD_ALGO);
+        $accountPassword = password_hash($accountPassword, Configure::get("password_algo"));
 
         $request =
             "INSERT INTO 
@@ -268,7 +271,7 @@ class AccountModel
             ":accountIsAdmin" => 0,
             ":accountIsModerator" => 0,
             ":accountIsSuspended" => 0,
-            ":failedLoginAttempts" => AppSettings::ACCOUNT_MAX_LOGIN_ATTEMPTS
+            ":failedLoginAttempts" => Configure::get("account_max_login_attempts")
         ];
 
         return Database::execute($request, $params);
@@ -282,7 +285,7 @@ class AccountModel
      */
     public function isUsernameMatchPattern(string $username): bool
     {
-        return preg_match(AppSettings::USERNAME_PATTERN, $username) === 1;
+        return preg_match(Configure::get("username_pattern"), $username) === 1;
     }
 
     /**
@@ -295,11 +298,11 @@ class AccountModel
     {
         // L'utilisation de la constante PASSWORD_BCRYPT pour l'algorithme fera que le paramètre password sera tronqué
         // à une longueur maximale de 72 octets.
-        if (mb_strlen($password, "8bit") > AppSettings::PASSWORD_MAX_BYTES) {
+        if (mb_strlen($password, "8bit") > Configure::get("password_max_bytes")) {
             return false;
         }
 
-        return preg_match(AppSettings::PASSWORD_PATTERN, $password) === 1;
+        return preg_match(Configure::get("password_pattern"), $password) === 1;
     }
 
     /**
@@ -367,7 +370,7 @@ class AccountModel
      */
     public function suspendAccount(int $idAccount): bool
     {
-        $timestampFutur = Time() + AppSettings::ACCOUNT_SUSPENSION_DURATION;
+        $timestampFutur = Time() + Configure::get("account_suspension_duration");
         $request =
             "UPDATE 
                 Accounts 
@@ -397,6 +400,7 @@ class AccountModel
      *
      * @param int $idAccount The unique identifier of the account whose admin privileges are to be revoked.
      * @return bool Returns true if the operation is successful, false otherwise.
+     * @throws Exception
      */
     public function revokeAdminAccount(int $idAccount): bool
     {
@@ -413,7 +417,7 @@ class AccountModel
      * @return bool Returns true if the database operation was successful, false otherwise.
      * @throws Exception
      */
-    public function revokeModeratorAccount($idAccount): bool
+    public function revokeModeratorAccount(int $idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsModerator = 0 WHERE idAccount = :idAccount";
@@ -424,11 +428,11 @@ class AccountModel
     /**
      * Grants administrative privileges to an account by updating its status in the database.
      *
-     * @param mixed $idAccount The unique identifier of the account to be granted administrative privileges.
+     * @param int $idAccount The unique identifier of the account to be granted administrative privileges.
      * @return bool Returns true if the action was successfully executed, or false otherwise.
      * @throws Exception
      */
-    public function grantAdminAccount($idAccount): bool
+    public function grantAdminAccount(int $idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsAdmin = 1 WHERE idAccount = :idAccount";
@@ -443,7 +447,7 @@ class AccountModel
      * @return bool Returns true if the operation succeeds, false otherwise.
      * @throws Exception
      */
-    public function grantModeratorAccount($idAccount): bool
+    public function grantModeratorAccount(int $idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsModerator = 1 WHERE idAccount = :idAccount";
