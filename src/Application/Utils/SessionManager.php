@@ -9,6 +9,7 @@ trait SessionManager
         if (!isset($_SESSION["user"])) {
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
+            $_SESSION["user"]["theme"] = "theme-light";
             $_SESSION["user"]["id"] = "none";
         }
     }
@@ -16,6 +17,16 @@ trait SessionManager
     public function getUserRole(): string
     {
         return $_SESSION["user"]["role"] ?? "guest";
+    }
+
+    public function getUserTheme(): string
+    {
+        return $_SESSION["user"]["theme"] ?? "theme-light";
+    }
+
+    public function setUserTheme(string $theme):void
+    {
+        $_SESSION["user"]["theme"] = $theme;
     }
 
     public function getUserId(): string
@@ -48,7 +59,7 @@ trait SessionManager
         return $_SESSION["user"]["role"] === "admin";
     }
 
-    public function logout(): void
+    public function userLogout(): void
     {
         unset($_SESSION["user"]);
     }

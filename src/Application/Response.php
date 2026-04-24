@@ -67,6 +67,8 @@ class Response
 
         http_response_code($this->code);
 
-        echo $this->body;
+        if (!empty($this->body)) {
+            echo $this->body;
+        }
     }
 }

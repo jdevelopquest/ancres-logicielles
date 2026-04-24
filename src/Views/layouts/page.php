@@ -13,7 +13,7 @@
     <meta name="description" content="Organisez, partagez et découvrez des liens web pour vos logiciels favoris.">
     <meta name="keywords" content="gestion de liens, partage de liens, application web collaborative, veille informationnelle, outils collaboratifs, partage de connaissances">
 </head>
-<body class="size-md theme-light">
+<body class="size-md <?= $theme ?? "theme-light" ?>">
 <div>
     <header class="menu" id="page-top">
         <div class="menu__submenu menu__submenu-h">

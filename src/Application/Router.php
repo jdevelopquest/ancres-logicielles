@@ -98,6 +98,15 @@ class Router
             "App\Controllers\AccountsController",
             "logout"
         );
+
+        // users api saveTheme
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=users&act=saveTheme$/",
+            "/^(POST)$/",
+            "/^(guest|registered|moderator|admin)$/",
+            "App\Controllers\UsersApiController",
+            "saveTheme"
+        );
     }
 
     private function add(string $pathPattern, string $queryPattern, string $methodPattern, string $rolePattern, string $controller, string $action): void
@@ -119,7 +128,7 @@ class Router
 //                continue;
 //            }
 
-            if (!preg_match($route['queryPattern'], $request->getQuery() ?? "")) {
+            if (!preg_match($route['queryPattern'], $request->getQuery())) {
                 continue;
             }
 
