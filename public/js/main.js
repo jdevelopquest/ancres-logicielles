@@ -5,12 +5,37 @@ function initMenuButtons(menuTag) {
         button.addEventListener('click', function () {
             const menu = document.querySelector(menuSelector);
             menu?.classList.toggle('hide');
-            const close = menu?.querySelector('.button-close');
-            close?.addEventListener('click', function () {
-                menu?.classList.add('hide');
+            if (menuTag === 'tiny') {
+                setTinyMenuVisibility(!menu?.classList.contains('hide'));
+            }
+            menu?.querySelectorAll('.button-close')?.forEach((button) => {
+                button?.addEventListener('click', function () {
+                    menu?.classList.add('hide');
+                    if (menuTag === 'tiny') {
+                        setTinyMenuVisibility(false);
+                    }
+                });
             });
         })
     });
+}
+
+function setTinyMenuVisibility(visible = false) {
+    localStorage.setItem('menu-tiny-visible', visible ? 'true' : 'false');
+}
+
+function getTinyMenuVisibility() {
+    return localStorage.getItem('menu-tiny-visible') ?? false;
+}
+
+function applyTinyMenuVisibility() {
+    const menuSelector = '.menu-tiny';
+    const menu = document.querySelector(menuSelector);
+    if (getTinyMenuVisibility() === 'true') {
+        menu?.classList.remove('hide');
+    } else {
+        menu?.classList.add('hide');
+    }
 }
 
 function initPostboxModButtons(buttonAction) {
@@ -182,4 +207,5 @@ document.addEventListener('DOMContentLoaded', function () {
     initMenuButtons('tiny');
     initPostboxMod();
     initSwitchThemeButtons();
+    applyTinyMenuVisibility();
 })

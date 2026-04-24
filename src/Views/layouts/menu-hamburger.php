@@ -18,6 +18,6 @@
 
     <div class="menu__submenu menu__submenu-v">
         <button class="menu__item menu__item-clickable prominent button-switch-theme" title="Changer le thème"><span class="prominent__text">Thème</span><span class="prominent__icon icon-switch-theme"></span></button>
-        <button class="menu__item menu__item-clickable prominent button-menu-tiny" title="Activer/Désactiver le menu flottant"><span class="prominent__text">Menu flottant</span><span class="prominent__icon icon-switch-on-off"></span></button>
+        <button class="menu__item menu__item-clickable prominent button-menu-tiny button-close" title="Activer/Désactiver le menu flottant"><span class="prominent__text">Menu flottant</span><span class="prominent__icon icon-switch-on-off"></span></button>
     </div>
 </aside>
