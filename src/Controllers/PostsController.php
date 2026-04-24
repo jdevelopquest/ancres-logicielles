@@ -79,7 +79,7 @@ class PostsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
 
-        $this->setPartConfig("content", "posts/indexSoftwares", $contentParams, "page");
+        $this->setPagePartial("content", "posts/indexSoftwares", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -183,9 +183,9 @@ class PostsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : " . $software["softwareName"] ?? "Nom du logiciel inconnu");
 
-        $this->setPartConfig("content", "posts/showSoftware", $contentParams, "page");
+        $this->setPagePartial("content", "posts/showSoftware", $contentParams, "page");
 
-        $this->setPartConfig("notification", "layouts/notification", $notificationParams, "content");
+        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -314,7 +314,7 @@ class PostsController extends Controller
         $partParams["software"]["idPost"] = $idPost;
         $partParams["softwareModTools"] = $this->getPostModToolsParams($postStatus);
 
-        $part = $this->renderHtmlPart("layouts/postbox-mod-tools", $partParams);
+        $part = $this->renderHtmlPartial("layouts/postbox-mod-tools", $partParams);
 
         if (empty($part)) {
             $this->logMessage("updatePostboxModTool le rendu est vide");
@@ -374,7 +374,7 @@ class PostsController extends Controller
         $partParams["software"]["idPost"] = $idPost;
         $partParams["software"]["status"] = $this->getPostStatusParams($postStatus);
 
-        $part = $this->renderHtmlPart("layouts/postbox-status", $partParams);
+        $part = $this->renderHtmlPartial("layouts/postbox-status", $partParams);
 
         if (empty($part)) {
             $this->logMessage("updateSoftwareStatus le rendu est vide");

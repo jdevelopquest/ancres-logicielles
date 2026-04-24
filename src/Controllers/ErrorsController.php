@@ -11,7 +11,7 @@ class ErrorsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->setPartConfig("content", "errors/error400", [], "page");
+        $this->setPagePartial("content", "errors/error400", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage(), 400);
     }
@@ -20,7 +20,7 @@ class ErrorsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->setPartConfig("content", "errors/error403", [], "page");
+        $this->setPagePartial("content", "errors/error403", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage(), 403);
     }
@@ -29,7 +29,7 @@ class ErrorsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->setPartConfig("content", "errors/error404", [], "page");
+        $this->setPagePartial("content", "errors/error404", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage(), 404);
     }
@@ -38,7 +38,7 @@ class ErrorsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->setPartConfig("content", "errors/error500", [], "page");
+        $this->setPagePartial("content", "errors/error500", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage(), 500);
     }
@@ -47,7 +47,7 @@ class ErrorsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->setPartConfig("content", "errors/error503", [], "page");
+        $this->setPagePartial("content", "errors/error503", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage(), 503);
     }

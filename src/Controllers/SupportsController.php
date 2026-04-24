@@ -15,7 +15,7 @@ class SupportsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : À propos de nous");
 
-        $this->setPartConfig("content", "supports/about", [], "page");
+        $this->setPagePartial("content", "supports/about", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -29,7 +29,7 @@ class SupportsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Chartes");
 
-        $this->setPartConfig("content", "supports/about", [], "page");
+        $this->setPagePartial("content", "supports/about", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
