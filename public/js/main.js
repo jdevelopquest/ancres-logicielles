@@ -168,7 +168,7 @@ function sendTheme(theme) {
         })
         .then(response => {
             if (!response.ok) {
-                // throw new Error(response.statusText);
+                // throw a new Error (response.statusText);
             }
             // Il n'y a pas de données à récupérer
         })
