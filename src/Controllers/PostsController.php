@@ -389,8 +389,6 @@ class PostsController extends Controller
 
     }
 
-    // utils
-
     /**
      * Determines the status parameters for a post based on its properties.
      *

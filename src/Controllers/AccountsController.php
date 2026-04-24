@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Request;
 use App\Application\Response;
-use App\Application\Utils\ConstructMenu;
 use App\Application\Utils\SessionManager;
 use App\Models\AccountModel;
 use Exception;
@@ -13,7 +12,6 @@ use Exception;
 class AccountsController extends Controller
 {
     use SessionManager;
-    use ConstructMenu;
 
     // todo : finir la fonction !!!
     public function signup(): Response

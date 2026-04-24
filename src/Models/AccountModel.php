@@ -7,27 +7,18 @@ use App\Application\Database;
 use Exception;
 
 /**
- * AccountModel handles all database operations related to user accounts.
- *
- * This class manages various profile-related operations including:
- * - Account authentication and login
- * - Account status management (banned, suspended, admin, moderator)
- * - Account retrieval and validation
- * - Login attempt tracking and suspension handling
- *
- * The model interacts with the Accounts table in the database and provides
- * methods to handle profile statuses, suspension periods, and administrative operations.
- *
- * @package models
+ * Represents the model for managing accounts within the application.
+ * Provides methods for handling account-related functionality such as
+ * deletion, retrieval, authentication, registration, and validation.
  */
 class AccountModel
 {
     /**
-     * Deletes a profile from the database identified by its profile ID.
+     * Deletes an account from the database based on the provided account ID.
      *
-     * @param int $idAccount The ID of the profile to delete.
-     * @return bool True if the operation was successful, otherwise false.
-     * @throws Exception
+     * @param int $idAccount The ID of the account to be deleted.
+     * @return bool True on success, false on failure.
+     * @throws Exception If there is an issue executing the database operation.
      */
     public function deleteAccount(int $idAccount): bool
     {
@@ -38,12 +29,9 @@ class AccountModel
     }
 
     /**
-     * Retrieves the IDs and usernames of all registered accounts.
+     * Retrieves all accounts from the database.
      *
-     * @return array An array containing all accounts with their IDs and usernames.
-     *               Each array element is an associative pair with the following keys:
-     *               - idAccount: The unique identifier of the profile.
-     *               - accountUsername: The username associated with the profile.
+     * @return array An array of accounts, each containing keys such as idAccount, accountUsername, accountIsBanned, accountIsAdmin, accountIsModerator, and accountIsSuspended.
      * @throws Exception
      */
     public function getAllAccounts(): array
@@ -62,15 +50,9 @@ class AccountModel
     }
 
     /**
-     * Retrieves the status of a profile based on the provided profile ID.
-     * This function fetches details such as whether the profile is banned,
-     * an admin, a moderator, or suspended from the database.
-     *
-     * @param string $idAccount The unique identifier of the profile to retrieve the status for.
-     * @return array An associative array containing the profile status details, or an empty array
-     *               if the profile is not found. The details include:
-     *               accountIsBanned, accountIsAdmin, accountIsModerator, accountIsSuspended.
-     * @throws Exception
+     * @param string $idAccount The account ID for which the status is being retrieved.
+     * @return array The account status details including flags for ban, admin, moderator, and suspension.
+     * @throws Exception If the database query fails.
      */
     public function getAccountStatus(string $idAccount): array
     {
@@ -90,6 +72,11 @@ class AccountModel
     }
 
     /**
+     * Authenticates a user using their username and password.
+     *
+     * @param string $username The username of the account.
+     * @param string $password The password of the account.
+     * @return array Returns an array of account details if authentication is successful. Returns an empty array if authentication fails.
      * @throws Exception
      */
     public function loginWithPassword(string $username, string $password): array
@@ -111,10 +98,10 @@ class AccountModel
     }
 
     /**
-     * Retrieves the profile details for a given username to facilitate login.
+     * Retrieves account details for a given username if the account exists and is not suspended.
      *
-     * @param string $username The username associated with the profile to retrieve.
-     * @return array An array containing the profile details, or an empty array if the profile cannot be found.
+     * @param string $username The username used to identify the account.
+     * @return array Returns an associative array containing account details. Returns an empty array if the account does not exist.
      * @throws Exception
      */
     public function getAccountForLogin(string $username): array
@@ -131,8 +118,8 @@ class AccountModel
     }
 
     /**
-     * @param $username
-     * @return mixed
+     * @param string $username The username of the account to look up.
+     * @return mixed The account ID if found, or null if no matching account exists.
      * @throws Exception
      */
     private function getAccountIdByUsername($username): mixed
@@ -153,9 +140,12 @@ class AccountModel
     }
 
     /**
-     * @param int $idAccount
+     * Checks and updates the suspension status of an account based on its suspension end time.
+     * If the suspension period has elapsed or the account suspension end time is not set while the account is marked as suspended,
+     * the suspension status will be canceled.
+     *
+     * @param int $idAccount The unique identifier of the account to be checked.
      * @return void
-     * @throws Exception
      */
     private function checkSuspendedDurationByIdAccount(int $idAccount): void
     {
@@ -180,9 +170,12 @@ class AccountModel
     }
 
     /**
-     * @param int $idAccount
-     * @return bool
-     * @throws Exception
+     * Cancels the suspension of an account by updating its suspension status and resetting relevant fields.
+     * The account's suspension flag is removed, the suspension end time is cleared,
+     * and the failed login attempts counter is reset to the maximum allowed value.
+     *
+     * @param int $idAccount The unique identifier of the account whose suspension is to be canceled.
+     * @return bool Returns true if the operation was successful, otherwise false.
      */
     public function cancelSuspendAccount(int $idAccount): bool
     {
@@ -198,9 +191,11 @@ class AccountModel
     }
 
     /**
-     * @param string $username
-     * @return array
-     * @throws Exception
+     * Retrieves account information from the database based on the provided username.
+     *
+     * @param string $username The username of the account to be retrieved.
+     * @return array An associative array containing account details such as ID, username, password, ban status,
+     *               administrative and moderator roles, suspension status, failed login attempts, and suspension end time.
      */
     private function getAccountByUsername(string $username): array
     {
@@ -226,9 +221,13 @@ class AccountModel
     }
 
     /**
-     * @param string $accountUsername
-     * @param string $accountPassword
-     * @return bool
+     * Registers a new account in the system with the specified username and password.
+     * Validates the username and password patterns before attempting registration,
+     * hashes the password, and inserts account details into the database.
+     *
+     * @param string $accountUsername The username for the new account.
+     * @param string $accountPassword The plain-text password for the new account.
+     * @return bool True if the account was successfully registered; false otherwise.
      * @throws Exception
      */
     public function registerAccount(string $accountUsername, string $accountPassword): bool
@@ -276,8 +275,10 @@ class AccountModel
     }
 
     /**
-     * @param string $username
-     * @return bool
+     * Validates whether the given username matches the predefined username pattern.
+     *
+     * @param string $username The username to be checked against the predefined pattern.
+     * @return bool True if the username matches the pattern, false otherwise.
      */
     public function isUsernameMatchPattern(string $username): bool
     {
@@ -285,8 +286,10 @@ class AccountModel
     }
 
     /**
-     * @param string $password
-     * @return bool
+     * Validates if the given password matches the defined pattern and adheres to the maximum allowed byte length.
+     *
+     * @param string $password The password to be validated.
+     * @return bool Returns true if the password matches the pattern and is within the valid byte length; false otherwise.
      */
     public function isPasswordMatchPattern(string $password): bool
     {
@@ -300,8 +303,10 @@ class AccountModel
     }
 
     /**
-     * @param $username
-     * @return bool
+     * Checks if a username exists in the system by verifying its associated account ID.
+     *
+     * @param string $username The username to check for existence.
+     * @return bool Returns true if the username exists, otherwise false.
      * @throws Exception
      */
     public function isUsernameExist($username): bool
@@ -316,7 +321,10 @@ class AccountModel
     }
 
     /**
-     * @param string $idAccount
+     * Decreases the failed login attempts count for a specified account by one
+     * and triggers a check on the updated failed login attempts count.
+     *
+     * @param string $idAccount The unique identifier of the account whose failed login attempts will be updated.
      * @return void
      * @throws Exception
      */
@@ -330,7 +338,11 @@ class AccountModel
     }
 
     /**
-     * @param int $idAccount
+     * Checks the number of failed login attempts for a specified account.
+     * If the number of failed login attempts is less than or equal to zero,
+     * the account will be suspended.
+     *
+     * @param int $idAccount The unique identifier of the account to be checked.
      * @return void
      * @throws Exception
      */
@@ -346,8 +358,11 @@ class AccountModel
     }
 
     /**
-     * @param int $idAccount
-     * @return bool
+     * Suspends an account by setting its suspension status and end time.
+     * The account will remain suspended until the specified suspension duration elapses.
+     *
+     * @param int $idAccount The unique identifier of the account to be suspended.
+     * @return bool True if the suspension operation is successful, false otherwise.
      * @throws Exception
      */
     public function suspendAccount(int $idAccount): bool
@@ -363,27 +378,16 @@ class AccountModel
     }
 
     /**
-     * @param $idAccount
-     * @return bool
+     * Removes a ban from the specified account, updating its status in the database.
+     *
+     * @param int $idAccount The unique identifier of the account to be unbanned.
+     * @return bool Returns true if the unban operation was successful, otherwise false.
      * @throws Exception
      */
     public function unbanAccount($idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsBanned = 0 WHERE idAccount = :idAccount";
-        $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
-    }
-
-    /**
-     * @param $idAccount
-     * @return bool
-     * @throws Exception
-     */
-    public function banAccount($idAccount): bool
-    {
-        $request =
-            "UPDATE Accounts SET accountIsBanned = 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
         return Database::execute($request, $params);
     }
@@ -402,8 +406,10 @@ class AccountModel
     }
 
     /**
-     * @param $idAccount
-     * @return bool
+     * Revokes moderator privileges for the specified account by updating the account's status in the database.
+     *
+     * @param int $idAccount The unique identifier of the account whose moderator privileges are to be revoked.
+     * @return bool Returns true if the database operation was successful, false otherwise.
      * @throws Exception
      */
     public function revokeModeratorAccount($idAccount): bool
@@ -415,8 +421,10 @@ class AccountModel
     }
 
     /**
-     * @param $idAccount
-     * @return bool
+     * Grants administrative privileges to an account by updating its status in the database.
+     *
+     * @param mixed $idAccount The unique identifier of the account to be granted administrative privileges.
+     * @return bool Returns true if the action was successfully executed, or false otherwise.
      * @throws Exception
      */
     public function grantAdminAccount($idAccount): bool
@@ -428,8 +436,10 @@ class AccountModel
     }
 
     /**
-     * @param $idAccount
-     * @return bool
+     * Grants moderator privileges to an account by updating its status in the database.
+     *
+     * @param int $idAccount The unique identifier of the account to be granted moderator privileges.
+     * @return bool Returns true if the operation succeeds, false otherwise.
      * @throws Exception
      */
     public function grantModeratorAccount($idAccount): bool
