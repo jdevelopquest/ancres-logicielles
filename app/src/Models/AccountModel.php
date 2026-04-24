@@ -51,7 +51,7 @@ class AccountModel
 
     /**
      * @param string $idAccount The account ID for which the status is being retrieved.
-     * @return array The account status details including flags for ban, admin, moderator, and suspension.
+     * @return array The account status details including flags for a ban, admin, moderator, and suspension.
      * @throws Exception If the database query fails.
      */
     public function getAccountStatus(string $idAccount): array
@@ -92,26 +92,6 @@ class AccountModel
     }
 
     /**
-     * Retrieves account details for a given username if the account exists and is not suspended.
-     *
-     * @param string $username The username used to identify the account.
-     * @return array Returns an associative array containing account details. Returns an empty array if the account does not exist.
-     * @throws Exception
-     */
-    public function getAccountForLogin(string $username): array
-    {
-        $idAccount = $this->getAccountIdByUsername($username);
-
-        if (is_null($idAccount)) {
-            return [];
-        }
-
-        $this->checkSuspendedDurationByIdAccount($idAccount);
-
-        return $this->getAccountByUsername($username);
-    }
-
-    /**
      * @param string $username The username of the account to look up.
      * @return mixed The account ID if found, or null if no matching account exists.
      * @throws Exception
@@ -134,37 +114,6 @@ class AccountModel
     }
 
     /**
-     * Checks and updates the suspension status of an account based on its suspension end time.
-     * If the suspension period has elapsed or the account suspension end time is not set while the account is marked as suspended,
-     * the suspension status will be canceled.
-     *
-     * @param int $idAccount The unique identifier of the account to be checked.
-     * @return void
-     * @throws Exception
-     */
-    private function checkSuspendedDurationByIdAccount(int $idAccount): void
-    {
-        $timestamp = time();
-
-        $request =
-            "SELECT accountIsSuspended, suspensionEndTime FROM Accounts WHERE idAccount = :idAccount";
-
-        $params = ["idAccount" => $idAccount];
-
-        $results = Database::fetch($request, $params);
-
-        // si le temps de suspension est écoulé, la suspension est annulée
-        // si le compte est suspendu et que la marque de fin de suspension est nulle, la suspension est annulée
-        if (
-            !empty($results) &&
-            (!is_null($results["suspensionEndTime"]) && ($results["suspensionEndTime"] < $timestamp)) ||
-            (is_null($results["suspensionEndTime"] && $results["accountIsSuspended"] == 1))
-        ) {
-            $this->cancelSuspendAccount($idAccount);
-        }
-    }
-
-    /**
      * Cancels the suspension of an account by updating its suspension status and resetting relevant fields.
      * The account's suspension flag is removed, the suspension end time is cleared,
      * and the failed login attempts counter is reset to the maximum allowed value.
@@ -178,7 +127,7 @@ class AccountModel
         $request =
             "UPDATE 
                 Accounts 
-            SET accountIsSuspended = 0, suspensionEndTime = NULL, failedLoginAttempts = :failedLoginAttempts
+            SET accountIsSuspended = 0, failedLoginAttempts = :failedLoginAttempts
             WHERE idAccount = :idAccount";
 
         $params = ["idAccount" => $idAccount, "failedLoginAttempts" => Configure::get("account_max_login_attempts")];
@@ -204,9 +153,7 @@ class AccountModel
                 accountIsBanned, 
                 accountIsAdmin, 
                 accountIsModerator,
-                accountIsSuspended, 
-                failedLoginAttempts, 
-                suspensionEndTime
+                accountIsSuspended
             FROM 
                 Accounts 
             WHERE 
@@ -368,7 +315,7 @@ class AccountModel
         $request =
             "UPDATE 
                 Accounts 
-            SET accountIsSuspended = 1, suspensionEndTime = :timestampFutur 
+            SET accountIsSuspended = 1,  = :timestampFutur 
             WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount, "timestampFutur" => $timestampFutur];
         return Database::execute($request, $params);

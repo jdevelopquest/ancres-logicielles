@@ -31,4 +31,4 @@ volumes:
   data-database:
 
 networks:
-  - app-internal: {}
+  app-internal: {}
