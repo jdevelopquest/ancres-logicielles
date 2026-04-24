@@ -4,40 +4,31 @@ namespace App\Controllers;
 
 use App\Application\Controller;
 use App\Application\Response;
-use App\Application\Utils\ConstructMenu;
-use App\Views\SupportsViewBuilder;
 
 class SupportsController extends Controller
 {
-    use ConstructMenu;
     public function about(): Response
     {
-        $supportsViewBuilder = new SupportsViewBuilder();
-        $supportsViewBuilder->addTitle("Ancres Logicielles : À propos");
-
         $this->response->setHeaders([
             "Content-Type" => "text/html",
         ]);
 
         $this->response->setCode(200);
 
-        $this->response->setBody($supportsViewBuilder->about());
+        $this->response->setBody($this->viewBuilder->renderTextHTML("Ancres Logicielles : À propos de nous","supports/about"));
 
         return $this->response;
     }
 
     public function policies(): Response
     {
-        $supportsViewBuilder = new SupportsViewBuilder();
-        $supportsViewBuilder->addTitle("Ancres Logicielles : Chartes");
-
         $this->response->setHeaders([
             "Content-Type" => "text/html",
         ]);
 
         $this->response->setCode(200);
 
-        $this->response->setBody($supportsViewBuilder->policies());
+        $this->response->setBody($this->viewBuilder->renderTextHTML("Ancres Logicielles : Chartes","supports/policies"));
 
         return $this->response;
     }

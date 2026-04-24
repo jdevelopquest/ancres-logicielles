@@ -27,6 +27,7 @@ class Router
 //            "error500"
 //        );
 
+        // home
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^$/",
             "/^(GET)$/",
@@ -35,6 +36,7 @@ class Router
             "index"
         );
 
+        // articles index
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=articles&act=index$/",
             "/^(GET)$/",
@@ -43,6 +45,7 @@ class Router
             "index"
         );
 
+        // articles show
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=articles&act=show&id=\d+$/",
             "/^(GET)$/",
@@ -51,6 +54,7 @@ class Router
             "show"
         );
 
+        // supports about
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=about$/",
             "/^(GET)$/",
@@ -59,12 +63,40 @@ class Router
             "about"
         );
 
+        // supports policies
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=policies$/",
             "/^(GET)$/",
             "/^(guest|regular|moderator|admin)$/",
             "App\Controllers\SupportsController",
             "policies"
+        );
+
+        // accounts signin
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=accounts&act=signin$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\AccountsController",
+            "signin"
+        );
+
+        // accounts login
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=accounts&act=login$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\AccountsController",
+            "login"
+        );
+
+        // accounts logout
+        $this->add("/^(\/|\/public\/index\.php)$/",
+            "/^ctr=accounts&act=logout$/",
+            "/^(GET)$/",
+            "/^(guest|regular|moderator|admin)$/",
+            "App\Controllers\AccountsController",
+            "logout"
         );
     }
 

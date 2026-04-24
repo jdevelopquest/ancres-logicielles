@@ -23,7 +23,7 @@ use App\Application\Response;
 set_exception_handler(
     function ($exception) {
         $file = LOG . "messages.log";
-        $message = sprintf("%s on line %s in %s\n", $exception->message, $exception->getLine(), $exception->getFile());
+        $message = sprintf("%s on line %s in %s\n", $exception->getMessage(), $exception->getLine(), $exception->getFile());
         error_log($message, 3, $file);
         $response = new Response(true);
         $response->send();

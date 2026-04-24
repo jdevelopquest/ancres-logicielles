@@ -25,9 +25,9 @@
         </div>
     </header>
     <main>
-        {{menu-hamburger}}
-        {{content}}
-        {{menu-tiny}}
+        {{ menu-hamburger }}
+        {{ content }}
+        {{ menu-tiny }}
     </main>
     <footer class="menu menu-info" id="page-bot">
             <nav class="menu__submenu">
