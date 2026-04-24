@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Core\Configure;
-use App\Core\Database;
+use App\Core\DatabaseHandler;
 use Exception;
 
 /**
@@ -11,8 +11,15 @@ use Exception;
  * Provides methods for handling account-related functionality such as
  * deletion, retrieval, authentication, registration, and validation.
  */
-class AccountModel
+final class AccountModel
 {
+    private DatabaseHandler $databaseHandler;
+
+    public function __construct()
+    {
+        $this->databaseHandler = new DatabaseHandler();
+    }
+    
     /**
      * Deletes an account from the database based on the provided account ID.
      *
@@ -25,7 +32,7 @@ class AccountModel
         $request =
             "DELETE FROM Accounts WHERE idAccount = :idAccount";
         $params = [":idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -46,7 +53,7 @@ class AccountModel
                 accountIsSuspended
             FROM Accounts";
 
-        return Database::fetchAll($request);
+        return $this->databaseHandler->fetchAll($request);
     }
 
     /**
@@ -68,7 +75,7 @@ class AccountModel
 
         $params = [":idAccount" => $idAccount];
 
-        return Database::fetch($request, $params) ?? [];
+        return $this->databaseHandler->fetch($request, $params) ?? [];
     }
 
     /**
@@ -108,7 +115,7 @@ class AccountModel
 
         $params = ["username" => $username];
 
-        $results = Database::fetch($request, $params);
+        $results = $this->databaseHandler->fetch($request, $params);
 
         return $results["idAccount"] ?? null;
     }
@@ -132,7 +139,7 @@ class AccountModel
 
         $params = ["idAccount" => $idAccount, "failedLoginAttempts" => Configure::get("account_max_login_attempts")];
 
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -161,7 +168,7 @@ class AccountModel
 
         $params = ["username" => $username];
 
-        return Database::fetch($request, $params);
+        return $this->databaseHandler->fetch($request, $params);
     }
 
     /**
@@ -215,7 +222,7 @@ class AccountModel
             ":failedLoginAttempts" => Configure::get("account_max_login_attempts")
         ];
 
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -277,7 +284,7 @@ class AccountModel
         $request =
             "UPDATE Accounts SET failedLoginAttempts = failedLoginAttempts - 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        Database::execute($request, $params);
+        $this->databaseHandler->execute($request, $params);
         $this->checkFailedLoginAttempts($idAccount);
     }
 
@@ -295,7 +302,7 @@ class AccountModel
         $request =
             "SELECT failedLoginAttempts FROM Accounts WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        $results = Database::fetch($request, $params);
+        $results = $this->databaseHandler->fetch($request, $params);
         if (!empty($results) && $results["failedLoginAttempts"] <= 0) {
             $this->suspendAccount($idAccount);
         }
@@ -318,7 +325,7 @@ class AccountModel
             SET accountIsSuspended = 1,  = :timestampFutur 
             WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount, "timestampFutur" => $timestampFutur];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -333,7 +340,7 @@ class AccountModel
         $request =
             "UPDATE Accounts SET accountIsBanned = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -348,7 +355,7 @@ class AccountModel
         $request =
             "UPDATE Accounts SET accountIsAdmin = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -363,7 +370,7 @@ class AccountModel
         $request =
             "UPDATE Accounts SET accountIsModerator = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -378,7 +385,7 @@ class AccountModel
         $request =
             "UPDATE Accounts SET accountIsAdmin = 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -393,6 +400,6 @@ class AccountModel
         $request =
             "UPDATE Accounts SET accountIsModerator = 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 }

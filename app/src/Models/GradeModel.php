@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
-use App\Core\Database;
+use App\Core\DatabaseHandler;
 use Exception;
 
 /**
  *
  */
-class GradeModel
+final class GradeModel
 {
+    private DatabaseHandler $databaseHandler;
+
+    public function __construct()
+    {
+        $this->databaseHandler = new DatabaseHandler();
+    }
+    
     /**
      * @param int $idPost
      * @param int $idAccount
@@ -20,7 +27,7 @@ class GradeModel
     {
         $request = "INSERT INTO Grades(idPost,idAccount) VALUES (:idPost,:idAccount)";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -33,7 +40,7 @@ class GradeModel
     {
         $request = "SELECT * FROM Grades WHERE idPost = :idPost AND idAccount = :idAccount";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
-        return Database::fetch($request, $params);
+        return $this->databaseHandler->fetch($request, $params);
     }
 
     /**
@@ -45,7 +52,7 @@ class GradeModel
     {
         $request = "UPDATE Grades SET gradeUp = 1, gradeDown = 0, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -57,7 +64,7 @@ class GradeModel
     {
         $request = "UPDATE Grades SET gradeUp = 0, gradeDown = 1, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 
     /**
@@ -69,6 +76,6 @@ class GradeModel
     {
         $request = "UPDATE Grades SET gradeUp = 0, gradeDown = 0, gradeReported = 1 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return Database::execute($request, $params);
+        return $this->databaseHandler->execute($request, $params);
     }
 }
