@@ -36,7 +36,7 @@ class ViewBuilder
         $this->pageParams[$key] = $value;
     }
 
-    public function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", array $contentParams = [], array $notification = []): string
+    public function renderPage(string $contentLayout = "", array $contentParams = [], array $notification = []): string
     {
         $this->setupPart("page", "layouts/page", []);
         $this->setupPart("menu-hamburger", "layouts/menu-hamburger", $this->constructMenuHamburger());
@@ -53,14 +53,12 @@ class ViewBuilder
             }
         }
 
-        $this->partParams["page"]["title"] = $pageTitle;
-
         if (!empty($this->pageParams)) {
             $this->partParams["page"] = array_merge($this->partParams["page"], $this->pageParams);
         }
 
         foreach ($this->partNames as $partName) {
-            $this->renderPart($partName);
+            $this->renderPartForPage($partName);
         }
 
         if (isset($this->partRenders["notification"])) {
@@ -76,7 +74,7 @@ class ViewBuilder
         return $this->partRenders["page"];
     }
 
-    protected function renderPart(string $partName): void
+    protected function renderPartForPage(string $partName): void
     {
         if (file_exists($this->partLayouts[$partName])) {
             if (isset($this->partParams[$partName])) {
@@ -89,5 +87,24 @@ class ViewBuilder
 
             $this->partRenders[$partName] = ob_get_clean();
         }
+    }
+
+    public function renderPart(string $partLayout = "", array $partParams = []): string
+    {
+        $file = $this->constructFilePath($partLayout);
+
+        if (file_exists($file)) {
+            if (isset($partParams)) {
+                extract($partParams);
+            }
+
+            ob_start();
+
+            include_once $file;
+
+            return ob_get_clean();
+        }
+
+        return "";
     }
 }

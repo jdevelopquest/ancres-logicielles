@@ -5,22 +5,24 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Response;
 use App\Application\Utils\ConstructHref;
+use App\Application\Utils\LogPrinter;
 use App\Models\PostModel;
 use Exception;
 
 class PostsController extends Controller
 {
     use ConstructHref;
+    use LogPrinter;
 
     public function indexSoftwares(): Response
     {
         $softwares = [];
 
-        $post = new PostModel();
+        $postModel = new PostModel();
 
         if ($this->userIsGuest()) {
             try {
-                $softwares = $post->getSoftwaresPublished();
+                $softwares = $postModel->getSoftwaresPublished();
             } catch (Exception $e) {
                 $errorsController = new ErrorsController($this->request);
                 return $errorsController->error503();
@@ -29,7 +31,7 @@ class PostsController extends Controller
 
         if ($this->userIsRegistered()) {
             try {
-                $softwares = $post->getSoftwaresPublishedAndPending();
+                $softwares = $postModel->getSoftwaresPublishedAndPending();
             } catch (Exception $e) {
                 $errorsController = new ErrorsController($this->request);
                 return $errorsController->error503();
@@ -38,7 +40,7 @@ class PostsController extends Controller
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
             try {
-                $softwares = $post->getSoftwares();
+                $softwares = $postModel->getSoftwares();
             } catch (Exception $e) {
                 $errorsController = new ErrorsController($this->request);
                 return $errorsController->error503();
@@ -55,24 +57,7 @@ class PostsController extends Controller
 
                 $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
                 $article["softwareName"] = $software["softwareName"];
-                $article["status"] = [];
-
-                if ($software["postIsPublished"]) {
-                    $article["status"][] = [
-                        "icon" => "published",
-                        "title" => "publiée"
-                    ];
-                } else if ($software["postIsBanned"]) {
-                    $article["status"][] = [
-                        "icon" => "banned",
-                        "title" => "banni"
-                    ];
-                } else {
-                    $article["status"][] = [
-                        "icon" => "pending",
-                        "title" => "en attente"
-                    ];
-                }
+                $article["status"] = $this->getPostStatusParams($software);
 
                 $contentParams["softwares"][] = $article;
             }
@@ -84,17 +69,17 @@ class PostsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles", "posts/indexSoftwares", $contentParams));
+        $this->response->setBody($this->renderPage("Ancres Logicielles", "posts/indexSoftwares", $contentParams));
 
         return $this->response;
     }
 
     public function showSoftware(string $idPost): Response
     {
-        $post = new PostModel();
+        $postModel = new PostModel();
 
         try {
-            $software = $post->getSoftwareByIdPost($idPost);
+            $software = $postModel->getSoftwareByIdPost($idPost);
 
             // idPost est inexistant
             if (!$software) {
@@ -120,6 +105,7 @@ class PostsController extends Controller
 
         $contentParams = [];
         $contentParams["software"] = [];
+        $contentParams["software"]["idPost"] = $software["idPost"];
         $contentParams["software"]["softwareName"] = $software["softwareName"];
 
         $contentParams["software"]["summary"] = [];
@@ -127,23 +113,10 @@ class PostsController extends Controller
             $contentParams["software"]["summary"][] = $summaryPart;
         }
 
-        $contentParams["software"]["status"] = [];
+        $contentParams["software"]["status"] = $this->getPostStatusParams($software);
 
-        if ($software["postIsPublished"]) {
-            $contentParams["software"]["status"][] = [
-                "icon" => "published",
-                "title" => "publiée"
-            ];
-        } else if ($software["postIsBanned"]) {
-            $contentParams["software"]["status"][] = [
-                "icon" => "banned",
-                "title" => "banni"
-            ];
-        } else {
-            $contentParams["software"]["status"][] = [
-                "icon" => "pending",
-                "title" => "en attente"
-            ];
+        if ($this->userIsModerator() || $this->userIsAdmin()) {
+            $contentParams["softwareModTools"] = $this->getPostModToolsParams($software);
         }
 
         $this->response->setHeaders([
@@ -154,8 +127,237 @@ class PostsController extends Controller
 
         $title = $software["softwareName"];
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : $title", "posts/showSoftware", $contentParams));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : $title", "posts/showSoftware", $contentParams));
 
         return $this->response;
+    }
+
+    public function unpublish(): Response
+    {
+        return $this->postModAction("unpublishPost");
+    }
+
+    public function publish(): Response
+    {
+        return $this->postModAction("publishPost");
+    }
+
+    public function ban(): Response
+    {
+        return $this->postModAction("banPost");
+    }
+
+    public function unban(): Response
+    {
+        return $this->postModAction("unbanPost");
+    }
+
+    private function postModAction(string $action): Response
+    {
+        $this->response->setHeaders([
+            "Content-Type: application/json",
+        ]);
+
+        $receive_data = json_decode($this->request->getBody(), true);
+
+        $idPost = $receive_data["idPost"];
+
+        $postModel = new PostModel();
+
+        if (!method_exists($postModel, $action)) {
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        try {
+            $result = $postModel->$action($idPost);
+
+            if (!$result) {
+                $errorsController = new ErrorsController($this->request);
+                return $errorsController->error503ByAjax();
+            }
+        } catch (Exception $e) {
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        $this->response->setCode(204);
+
+        return $this->response;
+    }
+
+    public function updatePostboxModTool(): Response
+    {
+        $this->response->setHeaders([
+            "Content-Type: application/json",
+        ]);
+
+        $receive_data = json_decode($this->request->getBody(), true);
+
+        $idPost = $receive_data["idPost"];
+
+        $postModel = new PostModel();
+
+        try {
+            $postStatus = $postModel->getPostStatus($idPost);
+
+            if (empty($postStatus)) {
+                $this->logMessage("updatePostboxModTool idPost doit être inexistant");
+                $this->logData($idPost);
+
+                $errorsController = new ErrorsController($this->request);
+                return $errorsController->error503ByAjax();
+            }
+        } catch (Exception $e) {
+            $this->logMessage("updatePostboxModTool problème avec la bd");
+            $this->logData($idPost);
+
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        $idPost = htmlspecialchars($idPost);
+        $this->htmlspecialcharsWalking($postStatus);
+
+        $partParams = [];
+        $partParams["software"] = [];
+        $partParams["software"]["idPost"] = $idPost;
+        $partParams["softwareModTools"] = $this->getPostModToolsParams($postStatus);
+
+        $part = $this->renderPart("layouts/postbox-mod-tools", $partParams);
+
+        if (empty($part)) {
+            $this->logMessage("updatePostboxModTool le rendu est vide");
+            $this->logData($idPost);
+            $this->logData($partParams);
+
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        $this->response->setCode(200);
+
+        $this->response->setBody(json_encode($part));
+
+        return $this->response;
+    }
+
+    public function updateSoftwareStatus(): Response
+    {
+        $this->response->setHeaders([
+            "Content-Type: application/json",
+        ]);
+
+        $receive_data = json_decode($this->request->getBody(), true);
+
+        $idPost = $receive_data["idPost"];
+
+        $postModel = new PostModel();
+
+        try {
+            $postStatus = $postModel->getPostStatus($idPost);
+
+            if (empty($postStatus)) {
+                $this->logMessage("updateSoftwareStatus idPost doit être inexistant");
+                $this->logData($idPost);
+
+                $errorsController = new ErrorsController($this->request);
+                return $errorsController->error503ByAjax();
+            }
+        } catch (Exception $e) {
+            $this->logMessage("updateSoftwareStatus problème avec la bd");
+            $this->logData($idPost);
+
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        $idPost = htmlspecialchars($idPost);
+        $this->htmlspecialcharsWalking($postStatus);
+
+        $partParams = [];
+        $partParams["software"] = [];
+        $partParams["software"]["idPost"] = $idPost;
+        $partParams["software"]["status"] = $this->getPostStatusParams($postStatus);
+
+        $part = $this->renderPart("layouts/postbox-status", $partParams);
+
+        if (empty($part)) {
+            $this->logMessage("updateSoftwareStatus le rendu est vide");
+            $this->logData($idPost);
+            $this->logData($partParams);
+
+            $errorsController = new ErrorsController($this->request);
+            return $errorsController->error503ByAjax();
+        }
+
+        $this->response->setCode(200);
+
+        $this->response->setBody(json_encode($part));
+
+        return $this->response;
+
+    }
+
+    // utils
+    private function getPostStatusParams(array $post): array
+    {
+        $status = [];
+
+        if ($post["postIsPublished"]) {
+            $status[] = [
+                "icon" => "published",
+                "title" => "publiée"
+            ];
+        } else if ($post["postIsBanned"]) {
+            $status[] = [
+                "icon" => "banned",
+                "title" => "banni"
+            ];
+        } else {
+            $status[] = [
+                "icon" => "pending",
+                "title" => "en attente"
+            ];
+        }
+
+        return $status;
+    }
+
+    private function getPostModToolsParams(mixed $post): array
+    {
+        $tools = [];
+
+        if ($post["postIsBanned"]) {
+            $tools[] = [
+                "action" => "unban",
+                "icon" => "unban",
+                "title" => "Rétirer le bannissement"
+            ];
+
+            return $tools;
+        }
+
+        if ($post["postIsPublished"]) {
+            $tools[] = [
+                "action" => "unpublish",
+                "icon" => "pending",
+                "title" => "Rétirer la publication"
+            ];
+        } else {
+            $tools[] = [
+                "action" => "publish",
+                "icon" => "publish",
+                "title" => "Mettre en publication"
+            ];
+        }
+
+        $tools[] = [
+            "action" => "ban",
+            "icon" => "ban",
+            "title" => "Mettre en bannissement"
+        ];
+
+        return $tools;
     }
 }

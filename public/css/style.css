@@ -288,6 +288,7 @@ main {
   height: var(--size-xl);
   margin-left: var(--size-xs);
   margin-right: var(--size-xs);
+  display: inline-block;
   background-image: url("../img/icons-tango-scalable/status/image-missing.svg");
   background-repeat: no-repeat;
   background-size: contain;

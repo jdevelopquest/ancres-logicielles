@@ -15,7 +15,7 @@ class SupportsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : À propos de nous","supports/about"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : À propos de nous","supports/about"));
 
         return $this->response;
     }
@@ -28,7 +28,7 @@ class SupportsController extends Controller
 
         $this->response->setCode(200);
 
-        $this->response->setBody($this->renderTextHTML("Ancres Logicielles : Chartes","supports/policies"));
+        $this->response->setBody($this->renderPage("Ancres Logicielles : Chartes","supports/policies"));
 
         return $this->response;
     }

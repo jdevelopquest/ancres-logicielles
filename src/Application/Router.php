@@ -12,33 +12,21 @@ class Router
 
     public function __construct()
     {
-//        $this->add("/^(\/|\/public\/index\.php)$/",
-//            "/ctr=errors&act=error404/",
-//            "/^(GET|POST)$/",
-//            "/(guest|registered|moderator|admin)/",
-//            "app\Controllers\ErrorsController",
-//            "error404"
-//        );
-//
-//        $this->add("/^(\/|\/public\/index\.php)$/",
-//            "/ctr=errors&act=error500/",
-//            "/^(GET|POST)$/",
-//            "/(guest|registered|moderator|admin)/",
-//            "app\Controllers\ErrorsController",
-//            "error500"
-//        );
-
         // home
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^$/",
             "/^(GET)$/",
             "/^(guest|registered|moderator|admin)$/",
             "App\Controllers\PostsController",
-            "index"
+            "indexSoftwares"
         );
 
         // posts indexSoftwares
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=posts&act=indexSoftwares$/",
             "/^(GET)$/",
             "/^(guest|registered|moderator|admin)$/",
@@ -47,7 +35,9 @@ class Router
         );
 
         // posts showSoftware
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=posts&act=showSoftware&id=\d+$/",
             "/^(GET)$/",
             "/^(guest|registered|moderator|admin)$/",
@@ -55,8 +45,76 @@ class Router
             "showSoftware"
         );
 
+        // posts unpublish
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=unpublish$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "unpublish"
+        );
+
+        // posts publish
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=publish$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "publish"
+        );
+
+        // posts ban
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=ban$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "ban"
+        );
+
+        // posts unban
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=unban$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "unban"
+        );
+
+        // posts updatePostboxModTool
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=updatePostboxModTool$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "updatePostboxModTool"
+        );
+
+        // posts updateSoftwareStatus
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
+            "/^ctr=posts&act=updateSoftwareStatus$/",
+            "/^(POST)$/",
+            "/^(moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "updateSoftwareStatus"
+        );
+
         // supports about
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=about$/",
             "/^(GET)$/",
             "/^(guest|registered|moderator|admin)$/",
@@ -65,7 +123,9 @@ class Router
         );
 
         // supports policies
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=policies$/",
             "/^(GET)$/",
             "/^(guest|registered|moderator|admin)$/",
@@ -74,7 +134,9 @@ class Router
         );
 
         // accounts signup
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=signup$/",
             "/^(GET|POST)$/",
             "/^(guest)$/",
@@ -83,7 +145,9 @@ class Router
         );
 
         // accounts login
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=login$/",
             "/^(GET|POST)$/",
             "/^(guest)$/",
@@ -92,7 +156,9 @@ class Router
         );
 
         // accounts logout
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            false,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=logout$/",
             "/^(GET|POST)$/",
             "/^(registered|moderator|admin)$/",
@@ -101,7 +167,9 @@ class Router
         );
 
         // users api saveTheme
-        $this->add("/^(\/|\/public\/index\.php)$/",
+        $this->add(
+            true,
+            "/^(\/|\/public\/index\.php)$/",
             "/^ctr=users&act=saveTheme$/",
             "/^(POST)$/",
             "/^(guest|registered|moderator|admin)$/",
@@ -110,9 +178,17 @@ class Router
         );
     }
 
-    private function add(string $pathPattern, string $queryPattern, string $methodPattern, string $rolePattern, string $controller, string $action): void
+    private function add(
+        bool $isAjax,
+        string $pathPattern,
+        string $queryPattern,
+        string $methodPattern,
+        string $rolePattern,
+        string $controller,
+        string $action): void
     {
         $this->routes[] = [
+            "isAjax" => $isAjax,
             "pathPattern" => $pathPattern,
             "queryPattern" => $queryPattern,
             "methodPattern" => $methodPattern,
@@ -125,19 +201,11 @@ class Router
     public function match(Request $request): array|bool
     {
         foreach ($this->routes as $route) {
-//            if (!preg_match($route['pathPattern'], $request->getPath())) {
+//            if (!preg_match($route["pathPattern"], $request->getPath())) {
 //                continue;
 //            }
 
-            if (!preg_match($route['queryPattern'], $request->getQuery())) {
-                continue;
-            }
-
-            if (!preg_match($route['methodPattern'], $request->getMethod())) {
-                continue;
-            }
-
-            if (!preg_match($route['rolePattern'], $this->getUserRole())) {
+            if (!preg_match($route["queryPattern"], $request->getQuery())) {
                 continue;
             }
 

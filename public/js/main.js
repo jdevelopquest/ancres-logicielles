@@ -13,6 +13,132 @@ function initMenuButtons(menuTag) {
     });
 }
 
+function initPostboxModButtons(buttonAction) {
+    const buttonSelector = '.button-post-' + buttonAction;
+    document.querySelectorAll(buttonSelector)?.forEach((button) => {
+        button.addEventListener('click', function () {
+            const params = {
+                idPost: button.getAttribute('data-id-post'),
+                action: buttonAction,
+            }
+            sendPostModAction(params);
+        })
+    });
+}
+
+function initPostboxMod() {
+    initPostboxModButtons('publish');
+    initPostboxModButtons('unpublish');
+    initPostboxModButtons('ban');
+    initPostboxModButtons('unban');
+}
+
+function sendPostModAction(params) {
+    const action = params.action;
+    const idPost = params.idPost;
+    const data = {
+        'idPost': idPost,
+    };
+    const url = `index.php?ctr=posts&act=${action}`;
+    fetch(
+        url,
+        {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            // Il n'y a pas de données à récupérer,
+            // mettre à jour les status et la barre d'outils
+            getUpdatePostboxModTool(idPost);
+            getUpdateSoftwareStatus(idPost);
+        })
+        .catch(error => {
+            // console.error('Il y a eu un problème avec la requête fetch:', error);
+        });
+}
+
+function getUpdatePostboxModTool(idPost) {
+    const body = {
+        'idPost': idPost,
+    };
+    const url = `index.php?ctr=posts&act=updatePostboxModTool`;
+    fetch(
+        url,
+        {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            updatePostboxModTool(idPost, data);
+        })
+        .catch(error => {
+            // console.error(error);
+        });
+}
+
+function getUpdateSoftwareStatus(idPost) {
+    const body = {
+        'idPost': idPost,
+    };
+    const url = `index.php?ctr=posts&act=updateSoftwareStatus`;
+    fetch(
+        url,
+        {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            updateSoftwareStatus(idPost, data);
+        })
+        .catch(error => {
+            // console.error(error);
+        });
+}
+
+function updatePostboxModTool(idPost, data) {
+    const postboxSelector = `.postbox-mod-tools-${idPost}`;
+    document.querySelectorAll(postboxSelector)?.forEach(postbox => {
+        // todo attention à la sécurité
+        postbox.innerHTML = data;
+    })
+    initPostboxMod();
+}
+
+function updateSoftwareStatus(idPost, data) {
+    const postboxStatusSelector = `.postbox-status-${idPost}`;
+    document.querySelectorAll(postboxStatusSelector)?.forEach(postbox => {
+        // todo attention à la sécurité
+        postbox.innerHTML = data;
+    })
+}
+
 function initSwitchThemeButtons() {
     document.querySelectorAll('.button-switch-theme')?.forEach(button => {
         button.addEventListener('click', function () {
@@ -43,18 +169,18 @@ function sendTheme(theme) {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                // throw new Error(response.statusText);
             }
             // Il n'y a pas de données à récupérer
         })
         .catch(error => {
-            console.error('Il y a eu un problème avec la requête fetch:', error);
+            // console.error('Il y a eu un problème avec la requête fetch:', error);
         });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     initMenuButtons('hamburger');
     initMenuButtons('tiny');
-
+    initPostboxMod();
     initSwitchThemeButtons();
 })
