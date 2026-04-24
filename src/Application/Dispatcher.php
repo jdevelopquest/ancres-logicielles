@@ -121,7 +121,7 @@ class Dispatcher
     {
         $errorsController = new ErrorsController($this->request, $this->response);
         if ($this->request->isAjax()) {
-            $errorsController->error404ByAjax()->send();
+            $errorsController->error404Json()->send();
         } else {
             $errorsController->error404()->send();
         }
@@ -137,7 +137,7 @@ class Dispatcher
     {
         $errorsController = new ErrorsController($this->request, $this->response);
         if ($this->request->isAjax()) {
-            $errorsController->error503ByAjax()->send();
+            $errorsController->error503Json()->send();
         } else {
             $errorsController->error503()->send();
         }

@@ -52,12 +52,12 @@ class ErrorsController extends Controller
         return $this->getHtmlResponse($this->renderHtmlPage(), 503);
     }
 
-    public function error404ByAjax(): Response
+    public function error404Json(): Response
     {
         return $this->getJsonResponse(null, 404);
     }
 
-    public function error503ByAjax(): Response
+    public function error503Json(): Response
     {
         return $this->getJsonResponse(null, 503);
     }

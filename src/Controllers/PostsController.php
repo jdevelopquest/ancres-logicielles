@@ -344,7 +344,7 @@ class PostsController extends Controller
 
         if (!method_exists($postModel, $action)) {
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         try {
@@ -352,13 +352,13 @@ class PostsController extends Controller
 
             if (!$result) {
                 $errorsController = new ErrorsController($this->request, $this->response);
-                return $errorsController->error503ByAjax();
+                return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
             $log->debug("Fail to get perform action on post.", ["id post" => $idPost, "action" => $action, "Exception message" => $e->getMessage()]);
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         return $this->getJsonResponse(null, 204);
@@ -387,13 +387,13 @@ class PostsController extends Controller
                 $log = new Logger();
                 $log->debug("Fail to update post mod toolbox.", ["id post" => $idPost]);
                 $errorsController = new ErrorsController($this->request, $this->response);
-                return $errorsController->error503ByAjax();
+                return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
             $log->debug("Fail to get post status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         $idPost = htmlspecialchars($idPost);
@@ -405,7 +405,7 @@ class PostsController extends Controller
             $log->debug("Fail to render post mod toolbox.");
 
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         return $this->getJsonResponse($part);
@@ -439,14 +439,14 @@ class PostsController extends Controller
                 $log->debug("Fail to update software status.", ["id post" => $idPost]);
 
                 $errorsController = new ErrorsController($this->request, $this->response);
-                return $errorsController->error503ByAjax();
+                return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
             $log->debug("Fail to get software status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
 
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         $part = $this->renderHtmlComponent("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
@@ -456,7 +456,7 @@ class PostsController extends Controller
             $log->debug("Fail to render software status.");
 
             $errorsController = new ErrorsController($this->request, $this->response);
-            return $errorsController->error503ByAjax();
+            return $errorsController->error503Json();
         }
 
         return $this->getJsonResponse($part);
