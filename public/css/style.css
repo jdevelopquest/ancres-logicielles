@@ -1,593 +1,521 @@
 @font-face {
-    font-family: "Montserrat";
-    src: url("/public/fonts/Montserrat-VariableFont_wght.woff2") format("woff2"), url("/public/fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-    font-display: swap;
+  font-family: "Montserrat";
+  src: url("/public/fonts/montserrat/Montserrat-VariableFont_wght.woff2") format("woff2"), url("/public/fonts/montserrat/Montserrat-VariableFont_wght.ttf") format("ttf");
+  font-display: swap;
 }
-
 .prominent__text {
-    font-family: "Montserrat", sans-serif;
-    font-size: var(--font-size-lg);
-    font-weight: 900;
+  font-family: "Montserrat", sans-serif;
+  font-size: var(--font-size-lg);
+  font-weight: 900;
 }
 
 .regular__text, body {
-    font-family: "Lato", sans-serif;
-    font-size: var(--font-size-md);
-    font-weight: 400;
+  font-family: "Lato", sans-serif;
+  font-size: var(--font-size-md);
+  font-weight: 400;
 }
 
 :root .theme-light {
-    --color-text: #2e3436;
-    --color-text-highlight: #3465a4;
-    --color-background: #eeeeec;
-    --color-background-overlay: #555753;
-    --color-background-global: #ffffff;
-    --color-background-specific: #ffffff;
-    --color-background-highlight: #e9b96e;
-    --color-text-error: white;
-    --color-text-success: white;
-    --color-background-error: #cc0000;
-    --color-background-succes: #73d216;
+  --color-text: #2e3436;
+  --color-text-highlight: #3465a4;
+  --color-background: #eeeeec;
+  --color-background-overlay: #555753;
+  --color-background-global: #ffffff;
+  --color-background-specific: #ffffff;
+  --color-background-highlight: #e9b96e;
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #cc0000;
+  --color-background-succes: #73d216;
 }
 
 :root .theme-dark {
-    --color-text: #eeeeec;
-    --color-text-highlight: #729fcf;
-    --color-background: #000000;
-    --color-background-overlay: #555753;
-    --color-background-global: #2e3436;
-    --color-background-specific: #2e3436;
-    --color-background-highlight: #ce5c00;
-    --color-text-error: white;
-    --color-text-success: white;
-    --color-background-error: #cc0000;
-    --color-background-succes: #73d216;
+  --color-text: #eeeeec;
+  --color-text-highlight: #729fcf;
+  --color-background: #000000;
+  --color-background-overlay: #555753;
+  --color-background-global: #2e3436;
+  --color-background-specific: #2e3436;
+  --color-background-highlight: #ce5c00;
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #cc0000;
+  --color-background-succes: #73d216;
 }
 
 .form__item-clickable, .menu__item-clickable {
-    color: inherit;
-    background-color: inherit;
-    border: none;
-    outline: none;
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  outline: none;
 }
-
 .form__item-clickable:focus, .menu__item-clickable:focus, .form__item-clickable:active, .menu__item-clickable:active {
-    outline: var(--color-background-highlight) var(--size-xs) solid;
+  outline: var(--color-background-highlight) var(--size-xs) solid;
 }
-
 .form__item-clickable:hover, .menu__item-clickable:hover {
-    cursor: pointer;
-    background-color: var(--color-background-highlight);
+  cursor: pointer;
+  background-color: var(--color-background-highlight);
 }
 
 :root .size-xs {
-    --size-xs: 2px;
-    --size-sm: 4px;
-    --size-md: 8px;
-    --size-lg: 16px;
-    --size-xl: 32px;
-    --font-size-md: 1.4rem;
-    --font-size-lg: 2.2rem;
-    --line-height-md: ;
-    --line-height-lg: 0.8;
+  --size-xs: 2px;
+  --size-sm: 4px;
+  --size-md: 8px;
+  --size-lg: 16px;
+  --size-xl: 32px;
+  --font-size-md: 1.4rem;
+  --font-size-lg: 2.2rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
-
 :root .size-md {
-    --size-xs: 4px;
-    --size-sm: 8px;
-    --size-md: 16px;
-    --size-lg: 32px;
-    --size-xl: 64px;
-    --font-size-md: 1.5rem;
-    --font-size-lg: 2.3rem;
-    --line-height-md: ;
-    --line-height-lg: 0.8;
+  --size-xs: 4px;
+  --size-sm: 8px;
+  --size-md: 16px;
+  --size-lg: 32px;
+  --size-xl: 64px;
+  --font-size-md: 1.5rem;
+  --font-size-lg: 2.3rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
-
 :root .size-xl {
-    --size-xs: 6px;
-    --size-sm: 12px;
-    --size-md: 24px;
-    --size-lg: 48px;
-    --size-xl: 96px;
-    --font-size-md: 1.6rem;
-    --font-size-lg: 2.4rem;
-    --line-height-md: ;
-    --line-height-lg: 0.8;
+  --size-xs: 6px;
+  --size-sm: 12px;
+  --size-md: 24px;
+  --size-lg: 48px;
+  --size-xl: 96px;
+  --font-size-md: 1.6rem;
+  --font-size-lg: 2.4rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
-
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 ul,
 ol {
-    list-style: none;
+  list-style: none;
 }
 
 body {
-    color: var(--color-text);
-    background-color: var(--color-background);
-    cursor: default;
-    line-height: 1.2;
-    background: linear-gradient(90deg, var(--color-background) 5%, var(--color-background-highlight) 30%, var(--color-background-highlight) 70%, var(--color-background) 95%);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  cursor: default;
+  line-height: 1.2;
+  background: linear-gradient(90deg, var(--color-background) 5%, var(--color-background-highlight) 30%, var(--color-background-highlight) 70%, var(--color-background) 95%);
 }
-
 body > div {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 0;
-    color: var(--color-text);
-    background-color: var(--color-background);
-    min-width: 360px;
-    max-width: 1440px;
-    min-height: 100vh;
-    margin: 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  min-width: 360px;
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
 }
 
 header,
 footer {
-    color: var(--color-text);
-    background-color: var(--color-background-global);
-    width: 100%;
-    margin: var(--size-lg) auto;
+  color: var(--color-text);
+  background-color: var(--color-background-global);
+  width: 100%;
+  margin: var(--size-lg) auto;
 }
 
 main {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: var(--size-md);
-    margin: 0 auto;
-    position: relative;
-    z-index: 0;
-    width: 100%;
-    flex: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-md);
+  margin: 0 auto;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  flex: 1;
 }
 
 .content {
-    color: var(--color-text);
-    background-color: var(--color-background);
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-md);
-    width: 100%;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-md);
+  width: 100%;
 }
-
 .content__subcontent {
-    color: var(--color-text);
-    background-color: var(--color-background-specific);
+  color: var(--color-text);
+  background-color: var(--color-background-specific);
 }
-
 .content h2.prominent__text {
-    margin-left: var(--size-xl);
+  margin-left: var(--size-xl);
 }
 
 .menu {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
-    padding: var(--size-xs);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
+  padding: var(--size-xs);
 }
-
 .menu__submenu-h {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-xs);
 }
-
 .menu__submenu-v {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
 }
-
 .menu__submenu-r {
-    justify-content: right;
+  justify-content: right;
 }
-
 .menu-hamburger {
-    color: var(--color-text);
-    background-color: var(--color-background-overlay);
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1000;
-    width: max-content;
-    height: max-content;
+  color: var(--color-text);
+  background-color: var(--color-background-overlay);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  width: max-content;
+  height: max-content;
 }
-
 .menu-hamburger .menu__submenu {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
 }
-
 .menu-hamburger .menu__submenu-close {
-    color: var(--color-text);
-    background-color: var(--color-background-overlay);
+  color: var(--color-text);
+  background-color: var(--color-background-overlay);
 }
-
 .menu-hamburger .menu__submenu-close .clickable {
-    margin-left: auto;
-    align-self: revert;
+  margin-left: auto;
+  align-self: revert;
 }
-
 .menu-tiny {
-    color: var(--color-text);
-    background-color: var(--color-background-overlay);
-    position: fixed;
-    top: 25vh;
-    right: 0;
-    z-index: 500;
-    width: max-content;
-    height: max-content;
+  color: var(--color-text);
+  background-color: var(--color-background-overlay);
+  position: fixed;
+  top: 25vh;
+  right: 0;
+  z-index: 500;
+  width: max-content;
+  height: max-content;
 }
-
 .menu-tiny .menu__submenu {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
 }
-
 .menu-info {
-    color: var(--color-text);
-    background-color: var(--color-background-global);
-    width: 100%;
+  color: var(--color-text);
+  background-color: var(--color-background-global);
+  width: 100%;
 }
-
 .menu-info .menu__submenu {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-xs);
 }
-
 .menu__submenu {
-    color: var(--color-text);
-    background-color: var(--color-background-global);
+  color: var(--color-text);
+  background-color: var(--color-background-global);
 }
-
 .form {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
-    align-items: center;
-    padding: var(--size-xl);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
+  align-items: center;
+  padding: var(--size-xl);
 }
-
 .form input:focus, .form input:active {
-    outline: var(--color-background-highlight) var(--size-xs) solid;
+  outline: var(--color-background-highlight) var(--size-xs) solid;
 }
-
 .form__subform-h {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-xs);
 }
-
 .form__subform-v {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--size-xs);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
 }
-
 .form__subform-r {
-    justify-content: right;
+  justify-content: right;
 }
-
 .form__subform {
-    color: var(--color-text);
-    background-color: var(--color-background-specific);
+  color: var(--color-text);
+  background-color: var(--color-background-specific);
 }
-
 .icon {
-    background-image: url(../img/icons-tango-scalable/image-missing.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/image-missing.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-menu-hamburger {
-    background-image: url(../img/icons-tango-scalable/menu-hamburger.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/menu-hamburger.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-switch-on-off {
-    background-image: url(../img/icons-tango-scalable/switch-on-off.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/switch-on-off.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-close {
-    background-image: url(../img/icons-tango-scalable/close.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/close.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-previous-page {
-    background-image: url(../img/icons-tango-scalable/image-missing.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/image-missing.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-home {
-    background-image: url(../img/icons-tango-scalable/go-home.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-home.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-bottom {
-    background-image: url(../img/icons-tango-scalable/go-bottom.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-bottom.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-top {
-    background-image: url(../img/icons-tango-scalable/go-top.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-top.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-previous {
-    background-image: url(../img/icons-tango-scalable/go-previous.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-previous.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-profile {
-    background-image: url(../img/icons-tango-scalable/go-profile.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-profile.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-logout {
-    background-image: url(../img/icons-tango-scalable/go-logout.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-logout.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-login {
-    background-image: url(../img/icons-tango-scalable/go-login.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-login.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-signup {
-    background-image: url(../img/icons-tango-scalable/go-signup.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-signup.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-go-admin {
-    background-image: url(../img/icons-tango-scalable/go-admin.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/go-admin.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-switch-theme {
-    background-image: url(../img/icons-tango-scalable/switch-theme.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/switch-theme.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-published {
-    background-image: url(../img/icons-tango-scalable/post-published.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-published.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-pending {
-    background-image: url(../img/icons-tango-scalable/post-pending.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-pending.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-banned {
-    background-image: url(../img/icons-tango-scalable/post-banned.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-banned.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-unpublish {
-    background-image: url(../img/icons-tango-scalable/post-unpublish.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-unpublish.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-publish {
-    background-image: url(../img/icons-tango-scalable/post-publish.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-publish.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-ban {
-    background-image: url(../img/icons-tango-scalable/post-ban.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-ban.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-post-unban {
-    background-image: url(../img/icons-tango-scalable/post-unban.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/post-unban.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-list-add {
-    background-image: url(../img/icons-tango-scalable/list-add.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/list-add.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
-
 .icon-list-remove {
-    background-image: url(../img/icons-tango-scalable/list-remove.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  background-image: url(../img/icons-tango-scalable/list-remove.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .prominent {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 0;
-    justify-content: right;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0;
+  justify-content: right;
 }
-
 .prominent-error {
-    color: var(--color-text-error);
-    background-color: var(--color-background-error);
+  color: var(--color-text-error);
+  background-color: var(--color-background-error);
 }
-
 .prominent-success {
-    color: var(--color-text-success);
-    background-color: var(--color-background-succes);
+  color: var(--color-text-success);
+  background-color: var(--color-background-succes);
 }
-
 .prominent__text {
-    height: var(--size-xl);
-    line-height: var(--size-xl);
-    margin-right: auto;
-    padding-left: var(--size-md);
-    padding-right: var(--size-md);
+  height: var(--size-xl);
+  line-height: var(--size-xl);
+  margin-right: auto;
+  padding-left: var(--size-md);
+  padding-right: var(--size-md);
 }
-
 .prominent__icon {
-    width: var(--size-xl);
-    height: var(--size-xl);
-    margin: var(--size-xs);
-    display: inline-block;
+  width: var(--size-xl);
+  height: var(--size-xl);
+  margin: var(--size-xs);
+  display: inline-block;
 }
 
 .regular {
-    margin: var(--size-lg);
+  margin: var(--size-lg);
 }
-
 .regular__text {
-    line-height: var(--line-height-md);
+  line-height: var(--line-height-md);
 }
-
 .regular__text:not(:first-of-type) {
-    margin-top: var(--size-sm);
+  margin-top: var(--size-sm);
 }
 
 .anchor {
-    color: var(--color-text);
-    background-color: var(--color-background-specific);
-    cursor: pointer;
-    text-decoration: underline;
+  color: var(--color-text);
+  background-color: var(--color-background-specific);
+  cursor: pointer;
+  text-decoration: underline;
 }
-
 .anchor:hover {
-    color: var(--color-text-highlight);
+  color: var(--color-text-highlight);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 @media screen and (min-width: 810px) {
-    main {
-        padding-left: var(--size-md);
-        padding-right: var(--size-md);
-    }
-
-    .button-menu-tiny {
-        display: none;
-    }
-
-    .menu-tiny {
-        color: var(--color-text);
-        background-color: var(--color-background);
-        position: sticky;
-        top: 25vh;
-    }
-
-    .menu-tiny.hide {
-        display: flex;
-    }
-
-    .menu-tiny .menu__submenu {
-        color: var(--color-text);
-        background-color: var(--color-background);
-    }
+  main {
+    padding-left: var(--size-md);
+    padding-right: var(--size-md);
+  }
+  .button-menu-tiny {
+    display: none;
+  }
+  .menu-tiny {
+    color: var(--color-text);
+    background-color: var(--color-background);
+    position: sticky;
+    top: 25vh;
+  }
+  .menu-tiny.hide {
+    display: flex;
+  }
+  .menu-tiny .menu__submenu {
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
 }
-
 @media screen and (min-width: 1440px) {
-    body > div {
-        max-width: fit-content(1440px);
-    }
-
-    header.menu {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 0;
-    }
-
-    header > div:first-child {
-        width: max-content;
-    }
-
-    header .button-menu-hamburger {
-        display: none;
-    }
-
-    main {
-        display: flex;
-        gap: var(--size-md);
-    }
-
-    .content {
-        width: 100%;
-    }
-
-    .menu-hamburger {
-        color: var(--color-text);
-        background-color: var(--color-background);
-        position: static;
-    }
-
-    .menu-hamburger.hide {
-        display: flex;
-    }
-
-    .menu-hamburger .menu__submenu-close {
-        display: none;
-    }
-
-    .menu-hamburger .button-menu-tiny {
-        display: none;
-    }
+  body > div {
+    max-width: fit-content(1440px);
+  }
+  header.menu {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0;
+  }
+  header > div:first-child {
+    width: max-content;
+  }
+  header .button-menu-hamburger {
+    display: none;
+  }
+  main {
+    display: flex;
+    gap: var(--size-md);
+  }
+  .content {
+    width: 100%;
+  }
+  .menu-hamburger {
+    color: var(--color-text);
+    background-color: var(--color-background);
+    position: static;
+  }
+  .menu-hamburger.hide {
+    display: flex;
+  }
+  .menu-hamburger .menu__submenu-close {
+    display: none;
+  }
+  .menu-hamburger .button-menu-tiny {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
