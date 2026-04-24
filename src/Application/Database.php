@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Application\Utils\LogPrinter;
 use Exception;
 use PDO;
 use Throwable;
@@ -11,6 +12,8 @@ use Throwable;
  */
 class Database
 {
+    use LogPrinter;
+
     private static PDO $pdo;
 
     /**
@@ -127,7 +130,7 @@ class Database
     {
         try {
             if (!self::isPdoCanBeUsed()) {
-                throw new Exception("Unable to connect to the database.");
+                throw new Exception();
             }
 
             $query = self::$pdo->prepare($request);
@@ -161,6 +164,7 @@ class Database
             if (!self::isPdoCanBeUsed()) {
                 throw new Exception();
             }
+
             return self::$pdo->beginTransaction();
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());

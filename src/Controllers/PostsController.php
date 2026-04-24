@@ -40,6 +40,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublished();
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
+                $this->logMessage("Failed to get published softwares.");
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -49,6 +51,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublishedAndPending();
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
+                $this->logMessage("Failed to get published and pending softwares.");
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -58,6 +62,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwares();
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
+                $this->logMessage("Failed to get banned, published and pending softwares.");
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -115,6 +121,7 @@ class PostsController extends Controller
                 return $errorsController->error404();
             }
         } catch (Exception $e) {
+            $this->logMessage($e->getMessage());
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503();
         }
@@ -155,6 +162,7 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getPublishedAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -163,6 +171,7 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -171,6 +180,7 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -263,6 +273,7 @@ class PostsController extends Controller
                     }
                 }
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -352,6 +363,7 @@ class PostsController extends Controller
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
+            $this->logMessage($e->getMessage());
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
@@ -386,7 +398,8 @@ class PostsController extends Controller
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $this->logMessage("updatePostboxModTool problème avec la bd");
+            $this->logMessage($e->getMessage());
+            $this->logMessage("updatePostboxModTool problème avec la bdd");
             $this->logData($idPost);
 
             $errorsController = new ErrorsController($this->request, $this->response);
@@ -441,6 +454,7 @@ class PostsController extends Controller
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
+            $this->logMessage($e->getMessage());
             $this->logMessage("updateSoftwareStatus problème avec la bdd");
             $this->logData($idPost);
 

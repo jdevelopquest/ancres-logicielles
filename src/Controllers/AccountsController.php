@@ -72,6 +72,7 @@ class AccountsController extends Controller
                     }
                 }
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -106,6 +107,7 @@ class AccountsController extends Controller
             try {
                 $account = $accountModel->loginWithPassword($username, $password);
             } catch (Exception $e) {
+                $this->logMessage($e->getMessage());
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }

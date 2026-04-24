@@ -4,8 +4,8 @@ namespace App\Application\Utils;
 
 trait LogPrinter
 {
-    private const LOG_FILE = "messages.log";
-    private const DATE_FORMAT = 'Y-m-d H:i:s';
+    private const string LOG_FILE = "messages.log";
+    private const string DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * Logs a message to the designated logging mechanism.
