@@ -4,7 +4,7 @@
     </div>
 
     <?php if (isset($menuModTools)): ?>
-        <?php foreach ($menuModTools as $submenu): ?>
+        <?php foreach ($menuModTools as $submenuName => $submenu): ?>
             <nav class="menu__submenu menu__submenu-h menu__submenu-r">
                 <?php foreach ($submenu as $item): ?>
                     <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>"

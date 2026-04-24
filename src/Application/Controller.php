@@ -2,14 +2,14 @@
 
 namespace App\Application;
 
-use App\Application\Utils\ConstructMenu;
-use App\Application\Utils\Logger;
+use App\Application\Utils\ConstructHref;
+use App\Application\Utils\Menu;
 use App\Application\Utils\SessionManager;
 
 class Controller
 {
     use SessionManager;
-    use ConstructMenu;
+    use ConstructHref;
 
     private ViewBuilder $viewBuilder;
 
@@ -132,24 +132,46 @@ class Controller
         }
 
         // menu hamburger et menu tiny
-        $this->setupHamburgerAndTinyParams();
+        $this->setupHamburgerAndTinyMenus();
     }
 
     /**
-     * Sets up and configures the parameters for the hamburger menu and tiny menu.
+     * Configures and initializes the hamburger and tiny menus for the application's navigation system.
      *
-     * This method constructs the parameters required for both menus and assigns
-     * their configurations to the respective layouts.
+     * Creates and sets up menus based on user roles (guest, registered, or admin) and dynamically links
+     * appropriate options such as Home, Profile, Login, Logout, Signup, or Administration. Each menu is
+     * assigned to a layout for rendering within the view.
      *
-     * @return void
+     * @return void This method does not return a value.
      */
-    private function setupHamburgerAndTinyParams(): void
+    private function setupHamburgerAndTinyMenus(): void
     {
-        $menuHamburgerParams = $this->constructMenuHamburgerParams();
-        $menuTinyParams = $this->constructMenuTinyParams();
+        $menuConfigurations = [
+            ["layoutName" => "menu-hamburger", "menuName" => "menuHamburger"],
+            ["layoutName" => "menu-tiny", "menuName" => "menuTiny"]
+        ];
 
-        $this->setViewComponent("menu-hamburger", "layouts/menu-hamburger", $menuHamburgerParams, "page");
-        $this->setViewComponent("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
+        foreach ($menuConfigurations as $configuration) {
+            $menu = new Menu($configuration["menuName"])
+                ->addSubMenu("homepage")
+                ->addSubMenuItem($this->constructHref("posts", "indexSoftwares"), "Accueil", "Accueil", "go-home");
 
+            if ($this->userIsLoggedIn()) {
+                $menu->addSubMenu("registeredMenu")
+                    ->addSubMenuItem($this->constructHref("accounts", "show", $this->getUserId()), "Profil", "Profil", "go-profile")
+                    ->addSubMenuItem($this->constructHref("accounts", "logout"), "Déconnexion", "Déconnexion", "go-logout");
+            } else {
+                $menu->addSubMenu("guestMenu")
+                    ->addSubMenuItem($this->constructHref("accounts", "login"), "Connexion", "Connexion", "go-login")
+                    ->addSubMenuItem($this->constructHref("accounts", "signup"), "Inscription", "Inscription", "go-signup");
+            }
+
+            if ($this->userIsAdmin()) {
+                $menu->addSubMenu("adminMenu")
+                    ->addSubMenuItem($this->constructHref("admins", "index"), "Administration", "Administration", "go-admin");
+            }
+
+            $this->setViewComponent($configuration["layoutName"], "layouts/" . $configuration["layoutName"], $menu->getMenu(), "page");
+        }
     }
 }

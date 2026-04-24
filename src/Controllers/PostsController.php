@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Response;
 use App\Application\Utils\Logger;
+use App\Application\Utils\Menu;
 use App\Application\Utils\SessionManager;
 use App\Models\PostModel;
 use Exception;
@@ -80,11 +81,10 @@ class PostsController extends Controller
         }
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
-            $contentParams["menuModTools"] = [];
-
-            $submenu = [];
-            $submenu[] = $this->addMenuItem($this->constructHref("posts", "addSoftware"), "Ajouter une fiche logicielle", "Ajouter une fiche logicielle", "list-add");
-            $contentParams["menuModTools"][] = $submenu;
+            $contentParams = array_merge($contentParams, new Menu("menuModTools")
+                ->addSubMenu("addSoftware")
+                ->addSubMenuItem($this->constructHref("posts", "addSoftware"), "Ajouter une fiche logicielle", "Ajouter une fiche logicielle", "list-add")
+                ->getMenu());
         }
 
         $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
@@ -251,17 +251,17 @@ class PostsController extends Controller
 
             if (!isset($notificationParams["error"])) {
                 try {
-                        $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
+                    $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
 
-                        if ($result) {
-                            $notificationParams["success"] = [];
-                            $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
-                            $contentParams["success"] = true;
-                        } else {
-                            $notificationParams["error"] = [];
-                            $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
-                            $contentParams["success"] = false;
-                        }
+                    if ($result) {
+                        $notificationParams["success"] = [];
+                        $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
+                        $contentParams["success"] = true;
+                    } else {
+                        $notificationParams["error"] = [];
+                        $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
+                        $contentParams["success"] = false;
+                    }
                 } catch (Exception $e) {
                     $log = new Logger();
                     $log->debug("Fail to add a software.", ["Exception message" => $e->getMessage()]);

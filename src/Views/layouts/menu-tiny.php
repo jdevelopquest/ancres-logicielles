@@ -4,8 +4,8 @@
                     class="prominent__icon icon-go-top"></span></a>
     </div>
 
-    <?php if (isset($menu)): ?>
-        <?php foreach ($menu as $submenu): ?>
+    <?php if (isset($menuTiny)): ?>
+        <?php foreach ($menuTiny as $submenuName => $submenu): ?>
             <nav class="menu__submenu menu__submenu-v">
                 <?php foreach ($submenu as $item): ?>
                     <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>"
