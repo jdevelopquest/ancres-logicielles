@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 session_start();
 
-require_once dirname(__DIR__) . "/config/bootstrap.php";
 require_once dirname(__DIR__) . "/config/paths.php";
 
 spl_autoload_register(

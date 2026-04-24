@@ -44,6 +44,7 @@ class Controller
     protected function getJsonResponse(?string $data = null, int $code = 200): Response
     {
         if ($data !== null) {
+            //todo à revoir
             $data = iconv('UTF-8', 'UTF-8//IGNORE', $data);
             $data = json_encode($data);
         }

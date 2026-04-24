@@ -1,3 +1,2 @@
 /.idea/
-/var/log/messages.log
-.env.local
+/app/var/log/messages.log

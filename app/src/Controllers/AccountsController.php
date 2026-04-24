@@ -14,7 +14,6 @@ use Exception;
 class AccountsController extends Controller
 {
     use SessionManager;
-    
 
     /**
      * Handles the signup process for a user, validating user input, checking for errors,
