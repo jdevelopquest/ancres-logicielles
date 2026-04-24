@@ -2,6 +2,8 @@
 
 namespace App\Application;
 
+use App\Controllers\ErrorsController;
+
 class Dispatcher
 {
     protected Router $router;
@@ -15,27 +17,29 @@ class Dispatcher
 
     public function run(): void
     {
-        $route = $this->router->match($this->request->getPath());
+        $route = $this->router->match($this->request);
 
         if (!$route) {
-            $route = $this->router->match("/error/404");
+            $controller = new ErrorsController();
+        } else {
+            if (!class_exists($route["controller"])) {
+                $response = new Response(true);
+                $response->send();
+                exit();
+            }
+
+            $controller = new $route["controller"]();
+
+            if (!method_exists($controller, $route["action"])) {
+                $response = new Response(true);
+                $response->send();
+                exit();
+            }
         }
 
-        if (!class_exists($route["controller"])) {
-            $response = new Response(true);
-            $response->send();
-            exit();
-        }
+        $action = $controller instanceof ErrorsController ? "error404" : $route["action"];
 
-        $controller = new $route["controller"]();
-
-        if (!method_exists($controller, $route["action"])) {
-            $response = new Response(true);
-            $response->send();
-            exit();
-        }
-
-        $response = $controller->{$route["action"]}();
+        $response = $controller->$action();
 
         $response->send();
     }

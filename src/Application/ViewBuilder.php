@@ -7,25 +7,21 @@ class ViewBuilder
     public array $vars = [];
     protected array $files = [];
     protected array $parts = [];
-    public function __construct(protected ?string $contentLayout)
+    public function __construct()
     {
-        $this->files["pageLayout"] = VIEWS . str_replace("/", DIRECTORY_SEPARATOR, "layouts/page" . ".php");
-        $this->files["contentLayout"] = VIEWS . str_replace("/", DIRECTORY_SEPARATOR, $this->contentLayout . ".php");
+        $this->files["pageLayout"] = $this->constructFilePath("layouts/page");
 
         $this->parts["content"] = "";
         $this->parts["page"] = "";
     }
 
+    protected function constructFilePath(string $layout): string
+    {
+        return VIEWS . str_replace("/", DIRECTORY_SEPARATOR, $layout . ".php");
+    }
+
     public function render(): string
     {
-        if (file_exists($this->files["contentLayout"])) {
-            ob_start();
-
-            include_once $this->files["contentLayout"];
-
-            $this->parts["content"] = ob_get_clean();
-        }
-
         if (file_exists($this->files["pageLayout"])) {
             ob_start();
 

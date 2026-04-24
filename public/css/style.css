@@ -43,6 +43,8 @@
   --size-xl: 32px;
   --font-size-md: 1.4rem;
   --font-size-lg: 2.2rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
 :root .size-md {
   --size-xs: 4px;
@@ -52,6 +54,8 @@
   --size-xl: 64px;
   --font-size-md: 1.5rem;
   --font-size-lg: 2.3rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
 :root .size-xl {
   --size-xs: 6px;
@@ -61,6 +65,8 @@
   --size-xl: 96px;
   --font-size-md: 1.6rem;
   --font-size-lg: 2.4rem;
+  --line-height-md: ;
+  --line-height-lg: 0.8;
 }
 html {
   font-size: 62.5%;
@@ -70,6 +76,15 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
 }
 
 body {
@@ -236,7 +251,7 @@ main {
   margin: var(--size-lg);
 }
 .regular__text {
-  line-height: var(--size-md);
+  line-height: var(--line-height-md);
 }
 .regular__text:not(:first-of-type) {
   margin-top: var(--size-sm);

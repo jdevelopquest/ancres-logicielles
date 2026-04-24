@@ -4,7 +4,7 @@
     </div>
     <article class="content__subcontent">
         <div class="prominent">
-            <h3 class="prominent__text">404</h3>
+            <h3 class="prominent__text">Erreur 404</h3>
             <span class="prominent__icon"></span>
         </div>
         <div class="regular">

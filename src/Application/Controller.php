@@ -5,10 +5,8 @@ namespace App\Application;
 class Controller
 {
     protected Response $response;
-    protected ViewBuilder $viewBuilder;
-    public function __construct(?string $contentLayout)
+    public function __construct()
     {
         $this->response = new Response();
-        $this->viewBuilder = new ViewBuilder($contentLayout);
     }
 }
