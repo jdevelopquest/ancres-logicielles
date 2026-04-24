@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Application\Controller;
 use App\Application\Response;
+use App\Views\ArticlesViewBuilder;
 
 class ArticlesController extends Controller
 {
@@ -16,9 +17,17 @@ class ArticlesController extends Controller
     {
 //        $articles = new ArticlesModel();
 //        $articles = $articles->getArticles();
-//        require ROOT . '/src/Views/articles/index.php';
+
+        $articlesViewBuilder = new ArticlesViewBuilder();
+        $articlesViewBuilder->addTitle("Ancres Logicielles : Accueil");
+
+        $this->response->setHeaders([
+            "Content-Type" => "text/html",
+        ]);
+
         $this->response->setCode(200);
-        $this->response->setBody("Hello World!");
+
+        $this->response->setBody($articlesViewBuilder->index());
 
         return $this->response;
     }

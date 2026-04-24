@@ -11,6 +11,7 @@ class ErrorsController extends Controller
     public function error404(): Response
     {
         $errorsViewBuilder = new ErrorsViewBuilder();
+        $errorsViewBuilder->addTitle("Ancres Logicielles : Erreur page non trouvée");
 
         $this->response->setHeaders([
             "Content-Type" => "text/html",
@@ -26,6 +27,7 @@ class ErrorsController extends Controller
     public function error500(): Response
     {
         $errorsViewBuilder = new ErrorsViewBuilder();
+        $errorsViewBuilder->addTitle("Ancres Logicielles : Erreur interne");
 
         $this->response->setHeaders([
             "Content-Type" => "text/html",

@@ -274,6 +274,9 @@ main {
     padding-left: var(--size-md);
     padding-right: var(--size-md);
   }
+  .button-menu-tiny {
+    display: none;
+  }
   .menu-tiny {
     color: var(--color-text);
     background-color: var(--color-background);
@@ -286,9 +289,6 @@ main {
   .menu-tiny .menu__submenu {
     color: var(--color-text);
     background-color: var(--color-background);
-  }
-  .menu-hamburger .button-menu-tiny {
-    display: none;
   }
 }
 @media screen and (min-width: 1440px) {

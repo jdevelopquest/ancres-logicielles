@@ -1,23 +1,31 @@
-function initMenu(menuTag) {
+function initMenuButtons(menuTag) {
     const buttonSelector = '.button-menu-' + menuTag;
     const menuSelector = '.menu-' + menuTag;
-    document.querySelector(buttonSelector)?.addEventListener('click', function () {
-        const menu = document.querySelector(menuSelector);
-        menu?.classList.toggle('hide');
-        const close = menu?.querySelector('.button-close');
-        close?.addEventListener('click', function () {
-            menu?.classList.add('hide');
-        });
+    document.querySelectorAll(buttonSelector)?.forEach((button) => {
+        button.addEventListener('click', function () {
+            const menu = document.querySelector(menuSelector);
+            menu?.classList.toggle('hide');
+            const close = menu?.querySelector('.button-close');
+            close?.addEventListener('click', function () {
+                menu?.classList.add('hide');
+            });
+        })
+    });
+}
+
+function initSwitchThemeButtons() {
+    document.querySelectorAll('.button-switch-theme')?.forEach(button => {
+        button.addEventListener('click', function () {
+            const body = document.querySelector('body');
+            body?.classList.toggle('theme-light');
+            body?.classList.toggle('theme-dark');
+        })
     });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    initMenu('hamburger');
-    initMenu('tiny');
+    initMenuButtons('hamburger');
+    initMenuButtons('tiny');
 
-    document.querySelector('.button-switch-theme')?.addEventListener('click', function () {
-        const body = document.querySelector('body');
-        body?.classList.toggle('theme-light');
-        body?.classList.toggle('theme-dark');
-    });
+    initSwitchThemeButtons();
 })
