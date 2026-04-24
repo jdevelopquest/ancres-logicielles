@@ -5,7 +5,7 @@
 
     {{ notification }}
 
-    <?php if (!isset($success)): ?>
+    <?php if (!isset($login_success)): ?>
         <form class="form content__subcontent"
               action="index.php?ctr=accounts&act=login" method="post" name="login" id="login">
 

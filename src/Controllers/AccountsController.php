@@ -16,9 +16,59 @@ class AccountsController extends Controller
     // todo : finir la fonction !!!
     public function signup(): Response
     {
+        $contentParams = [];
+        $notificationParams = [];
+
+        if ($this->request->isPost()) {
+            $username = $this->request->getParams()["accountUsername"] ?? "";
+            $password = $this->request->getParams()["accountPassword"] ?? "";
+
+            $accountModel = new AccountModel();
+
+            if (!$accountModel->isUsernameMatchPattern($username)) {
+                $notificationParams["error"] = [];
+                $notificationParams["error"][] = "Le pseudo doit contenir entre 3 et 200 caractères, et ne doit pas contenir de caractères spéciaux.";
+                $this->escapeHtmlRecursive($username);
+                $contentParams["accountUsername"] = $username;
+            }
+
+            if (!$accountModel->isPasswordMatchPattern($password)) {
+                if (!isset($notificationParams["error"])) {
+                    $notificationParams["error"] = [];
+                }
+                $notificationParams["error"][] = "Le mot de passe doit contenir au minimum 12 caractères, et ne doit pas contenir de caractères spéciaux.";
+                $notificationParams["error"][] = "Le mot de passe doit contenir au minimum 1 minuscule, 1 majuscule, 1 chiffre.";
+            }
+
+            try {
+                if (!isset($notificationParams["error"])) {
+                    if ($accountModel->isUsernameExists($username)) {
+                        $notificationParams["error"] = [];
+                        $notificationParams["error"][] = "Ce pseudo est déjà utilisé.";
+                    } else {
+                        $success = $accountModel->registerAccount($username, $password);
+
+                        if ($success) {
+                            $notificationParams["success"] = [];
+                            $notificationParams["success"][] = "Inscription réussie.";
+                            $contentParams["signup_success"] = true;
+                        } else {
+                            $notificationParams["error"] = [];
+                            $notificationParams["error"][] = "Une erreur est survenue lors de l'inscription.";
+                            $contentParams["signup_success"] = false;
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                $errorsController = new ErrorsController($this->request, $this->response);
+                return $errorsController->error503();
+            }
+        }
+
         $this->setPageParam("title", "Ancres Logicielles : Inscription");
 
-        $this->setPartConfig("content", "account/signup", [], "page");
+        $this->setPartConfig("notification", "layouts/notification", $notificationParams, "content");
+        $this->setPartConfig("content", "accounts/signup", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -49,21 +99,25 @@ class AccountsController extends Controller
             }
 
             if (empty($account)) {
-                $notificationParams["error"] = "Pseudo ou Mot de passe incorrect.";
+                $notificationParams["error"] = [];
+                $notificationParams["error"][] = "Pseudo ou Mot de passe incorrect.";
                 $this->escapeHtmlRecursive($username);
                 $contentParams["accountUsername"] = $username;
-            } else {
-                if ($account["accountIsBanned"]) {
-                    $notificationParams["error"] = "Compte bannis.";
-                } else {
-                    $notificationParams["success"] = "Connexion réussie.";
+            } else if ($account["accountIsBanned"]) {
+                $notificationParams["error"] = [];
+                $notificationParams["error"][] = "Compte bannis.";
+            } else if ($account["accountIsSuspended"]) {
+                $notificationParams["error"] = [];
+                $notificationParams["error"][] = "Compte suspendu.";
+            }  else {
+                $notificationParams["success"] = [];
+                $notificationParams["success"][] = "Connexion réussie.";
 
-                    $contentParams["success"] = true;
+                $contentParams["login_success"] = true;
 
-                    $this->escapeHtmlRecursive($account);
+                $this->escapeHtmlRecursive($account);
 
-                    $this->setupUserSession($account);
-                }
+                $this->setupUserSession($account);
             }
         }
 
