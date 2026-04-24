@@ -130,6 +130,41 @@ $color-jet-black: #000000;
   }
 }
 
+@mixin subLayout {
+  &-h {
+    @include layout("horizontal", var(--size-xs));
+  }
+
+  &-v {
+    @include layout("vertical", var(--size-xs));
+  }
+
+  &-r {
+    justify-content: right;
+  }
+}
+
+@mixin focus-active-outline {
+  &:focus,
+  &:active {
+    outline: var(--color-background-highlight) var(--size-xs) solid;
+  }
+}
+
+%clickable {
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  outline: none;
+
+  @include focus-active-outline;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--color-background-highlight);
+  }
+}
+
 :root {
   .size {
     &-xs {
@@ -240,17 +275,7 @@ main {
   padding: var(--size-xs);
 
   &__submenu {
-    &-h {
-      @include layout("horizontal", var(--size-xs));
-    }
-
-    &-v {
-      @include layout("vertical", var(--size-xs));
-    }
-
-    &-r {
-      justify-content: right;
-    }
+    @include subLayout;
   }
 
   &-hamburger {
@@ -310,15 +335,32 @@ main {
 
   &__item {
     &-clickable {
-      color: inherit;
-      background-color: inherit;
-      border: none;
-      outline: none;
+      @extend %clickable;
+    }
+  }
+}
 
-      &:hover {
-        cursor: pointer;
-        background-color: var(--color-background-highlight);
-      }
+.form {
+  @include layout("vertical", var(--size-xs));
+  align-items: center;
+
+  padding: var(--size-xl);
+
+  input {
+    @include focus-active-outline;
+  }
+
+  &__subform {
+    @include subLayout;
+  }
+
+  &__subform {
+    @include color("specific");
+  }
+
+  &__item {
+    &-clickable {
+      @extend %clickable;
     }
   }
 }

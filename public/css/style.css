@@ -35,6 +35,20 @@
   --color-background-highlight: #ce5c00;
 }
 
+.form__item-clickable, .menu__item-clickable {
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  outline: none;
+}
+.form__item-clickable:focus, .menu__item-clickable:focus, .form__item-clickable:active, .menu__item-clickable:active {
+  outline: var(--color-background-highlight) var(--size-xs) solid;
+}
+.form__item-clickable:hover, .menu__item-clickable:hover {
+  cursor: pointer;
+  background-color: var(--color-background-highlight);
+}
+
 :root .size-xs {
   --size-xs: 2px;
   --size-sm: 4px;
@@ -212,17 +226,33 @@ main {
   color: var(--color-text);
   background-color: var(--color-background-global);
 }
-.menu__item-clickable {
-  color: inherit;
-  background-color: inherit;
-  border: none;
-  outline: none;
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
+  align-items: center;
+  padding: var(--size-xl);
 }
-.menu__item-clickable:hover {
-  cursor: pointer;
-  background-color: var(--color-background-highlight);
+.form input:focus, .form input:active {
+  outline: var(--color-background-highlight) var(--size-xs) solid;
 }
-
+.form__subform-h {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-xs);
+}
+.form__subform-v {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--size-xs);
+}
+.form__subform-r {
+  justify-content: right;
+}
+.form__subform {
+  color: var(--color-text);
+  background-color: var(--color-background-specific);
+}
 .prominent {
   display: flex;
   flex-flow: row nowrap;

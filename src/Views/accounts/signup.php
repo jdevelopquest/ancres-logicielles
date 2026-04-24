@@ -2,12 +2,12 @@
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Inscription</h2>
     </div>
-    <form class="content__subcontent"
-          action="index.php?ctr=accounts&act=signin" method="post" name="signup" id="signup">
+    <form class="form content__subcontent"
+          action="index.php?ctr=accounts&act=signup" method="post" name="signup" id="signup">
 
-        <div class="regular">
-            <label class="regular__text" for="accountUsername">Pseudo</label>
-            <input class="regular__text" required
+        <div class="form__subform form__subform-v regular">
+            <label class="form__item regular__text" for="accountUsername">Pseudo</label>
+            <input class="form__item regular__text" required
                    name="accountUsername"
                    type="text"
                    id="accountUsername"
@@ -17,9 +17,9 @@
                    value=""/>
         </div>
 
-        <div class="regular">
-            <label class="regular__text" for="accountPassword">Mot de passe</label>
-            <input class="regular__text" required
+        <div class="form__subform form__subform-v regular">
+            <label class="form__item regular__text" for="accountPassword">Mot de passe</label>
+            <input class="form__item regular__text" required
                    name="accountPassword"
                    type="password"
                    id="accountPassword"
@@ -29,8 +29,8 @@
                    value=""/>
         </div>
 
-        <div class="prominent">
-            <input class="prominent__text" type="submit" value="Création">
+        <div class="form__subform prominent">
+            <input class="form__item form__item-clickable prominent__text" type="submit" value="Inscription">
         </div>
     </form>
 </section>
