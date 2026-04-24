@@ -2,7 +2,6 @@
 
 namespace App\Application;
 
-use App\Application\Utils\Logger;
 use Exception;
 use PDO;
 use Throwable;
@@ -21,7 +20,7 @@ class Database
      *
      * @param string $request The SQL query to execute.
      * @param array $params An associative array of key-value pairs to bind to the query.
-     * @return mixed The fetched result or an empty array if no results are found.
+     * @return mixed The fetched result or false if no results are found.
      * @throws Exception
      */
     public static function fetch(string $request, array $params = []): mixed

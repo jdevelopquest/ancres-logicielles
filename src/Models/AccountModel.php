@@ -83,14 +83,8 @@ class AccountModel
     {
         $account = $this->getAccountByUsername($username);
 
-        if (empty($account)) {
-            return [];
-        }
-
-        if (password_verify($password, $account["accountPassword"])) {
-
+        if (is_array($account) && password_verify($password, $account["accountPassword"])) {
             unset($account["accountPassword"]);
-
             return $account;
         }
 
@@ -193,14 +187,14 @@ class AccountModel
     }
 
     /**
-     * Retrieves account information from the database based on the provided username.
+     * Retrieves account details based on the provided username.
+     * This method fetches information like account status, role, and login-related details from the database.
      *
-     * @param string $username The username of the account to be retrieved.
-     * @return array An associative array containing account details such as ID, username, password, ban status,
-     *               administrative and moderator roles, suspension status, failed login attempts, and suspension end time.
-     * @throws Exception
+     * @param string $username The username of the account to retrieve.
+     * @return mixed A mixed type containing account details if found, or false if no matching account is found.
+     * @throws Exception If a database query error occurs.
      */
-    private function getAccountByUsername(string $username): array
+    private function getAccountByUsername(string $username): mixed
     {
         $request =
             "SELECT 
