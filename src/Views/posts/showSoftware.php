@@ -13,7 +13,7 @@
                 </h3>
 
                 <div class="postbox postbox-status postbox-status-<?= $software["idPost"] ?>">
-                    <?= $this->renderPartial("layouts/postbox-status", ["software" => $software]) ?>
+                    <?= $this->renderPartial("layouts/postbox-status", ["postStatus" => $software["status"]]) ?>
                 </div>
 
             </div>
@@ -53,16 +53,14 @@
             <article class="content__subcontent">
 
                 <div class="prominent">
-                    <h3 class="prominent__text"><a class="anchor" href="<?= $anchor["anchorUrl"] ?>"
-                                                   target="_blank"><?= $anchor["anchorUrl"] ?></a></h3>
+                    <h3 class="prominent__text">
+                        <a class="anchor" href="<?= $anchor["anchorUrl"] ?>"
+                           target="_blank"><?= $anchor["anchorUrl"] ?></a>
+                    </h3>
 
                     <div class="postbox postbox-status postbox-status-<?= $anchor["idPost"] ?>">
-                        <?php foreach ($anchor["status"] as $status): ?>
-                            <span class="prominent__icon icon-<?= $status["icon"] ?>"
-                                  title="<?= $status["title"] ?>"></span>
-                        <?php endforeach; ?>
+                        <?= $this->renderPartial("layouts/postbox-status", ["postStatus" => $anchor["status"]]) ?>
                     </div>
-
                 </div>
 
                 <div class="regular">
