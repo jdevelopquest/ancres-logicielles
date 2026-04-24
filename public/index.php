@@ -3,6 +3,7 @@
 session_start();
 
 define('ROOT', dirname(__DIR__));
+define('VIEWS', ROOT  . str_replace("/", DIRECTORY_SEPARATOR, "/src/Views/"));
 
 spl_autoload_register(
     function ($class) {
@@ -19,12 +20,3 @@ use App\Application\Dispatcher;
 
 $dispatcher = new Dispatcher();
 $dispatcher->run();
-
-//ob_start();
-//include_once ROOT . str_replace('/', DIRECTORY_SEPARATOR, '/src/Views/articles/index') . '.php';
-//$content = ob_get_clean();
-//ob_start();
-//include_once ROOT . str_replace('/', DIRECTORY_SEPARATOR, '/src/Views/layouts/main') . '.php';
-//$main = ob_get_clean();
-//$page = str_replace('{{content}}', $content, $main);
-//echo $page;
