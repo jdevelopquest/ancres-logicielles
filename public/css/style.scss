@@ -1,221 +1,332 @@
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
-  url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
+  src: url("/public/fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
+  url("/public/fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Montserrat-Bold";
-  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
-  url("../fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+//
+// Colors
+//
 
-$font-title: "Montserrat-Bold", sans-serif;
-$font-main: "Lato", serif;
-$font-title-size: 3.2rem;
+// Primary brand colors
+$color-brand-primary: null;
+$color-brand-secondary: null;
 
-$breakpoint-tablet: 810px;
-$breakpoint-desktop: 1410px;
+// Text colors
+$color-text: null;
+$color-text-link: null;
+$color-text-link-hover: null;
+$color-text-heading: null;
+$color-text-sidebar: null; // Color for text in the sidebar navigation
 
-$min-width: 375px;
-$max-width: 1440px;
+// Background colors
+$color-background: null;
+$color-background-header: null;
+$color-background-sidebar: null;
+$color-background-content: null;
+$color-background-card: null; // Background for the "Blender" and "Thème" sections
+$color-background-button-default: null;
+$color-background-button-hover: null;
+$color-background-button-active: null;
+$color-background-nav-item: null; // Background for navigation items like "Accueil", "Inscription"
+$color-background-nav-item-hover: null;
+$color-background-nav-item-active: null;
+$color-background-tab-inactive: null; // Background for inactive tabs like "Blender"
+$color-background-tab-active: null; // Background for the active tab "Thème"
 
-$min-margin: 32px;
-$button-min-width: 64px;
-$button-min-height: 64px;
+// Border colors
+$color-border-default: null;
+$color-border-separator: null; // Color for separating lines or borders
+$color-border-card: null;
+$color-border-tab: null;
 
-@mixin theme($theme: "light") {
+// Icon colors
+$color-icon-default: null;
+$color-icon-nav: null; // Color for navigation icons
+$color-icon-status-success: null; // For a success-like icon if applicable (not visible but good practice)
+$color-icon-status-warning: null; // Color for the warning icon
+$color-icon-status-error: null; // Color for an error-like icon if applicable
 
-  $color-font: #000000;
-  $color-background-primary: #ffffff;
-  $color-background-secondary: #ffffff;
-  $color-background-highlight: #ffffff;
+// Status colors (for icons or messages)
+$color-status-warning: null; // Color associated with the warning icon/message
+$color-status-error: null;
 
-  @if ($theme == "ligth") {
-    $color-font: #2e3436;
-    $color-background-primary: #ffffff;
-    $color-background-secondary: #fce94f;
-    $color-background-highlight: #2e3436;
-  }
+//
+// Typography
+//
 
-  @if ($theme == "dark") {
-    $color-font: #ce5c00;
-    $color-background-primary: #000000;
-    $color-background-secondary: #2e3436;
-    $color-background-highlight: #ce5c00;
-  }
+// Font families
+$font-family-base: "Lato", sans-serif;
+$font-family-heading: "Montserrat", sans-serif;
 
-  color: $color-font;
-  background-color: $color-background-primary;
+// Font sizes
+$font-size-base: null;
+$font-size-small: null;
+$font-size-large: null; // Potentially for headings or specific text elements
+$font-size-heading: null;
+$font-size-nav-item: null;
 
-  a {
-    color: $color-font;
-  }
+// Font weights
+$font-weight-regular: null;
+$font-weight-bold: null;
+$font-weight-heading: null;
+$font-weight-nav-item: null; // Font weight for navigation items
 
-  .button {
-    color: $color-font;
-    background-color: $color-background-secondary;
-  }
+// Line heights
+$line-height-base: null;
+$line-height-heading: null;
+
+//
+// size
+//
+
+// General size units (using a multiplier is common)
+$size-unit: 4px;
+$size-xs: $size-unit * 2;
+$size-sm: $size-unit * 4;
+$size-md: $size-unit * 8;
+$size-lg: $size-unit * 16;
+$size-xl: $size-unit * 32;
+
+// Specific element size
+$padding-page-horizontal: null;
+$padding-page-vertical: null;
+$padding-sidebar: null;
+$padding-content: null;
+$padding-card: null;
+$padding-nav-item: null;
+$margin-heading-bottom: null;
+$margin-icon-text: null; // Margin between an icon and adjacent text
+$margin-element-size: null; // General margin between block-level elements
+
+//
+// Borders and Shadows
+//
+
+$border-radius-default: null;
+$border-width-default: null;
+$box-shadow-default: null;
+$box-shadow-card: null;
+$border-nav-item-active: null; // Border for the active navigation item
+
+//
+// Layout
+//
+
+$sidebar-width: null;
+$header-height: null;
+$container-min-width: 375px;
+$container-max-width: 1440px; // If the content has a maximum width
+
+//
+// Specific Component Variables (Examples based on visible elements)
+//
+
+// Navigation
+$nav-item-height: null;
+$nav-item-icon-size: null;
+$nav-item-text-indent: null; // If text is indented next to an icon
+
+// Tabs
+$tab-height: null;
+$tab-padding: null;
+$tab-border-width: null;
+$tab-active-border-color: null;
+
+// Icons
+$icon-size-default: null;
+$icon-size-nav: null;
+$icon-size-status: null;
+
+// Assuming the heart icon and calculation symbols are part of a status or information block
+$status-block-padding: null;
+$status-block-icon-size: null;
+$status-block-text-color: null;
+
+// "À propos" section
+$about-section-padding: null;
+$about-section-border-top: null; // If there's a border separating it
+
+//
+// Z-index (if needed for stacking contexts)
+//
+
+$zindex-sidebar: null;
+$zindex-header: null;
+
+//
+// Transitions (if elements have hover/active states with transitions)
+//
+
+$transition-duration-default: null;
+$transition-timing-function-default: null;
+
+// Thème clair
+$theme-light: (
+        "color-text": #2e3436,
+        "color-background": #ffffff,
+        "color-background-panel": #eeeeec,
+        "color-background-hovered": #d3d7cf
+);
+
+// Thème sombre
+$theme-dark: (
+        "color-text": #ffffff,
+        "color-background": #000000,
+        "color-background-panel": #2e3436,
+        "color-background-hovered": #555753
+);
+
+@mixin apply-theme($theme) {
+  color: map-get($theme, "color-text");
+  background-color: map-get($theme, "color-background");
 
   .panel {
-    &-primary {
-      background-color: $color-background-primary;
-    }
-
-    &-secondary {
-      background-color: $color-background-secondary;
-    }
+    color: map-get($theme, "color-text");
+    background-color: map-get($theme, "color-background-panel");
   }
 
-  .button-hamburger,
-  .button-switch-theme {
-    fill: $color-background-highlight;
-    stroke: none;
+  .tool {
+    color: map-get($theme, "color-text");
+    background-color: map-get($theme, "color-background-panel");
+
+    &:hover {
+      color: map-get($theme, "color-text");
+      background-color: map-get($theme, "color-background-hovered");
+    }
   }
 }
 
-.light-theme {
-  @include theme("ligth");
-}
+// Font families
+$font-family-base: "Lato", sans-serif;
+$font-family-heading: "Montserrat", sans-serif;
 
-.dark-theme {
-  @include theme("dark");
-}
+// Font sizes
+$font-size-base: 1.6rem;
+$font-size-small: 1.2rem;
+$font-size-large: 2.8rem;
+
+// Font weights
+$font-weight-regular: 400;
+$font-weight-bold: 700;
+$font-weight-ultra-bold: 900;
+
+// Line heights
+$line-height-base: $font-size-base;
+$line-height-heading: $font-size-large;
 
 html {
   font-size: 62.5%;
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-}
-
-ul {
   margin: 0;
   padding: 0;
-  list-style: none;
+  border: none;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-  display: inline-block;
+body {
+  @include apply-theme($theme-light);
+
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+}
+
+.theme-dark {
+  @include apply-theme($theme-dark);
 }
 
 .container {
-  min-width: $min-width;
-  max-width: $max-width;
   margin: 0 auto;
+  min-width: $container-min-width;
+  max-width: $container-max-width;
+  min-height: fit-content;
+  display: flex;
+  flex-flow: row wrap;
 }
 
-.panel {
+header,
+footer {
   width: 100%;
-  height: $button-min-height;
-  font-family: $font-title;
-  font-size: $font-title-size;
+  margin: $size-sm auto;
 }
 
-.button {
-  width: 100%;
-  height: $button-min-height;
-  border: none;
+footer {
+  position: absolute;
+  bottom: 0;
+}
 
+main {
+  width: 100%;
+  position: relative;
+}
+
+h1,
+h2 {
+  font-family: $font-family-heading;
+  font-size: $font-size-large;
+  width: auto;
+  height: $size-lg;
+  line-height: $size-lg;
+}
+
+.sidebar {
+  min-width: 375px;
+  height: $size-lg;
+}
+
+.tool {
   &:hover {
     cursor: pointer;
   }
 }
 
-.header {
-  display: flex;
-  flex-flow: column nowrap;
-  position: relative;
-  margin: $min-margin;
+.panel {
+  margin: 0;
   padding: 0;
+  min-width: 375px;
+  height: $size-lg;
+  display: flex;
+  align-items: center;
 
-  .panel {
-    display: flex;
-    align-items: center;
+  .text,
+  .icon {
+    display: inline-block;
   }
 
-  .logo {
-    &-part-0 {
-      font-size: $font-title-size * 2;
-      align-self: baseline;
-    }
+  .text {
+    width: auto;
+    height: $size-lg;
+    line-height: $size-lg;
+    padding-left: $size-sm;
+  }
 
-    &-part-2 {
-      padding-left: $font-title-size * 1.5;
-      align-self: start;
+  .icon {
+    width: $size-lg;
+    height: $size-lg;
+
+    &:last-child {
+      margin-left: auto;
     }
   }
 }
 
-.button-hamburger,
-.button-switch-theme {
-  margin-left: auto;
-  width: $button-min-width;
-  height: $button-min-height;
+.button-previous-page {
+  visibility: hidden;
 }
 
 .menu-hamburger {
-  width: 100%;
-  position: absolute;
-  top: 100%;
-  margin-top: $min-margin;
   display: none;
-
-  &__navbar {
-    .panel {
-      margin: 0 0 $min-margin;
-
-      &last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-@media screen and (min-width: $breakpoint-tablet) {
-}
-
-@media screen and (min-width: $breakpoint-desktop) {
-  .button-hamburger {
-    display: none;
-  }
-
-  .menu-hamburger {
-    position: initial;
-    display: flex;
-    align-items: center;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-    }
-
-    &__navbar {
-      ul {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-    }
-
-    &__action {
-      margin-left: auto;
-      .ul {
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
+.menu-admin {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
