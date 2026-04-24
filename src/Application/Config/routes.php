@@ -165,15 +165,4 @@ return [
         "controller" => "App\Controllers\AccountsController",
         "action" => "logout"
     ],
-
-// users api saveTheme
-    [
-        "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=users&act=saveTheme$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
-        "controller" => "App\Controllers\SessionsController",
-        "action" => "saveTheme"
-    ],
 ];

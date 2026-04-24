@@ -170,36 +170,28 @@ function initSwitchThemeButtons() {
             body?.classList.toggle('theme-light');
             body?.classList.toggle('theme-dark');
             const theme = body?.classList.contains('theme-light') ? 'theme-light' : 'theme-dark';
-            sendTheme(theme);
+            setTheme(theme);
         })
     });
 }
 
-function sendTheme(theme) {
-    const url = "index.php?ctr=users&act=saveTheme";
-    const data = {
-        theme: theme
-    };
+function setTheme(theme = 'theme-light') {
+    localStorage.setItem('theme', theme);
+}
 
-    fetch(
-        url,
-        {
-            method: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                // throw a new Error (response.statusText);
-            }
-            // Il n'y a pas de données à récupérer
-        })
-        .catch(error => {
-            // console.error('Il y a eu un problème avec la requête fetch:', error);
-        });
+function getTheme() {
+    return localStorage.getItem('theme') ?? 'theme-light';
+}
+
+function applyTheme() {
+    const body = document.querySelector('body');
+    if (getTheme() === 'theme-dark') {
+        body?.classList.remove('theme-light');
+        body?.classList.add('theme-dark');
+    } else {
+        body?.classList.add('theme-light');
+        body?.classList.remove('theme-dark');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -207,5 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initMenuButtons('tiny');
     initPostboxMod();
     initSwitchThemeButtons();
+    applyTheme();
     applyTinyMenuVisibility();
 })

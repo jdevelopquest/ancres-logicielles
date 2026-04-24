@@ -157,12 +157,13 @@ class Controller
     }
 
     /**
-     * Prepares the HTML page's parameters for rendering by setting page-specific configurations.
+     * Prepares the necessary parameters for rendering an HTML page, including user navigation data,
+     * title, and menu configuration.
      *
-     * This method adjusts parameters such as the previous page link, the page title, the theme,
-     * and settings related to the menu for proper rendering.
+     * Updates the user's previous page data, sets the page title if not already defined, and configures
+     * specific parameters for the menu structure.
      *
-     * @return void
+     * @return void This method does not return a value.
      */
     private function prepareHtmlPageForRender(): void
     {
@@ -182,9 +183,6 @@ class Controller
         if ($this->issetPageParam("title")) {
             $this->setPageParam("title", "Ancres Logicielles");
         }
-
-        // thème de la page
-        $this->setPageParam("theme", $this->getUserTheme());
 
         // menu hamburger et menu tiny
         $this->setupHamburgerAndTinyParams();

@@ -9,9 +9,8 @@ trait SessionManager
     // todo : faire un logout en base de données
     // todo : supprimer les appels aux instances response et request
     /**
-     * Initializes the session by setting default values for the "user" session data
-     * if it is not already defined. This includes the user's role, ID, and theme
-     * preferences based on the available cookies or default values.
+     * Initializes the session for the user.
+     * Sets default values for a user role, ID, and previous page if not already set.
      *
      * @return void
      */
@@ -21,7 +20,6 @@ trait SessionManager
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
             $_SESSION["user"]["id"] = "none";
-            $_SESSION["user"]["theme"] = $this->request->getCookies()["theme"] ?? "theme-light";
             $_SESSION["user"]["previousPage"] = $this->request->getCookies()["previousPage"] ?? "";
         }
     }
@@ -67,34 +65,6 @@ trait SessionManager
     protected function getUserRole(): string
     {
         return $_SESSION["user"]["role"] ?? "guest";
-    }
-
-    /**
-     * Retrieves the user's theme preference from the session.
-     *
-     * @return string The user's theme preference, or "theme-light" if no preference is set.
-     */
-    protected function getUserTheme(): string
-    {
-        return $_SESSION["user"]["theme"] ?? "theme-light";
-    }
-
-    /**
-     * Sets the user's theme preference by adding a cookie with the specified theme value.
-     * The cookie is set to expire after 30 days.
-     *
-     * @param string $theme The theme identifier to be stored in the cookie.
-     * @return void
-     */
-    protected function setUserTheme(string $theme): void
-    {
-        // todo : vérifier que le thème est bien valide
-        $_SESSION["user"]["theme"] = $theme;
-        $this->response->addCookie(
-            "theme",
-            $theme,
-            time() + (86400 * 30),  // 30 jours
-        );
     }
 
     /**
