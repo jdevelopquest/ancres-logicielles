@@ -80,6 +80,14 @@ class PostsController extends Controller
             }
         }
 
+        if ($this->userIsModerator() || $this->userIsAdmin()) {
+            $contentParams["menuModTools"] = [];
+
+            $submenu = [];
+            $submenu[] = $this->addMenuItem($this->constructHref("posts", "addSoftware"), "Ajouter une fiche logicielle", "Ajouter une fiche logicielle", "list-add");
+            $contentParams["menuModTools"][] = $submenu;
+        }
+
         $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
 
         $this->setPagePartial("content", "posts/indexSoftwares", $contentParams, "page");

@@ -393,6 +393,18 @@ main {
   background-size: contain;
   background-position: center;
 }
+.icon-list-add {
+  background-image: url(../img/icons-tango-scalable/list-add.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-list-remove {
+  background-image: url(../img/icons-tango-scalable/list-remove.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
 
 .prominent {
   display: flex;

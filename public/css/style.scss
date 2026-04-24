@@ -1,3 +1,6 @@
+@use "sass:map";
+
+
 //
 // Tailles
 //
@@ -24,16 +27,16 @@ $size-variant: (
 );
 
 @mixin apply-size-variant($variant) {
-  $size-unit: map-get(map-get($size-variant, $variant), "size-unit");
+  $size-unit: map.get(map.get($size-variant, $variant), "size-unit");
   --size-xs: #{$size-unit * 2};
   --size-sm: #{$size-unit * 4};
   --size-md: #{$size-unit * 8};
   --size-lg: #{$size-unit * 16};
   --size-xl: #{$size-unit * 32};
-  $font-size-unit: map-get(map-get($size-variant, $variant), "font-size-unit");
+  $font-size-unit: map.get(map.get($size-variant, $variant), "font-size-unit");
   --font-size-md: #{$font-size-unit};
   --font-size-lg: #{$font-size-unit + 0.8};
-  $line-height-unit: map-get(map-get($size-variant, $variant), "line-height");
+  $line-height-unit: map.get(map.get($size-variant, $variant), "line-height");
   --line-height-md: #{$line-height-unit};
   --line-height-lg: #{$line-height-unit + 0.8};
 }
@@ -134,6 +137,9 @@ $icon-img-path: (
         "switch-on-off": "../img/icons-tango-scalable/switch-on-off.svg",
         "close": "../img/icons-tango-scalable/close.svg",
 
+        "list-add": "../img/icons-tango-scalable/list-add.svg",
+        "list-remove": "../img/icons-tango-scalable/list-remove.svg",
+
         "go-home": "../img/icons-tango-scalable/go-home.svg",
         "go-bottom": "../img/icons-tango-scalable/go-bottom.svg",
         "go-top": "../img/icons-tango-scalable/go-top.svg",
@@ -158,8 +164,8 @@ $icon-img-path: (
 @mixin set-icon-img($tag) {
   $url: "../img/icons-tango-scalable/image-missing.svg";
 
-  @if map-has-key($icon-img-path, $tag) {
-    $url: map-get($icon-img-path, $tag);
+  @if map.has-key($icon-img-path, $tag) {
+    $url: map.get($icon-img-path, $tag);
   }
 
   background-image: url(#{$url});
@@ -503,6 +509,14 @@ main {
 
   &-post-unban {
     @include set-icon-img("post-unban");
+  }
+
+  &-list-add {
+    @include set-icon-img("list-add");
+  }
+
+  &-list-remove {
+    @include set-icon-img("list-remove");
   }
 }
 
