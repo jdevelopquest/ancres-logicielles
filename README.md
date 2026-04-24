@@ -85,7 +85,7 @@ Points clés techniques :
 3 : Accéder à l’application :
 - https://localhost:8443/
 
-4 :Arrêt et nettoyage du volume database (ATTENTION, supprime les données) :
+4 : Arrêt et nettoyage du volume database (ATTENTION, supprime les données) :
 - docker compose down -v --remove-orphans
 
 
