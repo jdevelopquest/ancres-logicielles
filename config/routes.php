@@ -16,8 +16,8 @@ return [
 // posts showSoftware
     [
         "isAjax" => false,
-        "pathPattern" => "#^\/posts/showSoftware/id=\d+$#",
-        "queryPattern" => "#^$#",
+        "pathPattern" => "#^\/posts/showSoftware$#",
+        "queryPattern" => "#^id=\d+$#",
         "methodPattern" => "#^(GET)$#",
         "rolePattern" => "#^(guest|registered|moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",

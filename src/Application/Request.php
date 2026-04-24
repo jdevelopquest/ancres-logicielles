@@ -56,10 +56,10 @@ class Request
         $this->headers = getallheaders();
         $this->cookies = $_COOKIE;
 
-        if (preg_match("#/id=\d+$#", $this->path)) {
-            $id = explode("=", $this->path)[1];
-            $this->params = array_merge($this->params, ["id" => $id]);
-        }
+//        if (preg_match("#/id=\d+$#", $this->path)) {
+//            $id = explode("=", $this->path)[1];
+//            $this->params = array_merge($this->params, ["id" => $id]);
+//        }
     }
 
     /**
