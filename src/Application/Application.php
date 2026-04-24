@@ -3,6 +3,7 @@
 namespace App\Application;
 
 use App\Application\Utils\SessionManager;
+use Exception;
 
 /**
  * Represents the main application class responsible for handling
@@ -16,12 +17,22 @@ class Application
     use SessionManager;
     private Request $request;
     private Response $response;
+    private Router $router;
 
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
         $this->request = new Request();
         $this->response = new Response();
         $this->initSession();
+        $routeDefinitions = require CONFIG_PATH . "routes.php";
+        if (is_array($routeDefinitions)) {
+            $this->router = new Router($routeDefinitions);
+        } else {
+            throw new Exception("Routes file is not an array");
+        }
     }
 
     /**
@@ -31,7 +42,7 @@ class Application
      */
     public function run(): void
     {
-        $dispatcher = new Dispatcher($this->request, $this->response);
+        $dispatcher = new Dispatcher($this->request, $this->response, $this->router);
         $dispatcher->run();
     }
 }

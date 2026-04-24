@@ -6,8 +6,6 @@ use App\Application\Utils\SessionManager;
 
 class Router
 {
-    use SessionManager;
-
     private array $routes = [];
 
     /**
@@ -19,176 +17,16 @@ class Router
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $routeDefinitions = [])
     {
-        // home
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^$/",
-            "/^(GET)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "indexSoftwares"
-        );
-
-        // posts indexSoftwares
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=indexSoftwares$/",
-            "/^(GET)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "indexSoftwares"
-        );
-
-        // posts showSoftware
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=showSoftware&id=\d+$/",
-            "/^(GET)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "showSoftware"
-        );
-
-        // posts unpublish
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=unpublish$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "unpublish"
-        );
-
-        // posts publish
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=publish$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "publish"
-        );
-
-        // posts ban
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=ban$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "ban"
-        );
-
-        // posts unban
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=unban$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "unban"
-        );
-
-        // posts updatePostboxModTool
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=updatePostboxModTool$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "updatePostboxModTool"
-        );
-
-        // posts updateSoftwareStatus
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=posts&act=updateSoftwareStatus$/",
-            "/^(POST)$/",
-            "/^(moderator|admin)$/",
-            "App\Controllers\PostsController",
-            "updateSoftwareStatus"
-        );
-
-        // supports about
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=supports&act=about$/",
-            "/^(GET)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\SupportsController",
-            "about"
-        );
-
-        // supports policies
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=supports&act=policies$/",
-            "/^(GET)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\SupportsController",
-            "policies"
-        );
-
-        // accounts signup
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=accounts&act=signup$/",
-            "/^(GET|POST)$/",
-            "/^(guest)$/",
-            "App\Controllers\AccountsController",
-            "signup"
-        );
-
-        // accounts login
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=accounts&act=login$/",
-            "/^(GET|POST)$/",
-            "/^(guest)$/",
-            "App\Controllers\AccountsController",
-            "login"
-        );
-
-        // accounts logout
-        $this->add(
-            false,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=accounts&act=logout$/",
-            "/^(GET|POST)$/",
-            "/^(registered|moderator|admin)$/",
-            "App\Controllers\AccountsController",
-            "logout"
-        );
-
-        // users api saveTheme
-        $this->add(
-            true,
-            "/^(\/|\/public\/index\.php)$/",
-            "/^ctr=users&act=saveTheme$/",
-            "/^(POST)$/",
-            "/^(guest|registered|moderator|admin)$/",
-            "App\Controllers\SessionsController",
-            "saveTheme"
-        );
+        foreach ($routeDefinitions as $routeDefinition) {
+            extract($routeDefinition);
+            $this->add($isAjax, $pathPattern, $queryPattern, $methodPattern, $rolePattern, $controller, $action);
+        }
     }
 
     /**
-     * Adds a route to the routes array with the specified parameters.
+     * Adds a route to the route array with the specified parameters.
      *
      * @param bool $isAjax Indicates whether the route is for an AJAX request.
      * @param string $pathPattern The pattern for matching the URL path.
@@ -200,8 +38,8 @@ class Router
      *
      * @return void
      */
-    private function add(
-        bool $isAjax,
+    public function add(
+        bool   $isAjax,
         string $pathPattern,
         string $queryPattern,
         string $methodPattern,

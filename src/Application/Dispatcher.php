@@ -12,11 +12,8 @@ class Dispatcher
     use SessionManager;
     use LogPrinter;
 
-    protected Router $router;
-
-    public function __construct(protected Request $request, protected Response $response)
+    public function __construct(protected Request $request, protected Response $response, protected Router $router)
     {
-        $this->router = new Router();
     }
 
     /**
