@@ -73,6 +73,8 @@ class Logger
             'context' => $context
         ];
 
+        // todo
+        // tester l'existence du ficher de log
         error_log(json_encode($logEntry, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n", 3, self::LOG_FILE);
     }
 }

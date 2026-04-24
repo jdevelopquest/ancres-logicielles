@@ -163,6 +163,7 @@ Certificats/HTTPS local :
 - Tests automatisés absents : ajouter des tests unitaires/fonctionnels (PHPUnit) et un workflow CI.
 - Gestion des requêtes Ajax en erreur : TODO mentionné dans index.php pour mieux gérer les réponses JSON en cas d’exception/erreur.
 - Documentation développeur à enrichir (contributions, conventions de code, roadmap détaillée).
+- Enregister les messages d'erreurs dans un espace autre que le dossier de l'application
 
 Pistes futures :
 - Pagination/filtrage avancés pour la liste des logiciels.
