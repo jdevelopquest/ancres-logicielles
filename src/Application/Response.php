@@ -15,7 +15,7 @@ class Response
                 'Content-Type' => 'text/html',
             ]);
             $this->setCode(500);
-            $this->setBody("Une erreur est survenue");
+            $this->setBody("<p>Une erreur est survenue.</p><a href='index.php'>Ancres Logicielles</a>");
         }
     }
 

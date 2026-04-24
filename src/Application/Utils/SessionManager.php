@@ -28,6 +28,11 @@ trait SessionManager
         return $_SESSION["user"]["id"] !== "none";
     }
 
+    public function userIsGuest(): bool
+    {
+        return $_SESSION["user"]["role"] === "guest";
+    }
+
     public function userIsAdmin(): bool
     {
         return $_SESSION["user"]["role"] === "admin";
