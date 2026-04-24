@@ -309,7 +309,7 @@ class AccountModel
      * @return bool Returns true if the username exists, otherwise false.
      * @throws Exception
      */
-    public function isUsernameExist($username): bool
+    public function isUsernameExists(string $username): bool
     {
         $result = $this->getAccountIdByUsername($username);
 
@@ -384,7 +384,7 @@ class AccountModel
      * @return bool Returns true if the unban operation was successful, otherwise false.
      * @throws Exception
      */
-    public function unbanAccount($idAccount): bool
+    public function unbanAccount(int $idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsBanned = 0 WHERE idAccount = :idAccount";
@@ -393,11 +393,12 @@ class AccountModel
     }
 
     /**
-     * @param $idAccount
-     * @return bool
-     * @throws Exception
+     * Revokes administrative privileges of an account by updating its admin status in the database.
+     *
+     * @param int $idAccount The unique identifier of the account whose admin privileges are to be revoked.
+     * @return bool Returns true if the operation is successful, false otherwise.
      */
-    public function revokeAdminAccount($idAccount): bool
+    public function revokeAdminAccount(int $idAccount): bool
     {
         $request =
             "UPDATE Accounts SET accountIsAdmin = 0 WHERE idAccount = :idAccount";
