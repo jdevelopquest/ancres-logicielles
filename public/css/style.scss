@@ -1,3 +1,38 @@
+//
+// Tailles
+//
+
+$size-variant: (
+        "xs": (
+                "size-unit": 1px,
+                "font-size-unit": 1.4rem
+        ),
+        "md": (
+                "size-unit": 2px,
+                "font-size-unit": 1.5rem
+        ),
+        "xl": (
+                "size-unit": 3px,
+                "font-size-unit": 1.6rem
+        )
+);
+
+@mixin apply-size-variant($variant) {
+  $size-unit: map-get(map-get($size-variant, $variant), "size-unit");
+  --size-xs: #{$size-unit * 2};
+  --size-sm: #{$size-unit * 4};
+  --size-md: #{$size-unit * 8};
+  --size-lg: #{$size-unit * 16};
+  --size-xl: #{$size-unit * 32};
+  $font-size-unit: map-get(map-get($size-variant, $variant), "font-size-unit");
+  --font-size-md: #{$font-size-unit};
+  --font-size-lg: #{$font-size-unit + 0.8};
+}
+
+//
+// Polices
+//
+
 @font-face {
   font-family: "Montserrat";
   src: url("/public/fonts/Montserrat-VariableFont_wght.woff2") format("woff2"),
@@ -5,216 +40,113 @@
   font-display: swap;
 }
 
-//
-// Colors
-//
+%font-prominent {
+  font-family: "Montserrat", sans-serif;
+  font-size: var(--font-size-lg);
+  font-weight: 900;
+}
 
-// Primary brand colors
-$color-brand-primary: null;
-$color-brand-secondary: null;
-
-// Text colors
-$color-text: null;
-$color-text-link: null;
-$color-text-link-hover: null;
-$color-text-heading: null;
-$color-text-sidebar: null; // Color for text in the sidebar navigation
-
-// Background colors
-$color-background: null;
-$color-background-header: null;
-$color-background-sidebar: null;
-$color-background-content: null;
-$color-background-card: null; // Background for the "Blender" and "Thème" sections
-$color-background-button-default: null;
-$color-background-button-hover: null;
-$color-background-button-active: null;
-$color-background-nav-item: null; // Background for navigation items like "Accueil", "Inscription"
-$color-background-nav-item-hover: null;
-$color-background-nav-item-active: null;
-$color-background-tab-inactive: null; // Background for inactive tabs like "Blender"
-$color-background-tab-active: null; // Background for the active tab "Thème"
-
-// Border colors
-$color-border-default: null;
-$color-border-separator: null; // Color for separating lines or borders
-$color-border-card: null;
-$color-border-tab: null;
-
-// Icon colors
-$color-icon-default: null;
-$color-icon-nav: null; // Color for navigation icons
-$color-icon-status-success: null; // For a success-like icon if applicable (not visible but good practice)
-$color-icon-status-warning: null; // Color for the warning icon
-$color-icon-status-error: null; // Color for an error-like icon if applicable
-
-// Status colors (for icons or messages)
-$color-status-warning: null; // Color associated with the warning icon/message
-$color-status-error: null;
+%font-regular {
+  font-family: "Lato", sans-serif;
+  font-size: var(--font-size-md);
+  font-weight: 400;
+}
 
 //
-// Typography
+// Couleurs
 //
 
-// Font families
-$font-family-base: "Lato", sans-serif;
-$font-family-heading: "Montserrat", sans-serif;
+// couleurs issue des icônes Tango
+$color-orange-3: #ce5c00;
+$color-chocolate-1: #e9b96e;
+$color-sky-blue-1: #729fcf;
+$color-sky-blue-2: #3465a4;
+$color-chameleon-2: #73d216;
+$color-scarlet-red-2: #cc0000;
+$color-snowy-white: #ffffff;
+$color-aluminium-1: #eeeeec;
+$color-aluminium-2: #d3d7cf;
+$color-aluminium-3: #babdb6;
+$color-aluminium-4: #888a85;
+$color-aluminium-5: #555753;
+$color-aluminium-6: #2e3436;
+$color-jet-black: #000000;
 
-// Font sizes
-$font-size-base: null;
-$font-size-small: null;
-$font-size-large: null; // Potentially for headings or specific text elements
-$font-size-heading: null;
-$font-size-nav-item: null;
+%theme-light {
+  --color-text: #{$color-aluminium-6};
+  --color-text-highlight: #{$color-sky-blue-2};
+  --color-background: #{$color-aluminium-1};
+  --color-background-overlay: #{$color-aluminium-5};
+  --color-background-global: #{$color-snowy-white};
+  --color-background-specific: #{$color-snowy-white};
+  --color-background-highlight: #{$color-chocolate-1};
+}
 
-// Font weights
-$font-weight-regular: null;
-$font-weight-bold: null;
-$font-weight-heading: null;
-$font-weight-nav-item: null; // Font weight for navigation items
+%theme-dark {
+  --color-text: #{$color-aluminium-1};
+  --color-text-highlight: #{$color-sky-blue-1};
+  --color-background: #{$color-jet-black};
+  --color-background-overlay: #{$color-aluminium-5};
+  --color-background-global: #{$color-aluminium-6};
+  --color-background-specific: #{$color-aluminium-6};
+  --color-background-highlight: #{$color-orange-3};
+}
 
-// Line heights
-$line-height-base: null;
-$line-height-heading: null;
+@mixin color($tag: "base") {
+  color: var(--color-text);
 
-//
-// size
-//
-
-// General size units (using a multiplier is common)
-$size-unit: 4px;
-$size-xs: $size-unit * 2;
-$size-sm: $size-unit * 4;
-$size-md: $size-unit * 8;
-$size-lg: $size-unit * 16;
-$size-xl: $size-unit * 32;
-
-// Specific element size
-$padding-page-horizontal: null;
-$padding-page-vertical: null;
-$padding-sidebar: null;
-$padding-content: null;
-$padding-card: null;
-$padding-nav-item: null;
-$margin-heading-bottom: null;
-$margin-icon-text: null; // Margin between an icon and adjacent text
-$margin-element-size: null; // General margin between block-level elements
-
-//
-// Borders and Shadows
-//
-
-$border-radius-default: null;
-$border-width-default: null;
-$box-shadow-default: null;
-$box-shadow-card: null;
-$border-nav-item-active: null; // Border for the active navigation item
-
-//
-// Layout
-//
-
-$sidebar-width: null;
-$header-height: null;
-$container-min-width: 375px;
-$container-max-width: 1440px; // If the content has a maximum width
-
-//
-// Specific Component Variables (Examples based on visible elements)
-//
-
-// Navigation
-$nav-item-height: null;
-$nav-item-icon-size: null;
-$nav-item-text-indent: null; // If text is indented next to an icon
-
-// Tabs
-$tab-height: null;
-$tab-padding: null;
-$tab-border-width: null;
-$tab-active-border-color: null;
-
-// Icons
-$icon-size-default: null;
-$icon-size-nav: null;
-$icon-size-status: null;
-
-// Assuming the heart icon and calculation symbols are part of a status or information block
-$status-block-padding: null;
-$status-block-icon-size: null;
-$status-block-text-color: null;
-
-// "À propos" section
-$about-section-padding: null;
-$about-section-border-top: null; // If there's a border separating it
-
-//
-// Z-index (if needed for stacking contexts)
-//
-
-$zindex-sidebar: null;
-$zindex-header: null;
-
-//
-// Transitions (if elements have hover/active states with transitions)
-//
-
-$transition-duration-default: null;
-$transition-timing-function-default: null;
-
-// Thème clair
-$theme-light: (
-        "color-text": #2e3436,
-        "color-background": #ffffff,
-        "color-background-panel": #eeeeec,
-        "color-background-hovered": #d3d7cf
-);
-
-// Thème sombre
-$theme-dark: (
-        "color-text": #ffffff,
-        "color-background": #000000,
-        "color-background-panel": #2e3436,
-        "color-background-hovered": #555753
-);
-
-@mixin apply-theme($theme) {
-  color: map-get($theme, "color-text");
-  background-color: map-get($theme, "color-background");
-
-  .panel {
-    color: map-get($theme, "color-text");
-    background-color: map-get($theme, "color-background-panel");
-  }
-
-  .tool {
-    color: map-get($theme, "color-text");
-    background-color: map-get($theme, "color-background-panel");
-
-    &:hover {
-      color: map-get($theme, "color-text");
-      background-color: map-get($theme, "color-background-hovered");
-    }
+  @if ($tag == "transparant") {
+    background-color: #ffffff00;
+  } @else if ($tag == "overlay") {
+    background-color: var(--color-background-overlay);
+  } @else if ($tag == "global") {
+    background-color: var(--color-background-global);
+  } @else if ($tag == "specific") {
+    background-color: var(--color-background-specific);
+  } @else if ($tag == "highlight") {
+    background-color: var(--color-background-highlight);
+  } @else {
+    background-color: var(--color-background);
   }
 }
 
-// Font families
-$font-family-base: "Lato", sans-serif;
-$font-family-heading: "Montserrat", sans-serif;
+@mixin layout($flow, $gap: 0) {
+  @if ($flow == "horizontal") {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: #{$gap};
+  }
 
-// Font sizes
-$font-size-base: 1.6rem;
-$font-size-small: 1.2rem;
-$font-size-large: 2.8rem;
+  @if ($flow == "vertical") {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: #{$gap};
+  }
+}
 
-// Font weights
-$font-weight-regular: 400;
-$font-weight-bold: 700;
-$font-weight-ultra-bold: 900;
+:root {
+  .size {
+    &-xs {
+      @include apply-size-variant("xs");
+    }
 
-// Line heights
-$line-height-base: $font-size-base;
-$line-height-heading: $font-size-large;
+    &-md {
+      @include apply-size-variant("md");
+    }
+
+    &-xl {
+      @include apply-size-variant("xl");
+    }
+  }
+
+  .theme-light {
+    @extend %theme-light;
+  }
+
+  .theme-dark {
+    @extend %theme-dark;
+  }
+}
 
 html {
   font-size: 62.5%;
@@ -224,109 +156,287 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border: none;
 }
 
 body {
-  @include apply-theme($theme-light);
+  @include color();
+  @extend %font-regular;
 
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-}
+  cursor: default;
 
-.theme-dark {
-  @include apply-theme($theme-dark);
-}
+  line-height: 1.2;
 
-.container {
-  margin: 0 auto;
-  min-width: $container-min-width;
-  max-width: $container-max-width;
-  min-height: fit-content;
-  display: flex;
-  flex-flow: row wrap;
+  background: linear-gradient(
+                  90deg,
+                  var(--color-background) 5%,
+                  var(--color-background-highlight) 30%,
+                  var(--color-background-highlight) 70%,
+                  var(--color-background) 95%);
+
+  > div {
+    @include layout("vertical");
+    @include color();
+
+    min-width: 360px;
+    max-width: 1440px;
+    min-height: 100vh;
+    margin: 0 auto;
+  }
 }
 
 header,
 footer {
-  width: 100%;
-  margin: $size-sm auto;
-}
+  @include color("global");
 
-footer {
-  position: absolute;
-  bottom: 0;
+  width: 100%;
+  margin: var(--size-lg) auto;
 }
 
 main {
-  width: 100%;
+  @include layout("horizontal", var(--size-md));
+  margin: 0 auto;
+
   position: relative;
+  z-index: 0;
+
+  width: 100%;
+  flex: 1;
 }
 
-h1,
-h2 {
-  font-family: $font-family-heading;
-  font-size: $font-size-large;
-  width: auto;
-  height: $size-lg;
-  line-height: $size-lg;
-}
+.content {
+  @include color();
+  @include layout("vertical", var(--size-md));
 
-.sidebar {
-  min-width: 375px;
-  height: $size-lg;
-}
+  width: 100%;
 
-.tool {
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.panel {
-  margin: 0;
-  padding: 0;
-  min-width: 375px;
-  height: $size-lg;
-  display: flex;
-  align-items: center;
-
-  .text,
-  .icon {
-    display: inline-block;
+  &__subcontent {
+    @include color("specific");
   }
 
-  .text {
-    width: auto;
-    height: $size-lg;
-    line-height: $size-lg;
-    padding-left: $size-sm;
-  }
-
-  .icon {
-    width: $size-lg;
-    height: $size-lg;
-
-    &:last-child {
-      margin-left: auto;
+  h2 {
+    &.prominent__text {
+      margin-left: var(--size-xl);
     }
   }
 }
 
-.button-previous-page {
-  visibility: hidden;
+.menu {
+  @include layout("vertical", var(--size-xs));
+  padding: var(--size-xs);
+
+  &__submenu {
+    &-h {
+      @include layout("horizontal", var(--size-xs));
+    }
+
+    &-v {
+      @include layout("vertical", var(--size-xs));
+    }
+
+    &-r {
+      justify-content: right;
+    }
+  }
+
+  &-hamburger {
+    @include color("overlay");
+
+    .menu__submenu {
+      @include layout("vertical", var(--size-xs));
+
+      &-close {
+        @include color("overlay");
+
+        .clickable {
+          margin-left: auto;
+          align-self: revert;
+        }
+      }
+    }
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+
+    width: max-content;
+    height: max-content;
+  }
+
+  &-tiny {
+    @include color("overlay");
+
+    .menu__submenu {
+      @include layout("vertical", var(--size-xs));
+    }
+
+    position: fixed;
+    top: 25vh;
+    right: 0;
+    z-index: 500;
+
+    width: max-content;
+    height: max-content;
+  }
+
+  &-info {
+    @include color("global");
+
+    width: 100%;
+
+    .menu__submenu {
+      @include layout("horizontal", var(--size-xs));
+    }
+  }
+
+  &__submenu {
+    @include color("global");
+  }
+
+  &__item {
+    &-clickable {
+      color: inherit;
+      background-color: inherit;
+      border: none;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-background-highlight);
+      }
+    }
+  }
 }
 
-.menu-hamburger {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
+.prominent {
+  @include layout("horizontal");
+  justify-content: right;
+
+  &__text {
+    @extend %font-prominent;
+
+    width: max-content;
+    height: var(--size-xl);
+    line-height: var(--size-xl);
+
+    margin-right: auto;
+    padding-left: var(--size-md);
+    padding-right: var(--size-md);
+  }
+
+  &__icon {
+    width: var(--size-xl);
+    height: var(--size-xl);
+
+    margin-left: var(--size-xs);
+    margin-right: var(--size-xs);
+
+    background-image: url("../img/icons-tango-scalable/status/image-missing.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 }
 
-.menu-admin {
+.regular {
+  margin: var(--size-lg);
+
+  &__text {
+    @extend %font-regular;
+
+    line-height: var(--size-md);
+
+    &:not(:first-of-type) {
+      margin-top: var(--size-sm);
+    }
+  }
+}
+
+.anchor {
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--color-text-highlight);
+  }
+}
+
+.hide {
   display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
+}
+
+@media screen and (min-width: 810px) {
+  main {
+    padding-left: var(--size-md);
+    padding-right: var(--size-md);
+  }
+
+  .menu {
+    &-tiny {
+      &.hide {
+        display: flex;
+      }
+
+      @include color();
+
+      .menu__submenu {
+        @include color();
+      }
+
+      position: sticky;
+      top: 25vh;
+    }
+
+    &-hamburger {
+      .button-menu-tiny {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  header {
+    &.menu {
+      @include layout("horizontal");
+    }
+
+    > div:first-child {
+      width: max-content;
+    }
+
+    .button-menu-hamburger {
+      display: none;
+    }
+  }
+
+  main {
+    display: flex;
+    gap: var(--size-md);
+  }
+
+  .content {
+    width: 100% - var(--size-xl);
+  }
+
+  .menu {
+    &-hamburger {
+      &.hide {
+        display: flex;
+      }
+
+      @include color();
+
+      position: static;
+
+      .menu__submenu {
+        &-close {
+          display: none;
+        }
+      }
+
+      .button-menu-tiny {
+        display: none;
+      }
+    }
+  }
 }
