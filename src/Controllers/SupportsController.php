@@ -30,7 +30,7 @@ class SupportsController extends Controller
     {
         $this->setPageParam("title", "Ancres Logicielles : Chartes");
 
-        $this->setViewComponent("content", "supports/about", [], "page");
+        $this->setViewComponent("content", "supports/policies", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
