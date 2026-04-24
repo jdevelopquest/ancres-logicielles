@@ -1,49 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application;
 
 class Request
 {
-    public string $method {
-        get {
-            return $this->method;
-        }
-    }
-    public string $path {
-        get {
-            return $this->path;
-        }
-    }
-    public string $query {
-        get {
-            return $this->query;
-        }
-    }
-    public array $params {
-        get {
-            return $this->params;
-        }
-    }
-    public mixed $body {
-        get {
-            return $this->body;
-        }
-    }
-    protected mixed $files {
-        get {
-            return $this->files;
-        }
-    }
-    protected array $headers {
-        get {
-            return $this->headers;
-        }
-    }
-    public array $cookies {
-        get {
-            return $this->cookies;
-        }
-    }
+    public readonly string $method;
+    public readonly string $path;
+    public readonly string $query;
+    public readonly array $params;
+    public readonly mixed $body;
+    public readonly array $cookies;
+
+    protected readonly array $files;
+    protected readonly array $headers;
+    private const string HDR_X_AJAX_REQUEST  = "X-Ajax-Request";
 
     public function __construct()
     {
@@ -75,14 +46,7 @@ class Request
      */
     public function isAjax(): bool
     {
-        return (
-            // Vérification classique XMLHttpRequest
-            (isset($this->headers["X-Requested-With"]) && $this->headers["X-Requested-With"] === 'XMLHttpRequest') ||
-            // Vérification d'un en-tête personnalisé plus explicite
-            (isset($this->headers["X-Ajax-Request"]) && $this->headers["X-Ajax-Request"] === 'true') ||
-            // Vérification du type de contenu Accept
-            (isset($this->headers["Accept"]) && str_contains($this->headers["Accept"], 'application/json'))
-        );
+        return isset($this->headers[self::HDR_X_AJAX_REQUEST]) && $this->headers[self::HDR_X_AJAX_REQUEST] === 'true';
     }
 
     /**
@@ -93,13 +57,5 @@ class Request
     public function isPost(): bool
     {
         return $this->method === "POST";
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGet(): bool
-    {
-        return $this->method === "GET";
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -152,7 +153,7 @@ class PostsController extends Controller
 
         if ($this->userIsGuest()) {
             try {
-                $anchors = $postModel->getPublishedAnchorsByIdPostSoftware($idPostSoftware);
+                $anchors = $postModel->getPublishedAnchorsByIdPostSoftware((int)$idPostSoftware);
             } catch (Exception $e) {
                 $log = new Logger();
                 $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
@@ -162,7 +163,7 @@ class PostsController extends Controller
 
         if ($this->userIsRegistered()) {
             try {
-                $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware($idPostSoftware);
+                $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware((int)$idPostSoftware);
             } catch (Exception $e) {
                 $log = new Logger();
                 $log->debug("Fail to get linked anchors.", ["Exception message" => $e->getMessage()]);
@@ -172,7 +173,7 @@ class PostsController extends Controller
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
             try {
-                $anchors = $postModel->getAnchorsByIdPostSoftware($idPostSoftware);
+                $anchors = $postModel->getAnchorsByIdPostSoftware((int)$idPostSoftware);
             } catch (Exception $e) {
                 $log = new Logger();
                 $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
@@ -295,7 +296,7 @@ class PostsController extends Controller
      * Publishes a post by triggering the appropriate moderation action.
      *
      * @return Response A Response object with no content (empty body) with only an HTTP code
-     *  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     *                  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
      */
     public function publish(): Response
     {
@@ -334,7 +335,6 @@ class PostsController extends Controller
     private function postModAction(string $action): Response
     {
         // execute l'action demandée, renvois une réponse du status de l'action et sans contenu
-
         $receive_data = json_decode($this->request->body, true);
 
         // todo tester si les données envoyées contiennent les bonnes informations
@@ -369,7 +369,7 @@ class PostsController extends Controller
      * rendering the corresponding HTML part, and returning a JSON response.
      *
      * @return Response The response object containing the rendered HTML part or an error status,
-     * indicating the operation's success or failure.
+     *                  indicating the operation's success or failure.
      */
     public function updatePostboxModTool(): Response
     {
@@ -396,14 +396,11 @@ class PostsController extends Controller
             return $errorsController->error503Json();
         }
 
-        $idPost = htmlspecialchars($idPost);
-
         $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
 
         if (empty($part)) {
             $log = new Logger();
             $log->debug("Fail to render post mod toolbox.");
-
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503Json();
         }

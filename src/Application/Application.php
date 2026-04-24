@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 use Exception;
 
@@ -27,7 +29,6 @@ class Application
     {
         $this->request = new Request();
         $this->response = new Response();
-
         $this->initSession();
 
         $configurations = require CONFIG_PATH . "config.php";

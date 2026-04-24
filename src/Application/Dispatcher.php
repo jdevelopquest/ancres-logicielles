@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application;
 
@@ -10,8 +11,16 @@ use Exception;
 class Dispatcher
 {
     use SessionManager;
-    
 
+    /**
+     * Constructor for initializing the class with the required dependencies.
+     *
+     * @param Request $request The request object containing information about the HTTP request.
+     * @param Response $response The response object used for sending HTTP responses.
+     * @param Router $router The router object responsible for handling route resolution.
+     *
+     * @return void
+     */
     public function __construct(protected Request $request, protected Response $response, protected Router $router)
     {
     }

@@ -1,9 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application;
-
-use App\Application\Utils\Logger;
-use App\Application\Utils\SessionManager;
 
 class Router
 {
@@ -67,8 +65,6 @@ class Router
      */
     public function match(Request $request): array|bool
     {
-        $logger = new Logger();
-        $logger->info("Matching request: " . " path=" . $request->path . " query=" . $request->query);
         foreach ($this->routes as $route) {
             // Vérifier d'abord le chemin
             if (!preg_match($route["pathPattern"], $request->path)) {

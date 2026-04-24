@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application;
 
@@ -25,15 +26,12 @@ class Controller
      * @param int $code The HTTP status code for the response. Defaults to 200.
      * @return Response The response object containing the headers, status code, and body.
      */
-    protected function getHtmlResponse(string $pageHtml, int $code = 200): Response
+    protected function getHtmlResponse(string $pageHtml = "", int $code = 200): Response
     {
-        $this->response->addHeader("Content-Type: text/html");
-
-        $this->response->setCode($code);
-
-        $this->response->setBody($pageHtml);
-
-        return $this->response;
+        return $this->response
+            ->addHeader("Content-Type: text/html")
+            ->setCode($code)
+            ->setBody($pageHtml);
     }
 
     /**
@@ -43,17 +41,16 @@ class Controller
      * @param int $code The HTTP status code for the response. Defaults to 200.
      * @return Response The prepared HTTP response with JSON content and defined status code.
      */
-    protected function getJsonResponse(?string $data, int $code = 200): Response
+    protected function getJsonResponse(?string $data = null, int $code = 200): Response
     {
-        $this->response->addHeader("Content-Type: application/json");
-
-        $this->response->setCode($code);
-
-        if (isset($data)) {
-            $this->response->setBody(json_encode($data));
+        if ($data !== null) {
+            $data = iconv('UTF-8', 'UTF-8//IGNORE', $data);
+            $data = json_encode($data);
         }
-
-        return $this->response;
+        return $this->response
+            ->addHeader("Content-Type: application/json")
+            ->setCode($code)
+            ->setBody($data);
     }
 
     /**

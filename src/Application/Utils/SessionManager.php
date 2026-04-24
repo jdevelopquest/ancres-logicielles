@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Application\Utils;
 
@@ -6,6 +7,7 @@ use Exception;
 
 trait SessionManager
 {
+    const int GUEST_ID = -1;
     // todo : faire un logout en base de données
     // todo : supprimer les appels aux instances response et request
     /**
@@ -19,7 +21,7 @@ trait SessionManager
         if (!isset($_SESSION["user"])) {
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
-            $_SESSION["user"]["id"] = "none";
+            $_SESSION["user"]["id"] = self::GUEST_ID;
             $_SESSION["user"]["previousPage"] = "";
         }
     }
@@ -68,13 +70,13 @@ trait SessionManager
     }
 
     /**
-     * Retrieves the user ID from the session.
+     * Retrieves the user ID from the session if available.
      *
-     * @return string The user ID from the session, or "none" if not set.
+     * @return int Returns the user ID.
      */
-    protected function getUserId(): string
+    protected function getUserId(): int
     {
-        return $_SESSION["user"]["id"] ?? "none";
+        return $_SESSION["user"]["id"];
     }
 
     /**
@@ -84,7 +86,10 @@ trait SessionManager
      */
     protected function userIsLoggedIn(): bool
     {
-        return $_SESSION["user"]["id"] !== "none";
+        return match ($_SESSION["user"]["role"]) {
+            default => false,
+            "registered", "moderator", "admin" => true,
+        };
     }
 
     /**
@@ -203,8 +208,7 @@ trait SessionManager
                 time() + 3600, // 1 heure
                 "/",
                 "",
-                true,
-                false
+                true
             );
         }
     }
