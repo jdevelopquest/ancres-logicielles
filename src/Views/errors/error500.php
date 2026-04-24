@@ -8,7 +8,7 @@
             <span class="prominent__icon"></span>
         </div>
         <div class="regular">
-            <p class="regular__text">Erreur générique du serveur.</p>
+            <p class="regular__text">Une erreur générale s'est produite sur le serveur.</p>
         </div>
     </article>
 </section>

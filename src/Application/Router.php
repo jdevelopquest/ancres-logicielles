@@ -14,7 +14,7 @@ class Router
 //        $this->add("/^(\/|\/public\/index\.php)$/",
 //            "/ctr=errors&act=error404/",
 //            "/^(GET|POST)$/",
-//            "/(guest|regular|moderator|admin)/",
+//            "/(guest|registered|moderator|admin)/",
 //            "app\Controllers\ErrorsController",
 //            "error404"
 //        );
@@ -22,7 +22,7 @@ class Router
 //        $this->add("/^(\/|\/public\/index\.php)$/",
 //            "/ctr=errors&act=error500/",
 //            "/^(GET|POST)$/",
-//            "/(guest|regular|moderator|admin)/",
+//            "/(guest|registered|moderator|admin)/",
 //            "app\Controllers\ErrorsController",
 //            "error500"
 //        );
@@ -31,34 +31,34 @@ class Router
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^$/",
             "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
-            "App\Controllers\ArticlesController",
+            "/^(guest|registered|moderator|admin)$/",
+            "App\Controllers\PostsController",
             "index"
         );
 
-        // articles index
+        // posts indexSoftwares
         $this->add("/^(\/|\/public\/index\.php)$/",
-            "/^ctr=articles&act=index$/",
+            "/^ctr=posts&act=indexSoftwares$/",
             "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
-            "App\Controllers\ArticlesController",
-            "index"
+            "/^(guest|registered|moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "indexSoftwares"
         );
 
-        // articles show
+        // posts showSoftware
         $this->add("/^(\/|\/public\/index\.php)$/",
-            "/^ctr=articles&act=show&id=\d+$/",
+            "/^ctr=posts&act=showSoftware&id=\d+$/",
             "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
-            "App\Controllers\ArticlesController",
-            "show"
+            "/^(guest|registered|moderator|admin)$/",
+            "App\Controllers\PostsController",
+            "showSoftware"
         );
 
         // supports about
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=about$/",
             "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
+            "/^(guest|registered|moderator|admin)$/",
             "App\Controllers\SupportsController",
             "about"
         );
@@ -67,7 +67,7 @@ class Router
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=supports&act=policies$/",
             "/^(GET)$/",
-            "/^(guest|regular|moderator|admin)$/",
+            "/^(guest|registered|moderator|admin)$/",
             "App\Controllers\SupportsController",
             "policies"
         );
@@ -94,7 +94,7 @@ class Router
         $this->add("/^(\/|\/public\/index\.php)$/",
             "/^ctr=accounts&act=logout$/",
             "/^(POST)$/",
-            "/^(regular|moderator|admin)$/",
+            "/^(registered|moderator|admin)$/",
             "App\Controllers\AccountsController",
             "logout"
         );

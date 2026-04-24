@@ -33,6 +33,16 @@ trait SessionManager
         return $_SESSION["user"]["role"] === "guest";
     }
 
+    public function userIsRegistered(): bool
+    {
+        return $_SESSION["user"]["role"] === "registered";
+    }
+
+    public function userIsModerator(): bool
+    {
+        return $_SESSION["user"]["role"] === "moderator";
+    }
+
     public function userIsAdmin(): bool
     {
         return $_SESSION["user"]["role"] === "admin";
