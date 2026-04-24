@@ -9,88 +9,56 @@ class ErrorsController extends Controller
 {
     public function error400(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->response->setCode(400);
+        $this->setPartConfig("content", "errors/error400", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error400"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage(), 400);
     }
 
     public function error403(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->response->setCode(403);
+        $this->setPartConfig("content", "errors/error403", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error403"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage(), 403);
     }
 
     public function error404(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->response->setCode(404);
+        $this->setPartConfig("content", "errors/error404", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error404"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage(), 404);
     }
 
     public function error500(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->response->setCode(500);
+        $this->setPartConfig("content", "errors/error500", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error500"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage(), 500);
     }
 
     public function error503(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Erreur");
 
-        $this->response->setCode(503);
+        $this->setPartConfig("content", "errors/error503", [], "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : Erreur", "errors/error503"));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage(), 503);
     }
 
     public function error404ByAjax(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type: application/json",
-        ]);
-
-        $this->response->setCode(404);
-
-        return $this->response;
+        return $this->getJsonResponse(null, 404);
     }
 
     public function error503ByAjax(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type: application/json",
-        ]);
-
-        $this->response->setCode(503);
-
-        return $this->response;
+        return $this->getJsonResponse(null, 503);
     }
 }

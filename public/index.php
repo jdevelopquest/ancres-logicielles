@@ -4,6 +4,7 @@ session_start();
 
 define("ROOT", dirname(__DIR__));
 define("VIEWS", ROOT . str_replace("/", DIRECTORY_SEPARATOR, "/src/Views/"));
+define("CONFIG", ROOT . str_replace("/", DIRECTORY_SEPARATOR, "/src/Application/Config/"));
 define("LOG", ROOT . str_replace("/", DIRECTORY_SEPARATOR, "/log/"));
 
 spl_autoload_register(

@@ -2,6 +2,9 @@
 // Tailles
 //
 
+$container-min-width: 360px;
+$container-max-width: 1440px;
+
 $size-variant: (
         "xs": (
                 "size-unit": 1px,
@@ -277,9 +280,10 @@ body {
     @include layout("vertical");
     @include color();
 
-    min-width: 360px;
-    max-width: 1440px;
+    min-width: $container-min-width;
+    max-width: $container-max-width;
     min-height: 100vh;
+
     margin: 0 auto;
   }
 }
@@ -524,7 +528,6 @@ main {
   &__text {
     @extend %font-prominent;
 
-    //width: max-content;
     height: var(--size-xl);
     line-height: var(--size-xl);
 
@@ -601,6 +604,12 @@ main {
 }
 
 @media screen and (min-width: 1440px) {
+  body {
+    > div {
+      max-width: fit-content($container-max-width);
+    }
+  }
+
   header {
     &.menu {
       @include layout("horizontal");
@@ -621,7 +630,7 @@ main {
   }
 
   .content {
-    width: 100% - var(--size-xl);
+    width: 100%;
   }
 
   .menu {

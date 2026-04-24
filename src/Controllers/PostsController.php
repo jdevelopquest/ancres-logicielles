@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Response;
 use App\Application\Utils\ConstructHref;
+use App\Application\Utils\ConstructMenu;
 use App\Application\Utils\LogPrinter;
 use App\Models\PostModel;
 use Exception;
@@ -12,8 +13,21 @@ use Exception;
 class PostsController extends Controller
 {
     use ConstructHref;
+    use ConstructMenu;
     use LogPrinter;
 
+    /**
+     * Retrieves and displays a list of software records depending on the user's role.
+     * The list may vary depending on whether the user is a guest, registered user, moderator, or admin.
+     *
+     * Guest users can only access published software, while registered users can access both published and pending software.
+     * Moderators and admins have access to all software records.
+     *
+     * In case of an error during data retrieval, a 503 error response is returned.
+     * The retrieved software list is then processed and displayed with appropriate parameters.
+     *
+     * @return Response The rendered HTML response containing the software list or an error response in case of failure.
+     */
     public function indexSoftwares(): Response
     {
         $softwares = [];
@@ -53,7 +67,7 @@ class PostsController extends Controller
             $contentParams["softwares"] = [];
 
             foreach ($softwares as $software) {
-                $this->htmlspecialcharsWalking($software);
+                $this->escapeHtmlRecursive($software);
 
                 $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
                 $article["softwareName"] = $software["softwareName"];
@@ -63,17 +77,20 @@ class PostsController extends Controller
             }
         }
 
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
 
-        $this->response->setCode(200);
+        $this->setPartConfig("content", "posts/indexSoftwares", $contentParams, "page");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles", "posts/indexSoftwares", $contentParams));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
+    /**
+     * Displays the software details page based on the software ID provided.
+     *
+     * @param string $idPostSoftware The unique identifier of the software post to display.
+     * @return Response The HTTP response containing the rendered HTML page for the software details
+     *                  or an error response in case of access restrictions or internal issues.
+     */
     public function showSoftware(string $idPostSoftware): Response
     {
         $postModel = new PostModel();
@@ -101,7 +118,7 @@ class PostsController extends Controller
             return $errorsController->error403();
         }
 
-        $this->htmlspecialcharsWalking($software);
+        $this->escapeHtmlRecursive($software);
 
         $contentParams = [];
         $contentParams["software"] = [];
@@ -121,13 +138,13 @@ class PostsController extends Controller
 
         // récupérer les liens associés à la fiche
         $anchors = [];
-        $notification = [];
+        $notificationParams = [];
 
         if ($this->userIsGuest()) {
             try {
                 $anchors = $postModel->getPublishedAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $notification["error"] = "Impossible de récupérer les ancres associées.";
+                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
 
@@ -135,7 +152,7 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $notification["error"] = "Impossible de récupérer les ancres associées.";
+                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
 
@@ -143,7 +160,7 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $notification["error"] = "Impossible de récupérer les ancres associées.";
+                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
 
@@ -151,7 +168,7 @@ class PostsController extends Controller
             $contentParams["anchors"] = [];
 
             foreach ($anchors as $anchor) {
-                $this->htmlspecialcharsWalking($anchor);
+                $this->escapeHtmlRecursive($anchor);
 
                 $article = [];
                 $article["idPost"] = $anchor["idPost"];
@@ -164,47 +181,73 @@ class PostsController extends Controller
             }
         }
 
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->setPageParam("title", "Ancres Logicielles : " . $software["softwareName"] ?? "Nom du logiciel inconnu");
 
-        $this->response->setCode(200);
+        $this->setPartConfig("content", "posts/showSoftware", $contentParams, "page");
 
-        $title = $software["softwareName"];
+        $this->setPartConfig("notification", "layouts/notification", $notificationParams, "content");
 
-        $this->response->setBody($this->renderPage("Ancres Logicielles : $title", "posts/showSoftware", $contentParams, $notification));
-
-        return $this->response;
+        return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
+    /**
+     * Unpublishes a post by triggering the appropriate moderation action.
+     *
+     * @return Response A Response object with no content (empty body) with only an HTTP code
+     *  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     */
     public function unpublish(): Response
     {
         return $this->postModAction("unpublishPost");
     }
 
+    /**
+     * Publishes a post by triggering the appropriate moderation action.
+     *
+     * @return Response A Response object with no content (empty body) with only an HTTP code
+     *  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     */
     public function publish(): Response
     {
         return $this->postModAction("publishPost");
     }
 
+    /**
+     * Bans a post by performing a moderation action.
+     *
+     * @return Response A Response object with no content (empty body) with only an HTTP code
+     *  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     */
     public function ban(): Response
     {
         return $this->postModAction("banPost");
     }
 
+    /**
+     * Unbans a post by performing a moderation action.
+     *
+     * @return Response A Response object with no content (empty body) with only an HTTP code
+     *  indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     */
     public function unban(): Response
     {
         return $this->postModAction("unbanPost");
     }
 
+    /**
+     * Executes the specified action on a post and returns a response indicating the status of the operation.
+     *
+     * @param string $action The name of the action to execute on the post.
+     * @return Response A Response object with no content (empty body) with only an HTTP code
+     * indicating the success (204 No Content) or failure (503 Service Unavailable) of the operation.
+     */
     private function postModAction(string $action): Response
     {
-        $this->response->setHeaders([
-            "Content-Type: application/json",
-        ]);
+        // execute l'action demandée, renvois une réponse du status de l'action et sans contenu
 
         $receive_data = json_decode($this->request->getBody(), true);
 
+        // todo tester si les données envoyées contiennent les bonnes informations
         $idPost = $receive_data["idPost"];
 
         $postModel = new PostModel();
@@ -226,19 +269,21 @@ class PostsController extends Controller
             return $errorsController->error503ByAjax();
         }
 
-        $this->response->setCode(204);
-
-        return $this->response;
+        return $this->getJsonResponse(null, 204);
     }
 
+    /**
+     * Updates a postbox moderation tool by analyzing the given data, processing the request,
+     * rendering the corresponding HTML part, and returning a JSON response.
+     *
+     * @return Response The response object containing the rendered HTML part or an error status,
+     * indicating the operation's success or failure.
+     */
     public function updatePostboxModTool(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type: application/json",
-        ]);
-
         $receive_data = json_decode($this->request->getBody(), true);
 
+        // todo tester si les données envoyées contiennent les bonnes informations
         $idPost = $receive_data["idPost"];
 
         $postModel = new PostModel();
@@ -262,14 +307,14 @@ class PostsController extends Controller
         }
 
         $idPost = htmlspecialchars($idPost);
-        $this->htmlspecialcharsWalking($postStatus);
+        $this->escapeHtmlRecursive($postStatus);
 
         $partParams = [];
         $partParams["software"] = [];
         $partParams["software"]["idPost"] = $idPost;
         $partParams["softwareModTools"] = $this->getPostModToolsParams($postStatus);
 
-        $part = $this->renderPart("layouts/postbox-mod-tools", $partParams);
+        $part = $this->renderHtmlPart("layouts/postbox-mod-tools", $partParams);
 
         if (empty($part)) {
             $this->logMessage("updatePostboxModTool le rendu est vide");
@@ -280,19 +325,23 @@ class PostsController extends Controller
             return $errorsController->error503ByAjax();
         }
 
-        $this->response->setCode(200);
-
-        $this->response->setBody(json_encode($part));
-
-        return $this->response;
+        return $this->getJsonResponse($part, 200);
     }
 
+    /**
+     * Updates the status of a software post based on the provided data.
+     *
+     * The method retrieves the `idPost` provided in the request body,
+     * fetches the post status using the `PostModel`, and renders an HTML
+     * part to update the software status. It handles various error
+     * scenarios, including empty or invalid data and rendering failures,
+     * and returns an appropriate response.
+     *
+     * @return Response The JSON response containing the rendered HTML part on success,
+     *                  or an error response in case of failure.
+     */
     public function updateSoftwareStatus(): Response
     {
-        $this->response->setHeaders([
-            "Content-Type: application/json",
-        ]);
-
         $receive_data = json_decode($this->request->getBody(), true);
 
         $idPost = $receive_data["idPost"];
@@ -318,14 +367,14 @@ class PostsController extends Controller
         }
 
         $idPost = htmlspecialchars($idPost);
-        $this->htmlspecialcharsWalking($postStatus);
+        $this->escapeHtmlRecursive($postStatus);
 
         $partParams = [];
         $partParams["software"] = [];
         $partParams["software"]["idPost"] = $idPost;
         $partParams["software"]["status"] = $this->getPostStatusParams($postStatus);
 
-        $part = $this->renderPart("layouts/postbox-status", $partParams);
+        $part = $this->renderHtmlPart("layouts/postbox-status", $partParams);
 
         if (empty($part)) {
             $this->logMessage("updateSoftwareStatus le rendu est vide");
@@ -336,15 +385,24 @@ class PostsController extends Controller
             return $errorsController->error503ByAjax();
         }
 
-        $this->response->setCode(200);
-
-        $this->response->setBody(json_encode($part));
-
-        return $this->response;
+        return $this->getJsonResponse($part, 200);
 
     }
 
     // utils
+
+    /**
+     * Determines the status parameters for a post based on its properties.
+     *
+     * The method evaluates the post's attributes to construct an array of
+     * status information, including an icon and title that represent the
+     * post's current state (e.g., published, banned, or pending).
+     *
+     * @param array $post An associative array containing the post's data, including
+     *                    its publication, ban status, and other necessary attributes.
+     * @return array An array of status details, each element containing information
+     *               such as the status icon and corresponding title.
+     */
     private function getPostStatusParams(array $post): array
     {
         $status = [];
@@ -369,6 +427,18 @@ class PostsController extends Controller
         return $status;
     }
 
+    /**
+     * Generates a list of moderation tool parameters based on the status of a post.
+     *
+     * The method evaluates the input post data and determines the moderation
+     * actions that can be performed, such as banning or publishing the post.
+     * It returns the list of tools with corresponding actions, icons, and titles.
+     *
+     * @param mixed $post The data of the post, containing its current status and properties.
+     *
+     * @return array The list of moderation tools, each represented as an associative array
+     *               containing the action, icon, and title.
+     */
     private function getPostModToolsParams(mixed $post): array
     {
         $tools = [];
