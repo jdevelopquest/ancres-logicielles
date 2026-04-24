@@ -2,7 +2,7 @@
 
 namespace App\Application;
 
-use App\Application\Utils\LogPrinter;
+use App\Application\Utils\Logger;
 use Exception;
 use PDO;
 use Throwable;
@@ -12,7 +12,7 @@ use Throwable;
  */
 class Database
 {
-    use LogPrinter;
+    
 
     private static PDO $pdo;
 

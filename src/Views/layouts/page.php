@@ -11,17 +11,21 @@
 
     <title><?= $title ?? "Ancres Logicielles" ?></title>
     <meta name="description" content="Organisez, partagez et découvrez des liens web pour vos logiciels favoris.">
-    <meta name="keywords" content="gestion de liens, partage de liens, application web collaborative, veille informationnelle, outils collaboratifs, partage de connaissances">
+    <meta name="keywords"
+          content="gestion de liens, partage de liens, application web collaborative, veille informationnelle, outils collaboratifs, partage de connaissances">
 </head>
 <body class="size-md <?= $theme ?? "theme-light" ?>">
 <div>
     <header class="menu" id="page-top">
         <div class="menu__submenu menu__submenu-h">
             <h1 class="menu__item prominent__text">Ancres Logicielles</h1>
-            <button class="menu__item menu__item-clickable prominent button-menu-hamburger" title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span></button>
+            <button class="menu__item menu__item-clickable prominent button-menu-hamburger"
+                    title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span>
+            </button>
         </div>
         <div class="menu__submenu menu__submenu-h">
-            <a class="menu__item menu__item-clickable prominent button-go-previous" title="Page précédente" href="<?= $previousPage ?? "index.php" ?>"><span class="prominent__icon icon-go-previous"></span></a>
+            <a class="menu__item menu__item-clickable prominent button-go-previous" title="Page précédente"
+               href="<?= $previousPage ?? "index.php" ?>"><span class="prominent__icon icon-go-previous"></span></a>
         </div>
     </header>
     <main>
@@ -30,10 +34,12 @@
         {{ menu-tiny }}
     </main>
     <footer class="menu menu-info" id="page-bot">
-            <nav class="menu__submenu">
-                <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=about"><span class="prominent__text">À propos</span></a>
-                <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=policies"><span class="prominent__text">Chartes</span></a>
-            </nav>
+        <nav class="menu__submenu">
+            <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=about"><span
+                        class="prominent__text">À propos</span></a>
+            <a class="menu__item menu__item-clickable prominent" href="index.php?ctr=supports&act=policies"><span
+                        class="prominent__text">Chartes</span></a>
+        </nav>
     </footer>
 </div>
 <script src="js/main.js" type="module"></script>

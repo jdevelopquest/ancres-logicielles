@@ -71,7 +71,7 @@ class Router
 //                continue;
 //            }
 
-            if (!preg_match($route["queryPattern"], $request->getQuery())) {
+            if (!preg_match($route["queryPattern"], $request->query)) {
                 continue;
             }
 

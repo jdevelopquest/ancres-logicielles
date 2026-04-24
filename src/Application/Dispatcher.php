@@ -2,7 +2,7 @@
 
 namespace App\Application;
 
-use App\Application\Utils\LogPrinter;
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 use App\Controllers\ErrorsController;
 use Exception;
@@ -10,7 +10,7 @@ use Exception;
 class Dispatcher
 {
     use SessionManager;
-    use LogPrinter;
+    
 
     public function __construct(protected Request $request, protected Response $response, protected Router $router)
     {
@@ -30,41 +30,37 @@ class Dispatcher
         $route = $this->router->match($this->request);
 
         if (!$route) {
-            $this->logMessage("Pas de route");
-            $this->logData($this->request);
-
+            $log = new Logger();
+            $log->debug("No route found for requested path", ["path" => $this->request->path, "query" => $this->request->query]);
             $this->triggerError404();
             exit();
         } else {
             // todo affiner le code erreur
             if ($route["isAjax"] !== $this->request->isAjax()) {
-                $this->logMessage("La requête n'est pas ajax");
-                $this->logData($this->request);
-
+                $log = new Logger();
+                $log->debug("Not an AJAX request", ["path" => $this->request->path, "query" => $this->request->query]);
                 $this->triggerError404();
                 exit();
             }
 
-            if (!preg_match($route["methodPattern"], $this->request->getMethod())) {
-                $this->logMessage("Mauvais methode");
-                $this->logData($this->request);
-
+            if (!preg_match($route["methodPattern"], $this->request->method)) {
+                $log = new Logger();
+                $log->debug("Bad method", ["path" => $this->request->path, "query" => $this->request->query, "method" => $this->request->method]);
                 $this->triggerError404();
                 exit();
             }
 
             if (!preg_match($route["rolePattern"], $this->getUserRole())) {
-                $this->logMessage("Mauvais role");
-                $this->logData($this->request);
-
+                $log = new Logger();
+                $log->debug("Bad role", ["path" => $this->request->path, "query" => $this->request->query, "role" => $this->getUserRole()]);
                 $this->triggerError404();
                 exit();
             }
 
             // si la methode est post, il faut contrôler le jeton
             if ($this->request->isPost() && !$this->isValidToken()) {
-                $this->logMessage("Jeton incorrect");
-                $this->logData($this->request);
+                $log = new Logger();
+                $log->debug("Bad token");
 
                 // todo peut-être indiquer à l'utilisateur qu'il faut recharger la page
 
@@ -87,15 +83,16 @@ class Dispatcher
 
                 // Tout est bon, si la méthode néssécite un argument, il faut lui passer
                 $action = $route["action"];
-                $response = isset($this->request->getParams()["id"]) ? $controller->$action($this->request->getParams()["id"]) : $controller->$action();
+                $response = isset($this->request->params["id"]) ? $controller->$action($this->request->params["id"]) : $controller->$action();
                 // ajout du jeton
                 $this->setSessionToken();
                 $response->send();
                 exit();
             } catch (Exception $exception) {
-                $this->logMessage($exception->getMessage());
-                $this->logMessage($exception->getTraceAsString());
-                $this->logData($this->request);
+                $log = new Logger();
+                $log->debug($exception->getMessage());
+                $log = new Logger();
+                $log->debug($exception->getTraceAsString());
 
                 $this->triggerError503();
                 exit();

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Request;
 use App\Application\Response;
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 use App\Models\AccountModel;
 use Exception;
@@ -12,6 +13,7 @@ use Exception;
 class AccountsController extends Controller
 {
     use SessionManager;
+    
 
     /**
      * Handles the signup process for a user, validating user input, checking for errors,
@@ -32,8 +34,8 @@ class AccountsController extends Controller
         $notificationParams = [];
 
         if ($this->request->isPost()) {
-            $username = $this->request->getParams()["accountUsername"] ?? "";
-            $password = $this->request->getParams()["accountPassword"] ?? "";
+            $username = $this->request->params["accountUsername"] ?? "";
+            $password = $this->request->params["accountPassword"] ?? "";
 
             $accountModel = new AccountModel();
 
@@ -72,7 +74,8 @@ class AccountsController extends Controller
                     }
                 }
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to signup", ["exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -99,15 +102,16 @@ class AccountsController extends Controller
         $notificationParams = [];
 
         if ($this->request->isPost()) {
-            $username = $this->request->getParams()["accountUsername"] ?? "";
-            $password = $this->request->getParams()["accountPassword"] ?? "";
+            $username = $this->request->params["accountUsername"] ?? "";
+            $password = $this->request->params["accountPassword"] ?? "";
 
             $accountModel = new AccountModel();
 
             try {
                 $account = $accountModel->loginWithPassword($username, $password);
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to login", ["exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -123,7 +127,7 @@ class AccountsController extends Controller
             } else if ($account["accountIsSuspended"]) {
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Compte suspendu.";
-            }  else {
+            } else {
                 $notificationParams["success"] = [];
                 $notificationParams["success"][] = "Connexion réussie.";
 

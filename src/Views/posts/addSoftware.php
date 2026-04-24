@@ -24,10 +24,10 @@
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="softwareSummary">Description du logiciel</label>
                 <textarea class="form__item regular__text" required
-                       name="softwareSummary"
-                       id="softwareSummary"
-                       minlength="10"
-                       maxlength="2000"><?= $softwareSummary ?? null ?></textarea>
+                          name="softwareSummary"
+                          id="softwareSummary"
+                          minlength="10"
+                          maxlength="2000"><?= $softwareSummary ?? null ?></textarea>
             </div>
 
             <div class="form__subform prominent">

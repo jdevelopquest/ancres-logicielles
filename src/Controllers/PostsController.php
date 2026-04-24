@@ -6,7 +6,7 @@ use App\Application\Controller;
 use App\Application\Response;
 use App\Application\Utils\ConstructHref;
 use App\Application\Utils\ConstructMenu;
-use App\Application\Utils\LogPrinter;
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 use App\Models\PostModel;
 use Exception;
@@ -15,7 +15,7 @@ class PostsController extends Controller
 {
     use ConstructHref;
     use ConstructMenu;
-    use LogPrinter;
+    
     use SessionManager;
 
     /**
@@ -40,8 +40,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublished();
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
-                $this->logMessage("Failed to get published softwares.");
+                $log = new Logger();
+                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -51,8 +51,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwaresPublishedAndPending();
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
-                $this->logMessage("Failed to get published and pending softwares.");
+                $log = new Logger();
+                $log->debug("Fail to get published and pending softwares.", ["Exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -62,8 +62,8 @@ class PostsController extends Controller
             try {
                 $softwares = $postModel->getSoftwares();
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
-                $this->logMessage("Failed to get banned, published and pending softwares.");
+                $log = new Logger();
+                $log->debug("Fail to get banned, published and pending softwares.", ["Exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -121,7 +121,8 @@ class PostsController extends Controller
                 return $errorsController->error404();
             }
         } catch (Exception $e) {
-            $this->logMessage($e->getMessage());
+            $log = new Logger();
+            $log->debug("Fail to get software data.", ["Exception message" => $e->getMessage()]);
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503();
         }
@@ -162,7 +163,8 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getPublishedAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -171,7 +173,8 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to get linked anchors.", ["Exception message" => $e->getMessage()]);
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -180,7 +183,8 @@ class PostsController extends Controller
             try {
                 $anchors = $postModel->getAnchorsByIdPostSoftware($idPostSoftware);
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
                 $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
             }
         }
@@ -273,7 +277,8 @@ class PostsController extends Controller
                     }
                 }
             } catch (Exception $e) {
-                $this->logMessage($e->getMessage());
+                $log = new Logger();
+                $log->debug("Fail to add a software.", ["Exception message" => $e->getMessage()]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
@@ -343,7 +348,7 @@ class PostsController extends Controller
     {
         // execute l'action demandée, renvois une réponse du status de l'action et sans contenu
 
-        $receive_data = json_decode($this->request->getBody(), true);
+        $receive_data = json_decode($this->request->body, true);
 
         // todo tester si les données envoyées contiennent les bonnes informations
         $idPost = $receive_data["idPost"];
@@ -363,7 +368,8 @@ class PostsController extends Controller
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $this->logMessage($e->getMessage());
+            $log = new Logger();
+            $log->debug("Fail to get perform action on post.", ["id post" => $idPost, "action" => $action, "Exception message" => $e->getMessage()]);
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
@@ -380,7 +386,7 @@ class PostsController extends Controller
      */
     public function updatePostboxModTool(): Response
     {
-        $receive_data = json_decode($this->request->getBody(), true);
+        $receive_data = json_decode($this->request->body, true);
 
         // todo tester si les données envoyées contiennent les bonnes informations
         $idPost = $receive_data["idPost"];
@@ -391,17 +397,14 @@ class PostsController extends Controller
             $postStatus = $postModel->getPostStatus($idPost);
 
             if (empty($postStatus)) {
-                $this->logMessage("updatePostboxModTool idPost doit être inexistant");
-                $this->logData($idPost);
-
+                $log = new Logger();
+                $log->debug("Fail to update post mod toolbox.", ["id post" => $idPost]);
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $this->logMessage($e->getMessage());
-            $this->logMessage("updatePostboxModTool problème avec la bdd");
-            $this->logData($idPost);
-
+            $log = new Logger();
+            $log->debug("Fail to get post status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
@@ -412,9 +415,8 @@ class PostsController extends Controller
         $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
 
         if (empty($part)) {
-            $this->logMessage("updatePostboxModTool le rendu est vide");
-            $this->logData($idPost);
-            $this->logData($postStatus);
+            $log = new Logger();
+            $log->debug("Fail to render post mod toolbox.");
 
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
@@ -437,7 +439,7 @@ class PostsController extends Controller
      */
     public function updateSoftwareStatus(): Response
     {
-        $receive_data = json_decode($this->request->getBody(), true);
+        $receive_data = json_decode($this->request->body, true);
 
         $idPost = $receive_data["idPost"];
 
@@ -447,30 +449,27 @@ class PostsController extends Controller
             $postStatus = $postModel->getPostStatus($idPost);
 
             if (empty($postStatus)) {
-                $this->logMessage("updateSoftwareStatus idPost doit être inexistant");
-                $this->logData($idPost);
+                $log = new Logger();
+                $log->debug("Fail to update software status.", ["id post" => $idPost]);
 
                 $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $this->logMessage($e->getMessage());
-            $this->logMessage("updateSoftwareStatus problème avec la bdd");
-            $this->logData($idPost);
+            $log = new Logger();
+            $log->debug("Fail to get software status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
 
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
 
-        $idPost = htmlspecialchars($idPost);
         $this->escapeHtmlRecursive($postStatus);
 
         $part = $this->renderHtmlComponent("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
 
         if (empty($part)) {
-            $this->logMessage("updateSoftwareStatus le rendu est vide");
-            $this->logData($idPost);
-            $this->logData($postStatus);
+            $log = new Logger();
+            $log->debug("Fail to render software status.");
 
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();

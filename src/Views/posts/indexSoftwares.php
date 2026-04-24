@@ -7,7 +7,8 @@
         <?php foreach ($menuModTools as $submenu): ?>
             <nav class="menu__submenu menu__submenu-h menu__submenu-r">
                 <?php foreach ($submenu as $item): ?>
-                    <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>" title="<?= $item["title"] ?>">
+                    <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>"
+                       title="<?= $item["title"] ?>">
                         <span class="prominent__icon icon-<?= $item["icon"] ?>"></span>
                     </a>
                 <?php endforeach; ?>

@@ -2,11 +2,12 @@
 
 namespace App\Application;
 
-use App\Application\Utils\LogPrinter;
+use App\Application\Utils\Logger;
 
 class Response
 {
-    use LogPrinter;
+    
+
     protected array $headers = [];
     protected array $cookies = [];
     protected int $code = 200;

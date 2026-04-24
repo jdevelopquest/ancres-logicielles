@@ -3,14 +3,12 @@
 namespace App\Application;
 
 use App\Application\Utils\ConstructMenu;
-use App\Application\Utils\LogPrinter;
 use App\Application\Utils\SessionManager;
 
 class Controller
 {
     use SessionManager;
     use ConstructMenu;
-    use LogPrinter;
 
     private ViewBuilder $viewBuilder;
 
@@ -133,7 +131,7 @@ class Controller
         }
 
         // met à jour page précédente
-        $previousPage = $this->request->getPath() . "?" . $this->request->getQuery();
+        $previousPage = $this->request->path . "?" . $this->request->query;
 
         $this->setUserPreviousPage($previousPage);
 

@@ -15,6 +15,7 @@ use Exception;
 class Application
 {
     use SessionManager;
+
     private Request $request;
     private Response $response;
     private Router $router;

@@ -5,7 +5,7 @@ namespace App\Application;
 class ViewBuilder
 {
     private array $viewComponents = [];
-    
+
     /**
      * Constructs the full file path for the given layout file.
      *

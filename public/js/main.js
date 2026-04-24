@@ -70,7 +70,8 @@ function sendPostModAction(params) {
         {
             method: 'POST',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-Ajax-Request': 'true',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
@@ -98,7 +99,8 @@ async function getUpdatePostboxModTool(idPost) {
         {
             method: 'POST',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-Ajax-Request': 'true',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
@@ -127,7 +129,8 @@ async function getUpdateSoftwareStatus(idPost) {
         {
             method: 'POST',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-Ajax-Request': 'true',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)

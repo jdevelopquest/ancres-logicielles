@@ -20,7 +20,7 @@ trait SessionManager
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
             $_SESSION["user"]["id"] = "none";
-            $_SESSION["user"]["previousPage"] = $this->request->getCookies()["previousPage"] ?? "";
+            $_SESSION["user"]["previousPage"] = $this->request->cookies["previousPage"] ?? "";
         }
     }
 
@@ -176,12 +176,13 @@ trait SessionManager
      */
     protected function isValidToken(): bool
     {
-        if (!isset($_SESSION["token"]) || !isset($this->request->getCookies()["token"])) {
-            $this->logMessage("Pas de token dans la session ou dans les cookies");
+        if (!isset($_SESSION["token"]) || !isset($this->request->cookies["token"])) {
+            $log = new Logger();
+            $log->debug("Token is not set in session or request cookies");
             return false;
         }
 
-        return $_SESSION["token"] === $this->request->getCookies()["token"];
+        return $_SESSION["token"] === $this->request->cookies["token"];
     }
 
     /**
@@ -193,9 +194,9 @@ trait SessionManager
     {
         $_SESSION["token"] = $this->generateToken();
         if (empty($_SESSION["token"])) {
-            $this->logMessage("Impossible de générer un jeton de session");
+            $log = new Logger();
+            $log->debug("Impossible to generate token");
         } else {
-//            $this->logMessage("Jeton de session généré");
             $this->response->addCookie(
                 'token',
                 $_SESSION["token"],
@@ -218,6 +219,8 @@ trait SessionManager
         try {
             return bin2hex(random_bytes(32));
         } catch (Exception $e) {
+            $log = new Logger();
+            $log->debug("Impossible to generate token", ["exception message" => $e->getMessage()]);
             // todo prévoir une action si la génération du jeton échoue
             return "";
         }
