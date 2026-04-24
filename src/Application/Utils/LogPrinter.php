@@ -37,7 +37,7 @@ trait LogPrinter
      */
     private function writeToLog(string $content): void
     {
-        $logFile = LOG . self::LOG_FILE;
+        $logFile = LOG_PATH . self::LOG_FILE;
         $formattedMessage = sprintf("[%s] %s\n", date(self::DATE_FORMAT), $content);
         error_log($formattedMessage, 3, $logFile);
     }
