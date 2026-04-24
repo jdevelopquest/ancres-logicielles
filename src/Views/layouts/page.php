@@ -18,10 +18,10 @@
     <header class="menu" id="page-top">
         <div class="menu__submenu menu__submenu-h">
             <h1 class="menu__item prominent__text">Ancres Logicielles</h1>
-            <button class="menu__item menu__item-clickable prominent button-menu-hamburger" title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon"></span></button>
+            <button class="menu__item menu__item-clickable prominent button-menu-hamburger" title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span></button>
         </div>
         <div class="menu__submenu menu__submenu-h">
-            <button class="menu__item menu__item-clickable prominent button-previous-page"><span class="prominent__icon"></span></button>
+            <button class="menu__item menu__item-clickable prominent button-go-previous"><span class="prominent__icon icon-previous-page"></span></button>
         </div>
     </header>
     <main>

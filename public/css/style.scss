@@ -124,6 +124,48 @@ $color-jet-black: #000000;
   }
 }
 
+$icon-img-path: (
+        "image-missing": "../img/icons-tango-scalable/image-missing.svg",
+
+        "menu": "../img/icons-tango-scalable/menu.svg",
+        "menu-hamburger": "../img/icons-tango-scalable/menu-hamburger.svg",
+        "switch-on-off": "../img/icons-tango-scalable/switch-on-off.svg",
+        "close": "../img/icons-tango-scalable/close.svg",
+
+        "go-home": "../img/icons-tango-scalable/go-home.svg",
+        "go-bottom": "../img/icons-tango-scalable/go-bottom.svg",
+        "go-top": "../img/icons-tango-scalable/go-top.svg",
+        "-go-previous": "../img/icons-tango-scalable/go-previous.svg",
+        "go-profile": "../img/icons-tango-scalable/go-profile.svg",
+        "go-logout": "../img/icons-tango-scalable/go-logout.svg",
+        "go-login": "../img/icons-tango-scalable/go-login.svg",
+        "go-signup": "../img/icons-tango-scalable/go-signup.svg",
+        "go-admin": "../img/icons-tango-scalable/go-admin.svg",
+
+        "switch-theme": "../img/icons-tango-scalable/switch-theme.svg",
+
+        "post-published": "../img/icons-tango-scalable/post-published.svg",
+        "post-pending": "../img/icons-tango-scalable/post-pending.svg",
+        "post-banned": "../img/icons-tango-scalable/post-banned.svg",
+        "post-publish": "../img/icons-tango-scalable/post-publish.svg",
+        "post-unpublish": "../img/icons-tango-scalable/post-unpublish.svg",
+        "post-ban": "../img/icons-tango-scalable/post-ban.svg",
+        "post-unban": "../img/icons-tango-scalable/post-unban.svg",
+);
+
+@mixin set-icon-img($tag) {
+  $url: "../img/icons-tango-scalable/status/image-missing.svg";
+
+  @if map-has-key($icon-img-path, $tag) {
+    $url: map-get($icon-img-path, $tag);
+  }
+
+  background-image: url(#{$url});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
 @mixin layout($flow, $gap: 0) {
   @if ($flow == "horizontal") {
     display: flex;
@@ -373,6 +415,94 @@ main {
   }
 }
 
+.icon {
+  @include set-icon-img("image-missing");
+
+  &-menu {
+    @include set-icon-img("menu");
+  }
+
+  &-menu-hamburger {
+    @include set-icon-img("menu-hamburger");
+  }
+
+  &-switch-on-off {
+    @include set-icon-img("switch-on-off");
+  }
+
+  &-close {
+    @include set-icon-img("close");
+  }
+
+  &-previous-page {
+    @include set-icon-img("previous-page");
+  }
+
+  &-go-home {
+    @include set-icon-img("go-home");
+  }
+
+  &-go-bottom {
+    @include set-icon-img("go-bottom");
+  }
+
+  &-go-top {
+    @include set-icon-img("go-top");
+  }
+
+  &-go-profile {
+    @include set-icon-img("go-profile");
+  }
+
+  &-go-logout {
+    @include set-icon-img("go-logout");
+  }
+
+  &-go-login {
+    @include set-icon-img("go-login");
+  }
+
+  &-go-signup {
+    @include set-icon-img("go-signup");
+  }
+
+  &-go-admin {
+    @include set-icon-img("go-admin");
+  }
+
+  &-switch-theme {
+    @include set-icon-img("switch-theme");
+  }
+
+  &-post-published {
+    @include set-icon-img("post-published");
+  }
+
+  &-post-pending {
+    @include set-icon-img("post-pending");
+  }
+
+  &-post-banned {
+    @include set-icon-img("post-banned");
+  }
+
+  &-post-unpublish {
+    @include set-icon-img("post-unpublish");
+  }
+
+  &-post-publish {
+    @include set-icon-img("post-publish");
+  }
+
+  &-post-ban {
+    @include set-icon-img("post-ban");
+  }
+
+  &-post-unban {
+    @include set-icon-img("post-unban");
+  }
+}
+
 .prominent {
   @include layout("horizontal");
   justify-content: right;
@@ -403,14 +533,9 @@ main {
     width: var(--size-xl);
     height: var(--size-xl);
 
-    margin-left: var(--size-xs);
-    margin-right: var(--size-xs);
+    margin: var(--size-xs);
 
     display: inline-block;
-
-    background-image: url("../img/icons-tango-scalable/status/image-missing.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
   }
 }
 
