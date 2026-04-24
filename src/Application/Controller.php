@@ -12,15 +12,13 @@ class Controller
     use ConstructMenu;
     use LogPrinter;
 
-    protected Response $response;
     protected ViewBuilder $viewBuilder;
     protected array $pageParams = [];
     private array $pageParts = [];
 
-    public function __construct(protected Request $request)
+    public function __construct(protected Request $request, protected Response $response)
     {
         $this->viewBuilder = new ViewBuilder();
-        $this->response = new Response();
     }
 
     /**
@@ -32,9 +30,7 @@ class Controller
      */
     protected function getHtmlResponse(string $pageHtml, int $code = 200): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "text/html",
-        ]);
+        $this->response->addHeader("Content-Type: text/html");
 
         $this->response->setCode($code);
 
@@ -52,9 +48,7 @@ class Controller
      */
     protected function getJsonResponse(?string $data, int $code = 200): Response
     {
-        $this->response->setHeaders([
-            "Content-Type" => "application/json",
-        ]);
+        $this->response->addHeader("Content-Type: application/json");
 
         $this->response->setCode($code);
 
@@ -157,7 +151,7 @@ class Controller
      *
      * @return void
      */
-    protected function escapeHtmlRecursive(string|array &$data): void
+    protected function escapeHtmlRecursive(array|string|float|int|bool|null &$data): void
     {
         if (is_string($data)) {
             $data = htmlspecialchars($data);

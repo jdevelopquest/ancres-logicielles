@@ -18,8 +18,9 @@ spl_autoload_register(
     }
 );
 
-use App\Application\Dispatcher;
+use App\Application\Application;
 use App\Application\Request;
+use App\Application\Response;
 use App\Controllers\ErrorsController;
 
 //
@@ -29,7 +30,7 @@ set_exception_handler(
         $message = sprintf("%s on line %s in %s\n", $exception->getMessage(), $exception->getLine(), $exception->getFile());
         error_log($message, 3, $file);
         // todo il faut pouvoir gérer les requête ajax
-        $errorsController = new ErrorsController(new Request());
+        $errorsController = new ErrorsController(new Request(), new Response());
         $errorsController->error503()->send();
         exit();
     }
@@ -41,11 +42,11 @@ set_error_handler(
         $message = sprintf("%s %s on line %s in %s\n", $errno, $errstr, $errline, $errfile);
         error_log($message, 3, $file);
         // todo il faut pouvoir gérer les requête ajax
-        $errorsController = new ErrorsController(new Request());
+        $errorsController = new ErrorsController(new Request(), new Response());
         $errorsController->error503()->send();
         exit();
     }
 );
 
-$dispatcher = new Dispatcher();
-$dispatcher->run();
+$application = new Application();
+$application->run();

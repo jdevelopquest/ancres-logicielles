@@ -73,26 +73,38 @@ class Request
         return $this->files;
     }
 
-    public function getHeaders(): array
-    {
-        return $this->headers;
-    }
-
+    /**
+     * @return array
+     */
     public function getCookies(): array
     {
         return $this->cookies;
     }
 
+    /**
+     * Determines if the current request is an AJAX request.
+     *
+     * @return bool
+     */
     public function isAjax(): bool
     {
+        // todo peut-être modifier la technique de vérification en explicitant ajax dans le code js
         return isset($this->headers["X-Requested-With"]) && $this->headers["X-Requested-With"] === 'XMLHttpRequest';
     }
 
+    /**
+     * Determines if the current request method is POST.
+     *
+     * @return bool
+     */
     public function isPost(): bool
     {
         return $this->method === "POST";
     }
 
+    /**
+     * @return bool
+     */
     public function isGet(): bool
     {
         return $this->method === "GET";

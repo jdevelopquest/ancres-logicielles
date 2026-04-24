@@ -25,6 +25,13 @@ class AccountsController extends Controller
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
+    /**
+     * Handles the user login process, verifying credentials and initializing the session
+     * if the login is successful. Displays appropriate notifications and feedback for login errors
+     * or account issues such as bans.
+     *
+     * @return Response The HTTP response containing the rendered login page or the appropriate error page.
+     */
     public function login(): Response
     {
         $contentParams = [];
@@ -39,13 +46,14 @@ class AccountsController extends Controller
             try {
                 $account = $accountModel->loginWithPassword($username, $password);
             } catch (Exception $e) {
-                $errorsController = new ErrorsController($this->request);
+                $errorsController = new ErrorsController($this->request, $this->response);
                 return $errorsController->error503();
             }
 
             if (empty($account)) {
                 $notificationParams["error"] = "Pseudo ou Mot de passe incorrect.";
-                $contentParams["accountUsername"] = htmlspecialchars($username);
+                $this->escapeHtmlRecursive($username);
+                $contentParams["accountUsername"] = $username;
             } else {
                 if ($account["accountIsBanned"]) {
                     $notificationParams["error"] = "Compte bannis.";
@@ -69,12 +77,20 @@ class AccountsController extends Controller
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
 
+    /**
+     * Logs out the current user and handles the logout process.
+     * If the request is a POST, performs the user logout and redirects to another page.
+     * Otherwise, sets up the page parameters and returns an HTML response.
+     *
+     * @return Response The response object containing either a redirection or rendered HTML page.
+     */
     public function logout(): Response
     {
         if ($this->request->isPost()) {
             $this->userLogout();
 
-            $postsController = new PostsController(new Request());
+            // todo : rediriger vers la page d'accueil après déconnexion
+            $postsController = new PostsController(new Request(), new Response());
             return $postsController->indexSoftwares();
         }
 
