@@ -58,6 +58,17 @@ class Request
     }
 
     /**
+     * Retrieves the value of a specified parameter by its name.
+     *
+     * @param string $paramName The name of the parameter to retrieve.
+     * @return string The value of the parameter if it exists, or an empty string if it does not.
+     */
+    public function getParam(string $paramName): string
+    {
+        return key_exists($paramName, $this->params) ? $this->params[$paramName] : "";
+    }
+
+    /**
      * @return false|string
      */
     public function getBody(): false|string

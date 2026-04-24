@@ -7,6 +7,7 @@ use App\Application\Response;
 use App\Application\Utils\ConstructHref;
 use App\Application\Utils\ConstructMenu;
 use App\Application\Utils\LogPrinter;
+use App\Application\Utils\SessionManager;
 use App\Models\PostModel;
 use Exception;
 
@@ -15,6 +16,7 @@ class PostsController extends Controller
     use ConstructHref;
     use ConstructMenu;
     use LogPrinter;
+    use SessionManager;
 
     /**
      * Retrieves and displays a list of software records depending on the user's role.
@@ -69,6 +71,7 @@ class PostsController extends Controller
             foreach ($softwares as $software) {
                 $this->escapeHtmlRecursive($software);
 
+                $article = [];
                 $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
                 $article["softwareName"] = $software["softwareName"];
                 $article["status"] = $this->getPostStatusParams($software);
@@ -190,6 +193,78 @@ class PostsController extends Controller
         $this->setPagePartial("content", "posts/showSoftware", $contentParams, "page");
 
         $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
+
+        return $this->getHtmlResponse($this->renderHtmlPage());
+    }
+
+    /**
+     * Adds a new software entry based on the provided data from a POST request.
+     *
+     * The method validates the software name and summary, ensuring that they
+     * are unique. If validation fails, appropriate error messages are set.
+     * On successful validation, the software entry is registered. If any
+     * errors occur during the process, these are captured, and suitable
+     * error messages or responses are provided. The method prepares the
+     * content and notification parameters required for rendering the
+     * appropriate HTML response.
+     *
+     * @return Response The rendered HTML response on success or failure,
+     *                  including necessary notifications and content parameters.
+     */
+    public function addSoftware(): Response
+    {
+        $contentParams = [];
+        $notificationParams = [];
+
+        if ($this->request->isPost()) {
+            $softwareName = $this->request->getParam("softwareName");
+            $softwareSummary = $this->request->getParam("softwareSummary");
+
+            $postModel = new PostModel();
+
+            if (!$postModel->isValidSoftwareName($softwareName)) {
+                $notificationParams["error"] = [];
+                $notificationParams["error"][] = "Le nom du logiciel n'est pas valide.";
+                $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (maximum 100 caractères).";
+                $this->escapeHtmlRecursive($softwareName);
+                $contentParams["softwareName"] = $softwareName;
+            }
+
+            if (!$postModel->isValidSoftwareSummary($softwareSummary)) {
+                if (!isset($notificationParams["error"])) {
+                    $notificationParams["error"] = [];
+                }
+                $notificationParams["error"][] = "La description du logiciel n'est pas valide.";
+                $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (minimum 10 caractères, maximum 2000 caractères).";
+                $this->escapeHtmlRecursive($softwareSummary);
+                $contentParams["softwareSummary"] = $softwareSummary;
+            }
+
+            try {
+                if (!isset($notificationParams["error"])) {
+                    $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
+
+                    if ($result) {
+                        $notificationParams["success"] = [];
+                        $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
+                        $contentParams["success"] = true;
+                    } else {
+                        $notificationParams["error"] = [];
+                        $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
+                        $contentParams["success"] = false;
+                    }
+                }
+            } catch (Exception $e) {
+                $errorsController = new ErrorsController($this->request, $this->response);
+                return $errorsController->error503();
+            }
+        }
+
+        $this->setPageParam("title", "Ancres Logicielles : Ajouter une fiche logicielle");
+
+        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
+
+        $this->setPagePartial("content", "posts/addSoftware", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }

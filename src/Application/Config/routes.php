@@ -34,6 +34,17 @@ return [
         "action" => "showSoftware"
     ],
 
+// posts addSoftware
+    [
+        "isAjax" => false,
+        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
+        "queryPattern" => "/^ctr=posts&act=addSoftware$/",
+        "methodPattern" => "/^(GET|POST)$/",
+        "rolePattern" => "/^(moderator|admin)$/",
+        "controller" => "App\Controllers\PostsController",
+        "action" => "addSoftware"
+    ],
+
 // posts unpublish
     [
         "isAjax" => true,
