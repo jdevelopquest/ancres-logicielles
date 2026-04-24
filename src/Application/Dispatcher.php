@@ -92,8 +92,9 @@ class Dispatcher
                 $action = $route["action"];
                 $response = isset($this->request->getParams()["id"]) ? $controller->$action($this->request->getParams()["id"]) : $controller->$action();
                 // ajout du jeton
-                $this->iniToken();
+                $this->setSessionToken();
                 $response->send();
+                exit();
             } catch (Exception $exception) {
                 $this->logMessage($exception->getMessage());
                 $this->logMessage($exception->getTraceAsString());

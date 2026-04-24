@@ -80,6 +80,18 @@ class Controller
     }
 
     /**
+     * Renders an HTML partial view using the specified file path and parameters.
+     *
+     * @param string $partialFilePath The file path of the partial view to be rendered. Defaults to an empty string.
+     * @param array $parameters An associative array of parameters to pass to the partial view.
+     * @return string The rendered HTML content of the partial view.
+     */
+    protected function renderHtmlPartial(string $partialFilePath = "", array $parameters = []): string
+    {
+        return $this->viewBuilder->renderPartial($partialFilePath, $parameters);
+    }
+
+    /**
      * Renders the complete HTML page by combining defined page partials into the final output.
      *
      * @return string The fully rendered HTML page as a string.

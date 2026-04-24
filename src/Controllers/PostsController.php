@@ -332,7 +332,7 @@ class PostsController extends Controller
      * Updates the status of a software post based on the provided data.
      *
      * The method retrieves the `idPost` provided in the request body,
-     * fetches the post status using the `PostModel`, and renders an HTML
+     * fetches the post-status using the `PostModel`, and renders an HTML
      * part to update the software status. It handles various error
      * scenarios, including empty or invalid data and rendering failures,
      * and returns an appropriate response.
@@ -359,7 +359,7 @@ class PostsController extends Controller
                 return $errorsController->error503ByAjax();
             }
         } catch (Exception $e) {
-            $this->logMessage("updateSoftwareStatus problème avec la bd");
+            $this->logMessage("updateSoftwareStatus problème avec la bdd");
             $this->logData($idPost);
 
             $errorsController = new ErrorsController($this->request, $this->response);
@@ -428,7 +428,7 @@ class PostsController extends Controller
     /**
      * Generates a list of moderation tool parameters based on the status of a post.
      *
-     * The method evaluates the input post data and determines the moderation
+     * The method evaluates the input post-data and determines the moderation
      * actions that can be performed, such as banning or publishing the post.
      * It returns the list of tools with corresponding actions, icons, and titles.
      *
