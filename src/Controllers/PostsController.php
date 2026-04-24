@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Application\Controller;
 use App\Application\Response;
-use App\Application\Utils\ConstructHref;
-use App\Application\Utils\ConstructMenu;
 use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 use App\Models\PostModel;
@@ -13,9 +11,6 @@ use Exception;
 
 class PostsController extends Controller
 {
-    use ConstructHref;
-    use ConstructMenu;
-    
     use SessionManager;
 
     /**
@@ -254,25 +249,25 @@ class PostsController extends Controller
                 $contentParams["softwareSummary"] = $softwareSummary;
             }
 
-            try {
-                if (!isset($notificationParams["error"])) {
-                    $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
+            if (!isset($notificationParams["error"])) {
+                try {
+                        $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
 
-                    if ($result) {
-                        $notificationParams["success"] = [];
-                        $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
-                        $contentParams["success"] = true;
-                    } else {
-                        $notificationParams["error"] = [];
-                        $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
-                        $contentParams["success"] = false;
-                    }
+                        if ($result) {
+                            $notificationParams["success"] = [];
+                            $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
+                            $contentParams["success"] = true;
+                        } else {
+                            $notificationParams["error"] = [];
+                            $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
+                            $contentParams["success"] = false;
+                        }
+                } catch (Exception $e) {
+                    $log = new Logger();
+                    $log->debug("Fail to add a software.", ["Exception message" => $e->getMessage()]);
+                    $errorsController = new ErrorsController($this->request, $this->response);
+                    return $errorsController->error503();
                 }
-            } catch (Exception $e) {
-                $log = new Logger();
-                $log->debug("Fail to add a software.", ["Exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
-                return $errorsController->error503();
             }
         }
 
@@ -370,7 +365,7 @@ class PostsController extends Controller
     }
 
     /**
-     * Updates a postbox moderation tool by analyzing the given data, processing the request,
+     * Updates a post-box moderation tool by analyzing the given data, processing the request,
      * rendering the corresponding HTML part, and returning a JSON response.
      *
      * @return Response The response object containing the rendered HTML part or an error status,
@@ -413,7 +408,7 @@ class PostsController extends Controller
             return $errorsController->error503ByAjax();
         }
 
-        return $this->getJsonResponse($part, 200);
+        return $this->getJsonResponse($part);
     }
 
     /**
@@ -464,7 +459,7 @@ class PostsController extends Controller
             return $errorsController->error503ByAjax();
         }
 
-        return $this->getJsonResponse($part, 200);
+        return $this->getJsonResponse($part);
     }
 
     /**
