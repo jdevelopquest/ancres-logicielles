@@ -292,7 +292,7 @@ main {
   background-position: center;
 }
 .icon-previous-page {
-  background-image: url(../img/icons-tango-scalable/status/image-missing.svg);
+  background-image: url(../img/icons-tango-scalable/image-missing.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -311,6 +311,12 @@ main {
 }
 .icon-go-top {
   background-image: url(../img/icons-tango-scalable/go-top.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.icon-go-previous {
+  background-image: url(../img/icons-tango-scalable/go-previous.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -409,7 +415,6 @@ main {
   background-color: var(--color-background-succes);
 }
 .prominent__text {
-  width: max-content;
   height: var(--size-xl);
   line-height: var(--size-xl);
   margin-right: auto;
@@ -434,6 +439,8 @@ main {
 }
 
 .anchor {
+  color: var(--color-text);
+  background-color: var(--color-background-specific);
   cursor: pointer;
   text-decoration: underline;
 }

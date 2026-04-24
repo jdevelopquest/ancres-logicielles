@@ -49,7 +49,7 @@ trait SessionManager
 
     protected function setUserTheme(string $theme): void
     {
-        setcookie('theme', $theme, time() + (86400 * 30), "/"); // 30 jours
+        setcookie("theme", $theme, time() + (86400 * 30), "/"); // 30 jours
     }
 
     protected function getUserId(): string
@@ -92,5 +92,19 @@ trait SessionManager
 
             $this->initSession();
         }
+    }
+
+    protected function setUserPreviousPage(string $previousPage): void
+    {
+        setcookie("previousPage", $previousPage, time() + (86400 * 30), "/"); // 30 jours
+    }
+
+    protected function getUserPreviousPage(): string
+    {
+        if (isset($this->request->getCookies()["previousPage"])) {
+            return $this->request->getCookies()["previousPage"];
+        }
+
+        return "";
     }
 }

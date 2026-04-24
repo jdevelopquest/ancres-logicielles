@@ -135,7 +135,7 @@ $icon-img-path: (
         "go-home": "../img/icons-tango-scalable/go-home.svg",
         "go-bottom": "../img/icons-tango-scalable/go-bottom.svg",
         "go-top": "../img/icons-tango-scalable/go-top.svg",
-        "-go-previous": "../img/icons-tango-scalable/go-previous.svg",
+        "go-previous": "../img/icons-tango-scalable/go-previous.svg",
         "go-profile": "../img/icons-tango-scalable/go-profile.svg",
         "go-logout": "../img/icons-tango-scalable/go-logout.svg",
         "go-login": "../img/icons-tango-scalable/go-login.svg",
@@ -154,7 +154,7 @@ $icon-img-path: (
 );
 
 @mixin set-icon-img($tag) {
-  $url: "../img/icons-tango-scalable/status/image-missing.svg";
+  $url: "../img/icons-tango-scalable/image-missing.svg";
 
   @if map-has-key($icon-img-path, $tag) {
     $url: map-get($icon-img-path, $tag);
@@ -450,6 +450,10 @@ main {
     @include set-icon-img("go-top");
   }
 
+  &-go-previous {
+    @include set-icon-img("go-previous");
+  }
+
   &-go-profile {
     @include set-icon-img("go-profile");
   }
@@ -520,7 +524,7 @@ main {
   &__text {
     @extend %font-prominent;
 
-    width: max-content;
+    //width: max-content;
     height: var(--size-xl);
     line-height: var(--size-xl);
 
@@ -554,6 +558,8 @@ main {
 }
 
 .anchor {
+  @include color("specific");
+
   cursor: pointer;
   text-decoration: underline;
 

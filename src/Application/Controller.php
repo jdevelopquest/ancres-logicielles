@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Application\Utils\ConstructHref;
 use App\Application\Utils\SessionManager;
 
 class Controller
@@ -30,6 +31,17 @@ class Controller
 
     protected function renderPage(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", array $contentParams = [], array $notification = []): string
     {
+        if (!$this->request->isAjax()) {
+            $previousPage = $this->getUserPreviousPage();
+
+            if ($previousPage) {
+                $this->viewBuilder->setPageParam("previousPage", $previousPage);
+            }
+            
+            $previousPage = $this->request->getPath() . "?" . $this->request->getQuery();
+            $this->setUserPreviousPage($previousPage);
+        }
+
         $this->viewBuilder->setPageParam("title", $pageTitle);
         $this->viewBuilder->setPageParam("theme", $this->getUserTheme());
 

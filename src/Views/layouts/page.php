@@ -21,7 +21,7 @@
             <button class="menu__item menu__item-clickable prominent button-menu-hamburger" title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span></button>
         </div>
         <div class="menu__submenu menu__submenu-h">
-            <button class="menu__item menu__item-clickable prominent button-go-previous"><span class="prominent__icon icon-previous-page"></span></button>
+            <a class="menu__item menu__item-clickable prominent button-go-previous" title="Page précédente" href="<?= $previousPage ?? "index.php" ?>"><span class="prominent__icon icon-go-previous"></span></a>
         </div>
     </header>
     <main>

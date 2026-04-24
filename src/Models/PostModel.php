@@ -265,6 +265,51 @@ class PostModel
 
     /**
      * @param int $idPostSoftware
+     * @return array
+     * @throws Exception
+     */
+    public function getPublishedAnchorsByIdPostSoftware(int $idPostSoftware): array
+    {
+        $request =
+            "SELECT
+                Posts.idPost,
+                idAnchor,
+                anchorUrl,
+                anchorContent,
+                postIsPublished,
+                postIsBanned
+            FROM Posts
+            JOIN Anchors on Posts.idPost = Anchors.idPost
+            WHERE Anchors.idPostSoftware = :idPostSoftware AND postIsPublished = 1 AND postIsBanned = 0";
+        $params = [":idPostSoftware" => $idPostSoftware];
+        return Database::fetchAll($request, $params);
+    }
+
+    /**
+     * @param int $idPostSoftware
+     * @return array
+     * @throws Exception
+     */
+    public function getPublishedAndPendingAnchorsByIdPostSoftware(int $idPostSoftware): array
+    {
+        $request =
+            "SELECT
+                Posts.idPost,
+                idAnchor,
+                anchorUrl,
+                anchorContent,
+                postIsPublished,
+                postIsBanned
+            FROM Posts
+            JOIN Anchors on Posts.idPost = Anchors.idPost
+            WHERE Anchors.idPostSoftware = :idPostSoftware AND postIsBanned = 0";
+        $params = [":idPostSoftware" => $idPostSoftware];
+        return Database::fetchAll($request, $params);
+    }
+
+    /**
+     * @param int $idAccount
+     * @param int $idPostSoftware
      * @param string $anchorUrl
      * @param string $anchorContent
      * @return bool
