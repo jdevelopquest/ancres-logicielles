@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Application\Controller;
 use App\Application\Response;
 use App\Application\Utils\ConstructHref;
-use App\Application\Utils\SessionManager;
 use App\Models\PostModel;
 use Exception;
 
@@ -52,9 +51,7 @@ class PostsController extends Controller
             $contentParams["softwares"] = [];
 
             foreach ($softwares as $software) {
-                array_walk($software, function (&$value) {
-                    $value = htmlspecialchars($value);
-                });
+                $this->htmlspecialcharsWalking($software);
 
                 $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
                 $article["softwareName"] = $software["softwareName"];
@@ -65,17 +62,15 @@ class PostsController extends Controller
                         "icon" => "published",
                         "title" => "publiée"
                     ];
+                } else if ($software["postIsBanned"]) {
+                    $article["status"][] = [
+                        "icon" => "banned",
+                        "title" => "banni"
+                    ];
                 } else {
                     $article["status"][] = [
                         "icon" => "pending",
                         "title" => "en attente"
-                    ];
-                }
-
-                if ($software["postIsBanned"]) {
-                    $article["status"][] = [
-                        "icon" => "banned",
-                        "title" => "banni"
                     ];
                 }
 
@@ -121,15 +116,13 @@ class PostsController extends Controller
             return $errorsController->error403();
         }
 
-        array_walk($software, function (&$value) {
-            $value = htmlspecialchars($value);
-        });
+        $this->htmlspecialcharsWalking($software);
 
         $contentParams = [];
         $contentParams["software"] = [];
         $contentParams["software"]["softwareName"] = $software["softwareName"];
 
-        $article["summary"] = [];
+        $contentParams["software"]["summary"] = [];
         foreach (explode("\n", $software["softwareSummary"]) as $summaryPart) {
             $contentParams["software"]["summary"][] = $summaryPart;
         }
@@ -141,16 +134,15 @@ class PostsController extends Controller
                 "icon" => "published",
                 "title" => "publiée"
             ];
+        } else if ($software["postIsBanned"]) {
+            $contentParams["software"]["status"][] = [
+                "icon" => "banned",
+                "title" => "banni"
+            ];
         } else {
             $contentParams["software"]["status"][] = [
                 "icon" => "pending",
                 "title" => "en attente"
-            ];
-        }
-        if ($software["postIsBanned"]) {
-            $contentParams["software"]["status"][] = [
-                "icon" => "banned",
-                "title" => "banni"
             ];
         }
 

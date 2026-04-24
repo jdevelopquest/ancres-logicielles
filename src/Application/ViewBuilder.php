@@ -3,7 +3,6 @@
 namespace App\Application;
 
 use App\Application\Utils\ConstructMenu;
-use App\Application\Utils\SessionManager;
 
 class ViewBuilder
 {
@@ -37,12 +36,22 @@ class ViewBuilder
         $this->pageParams[$key] = $value;
     }
 
-    public function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", mixed $contentParams = []): string
+    public function renderTextHTML(string $pageTitle = "Ancres Logicielles", string $contentLayout = "", array $contentParams = [], array $notification = []): string
     {
         $this->setupPart("page", "layouts/page", []);
         $this->setupPart("menu-hamburger", "layouts/menu-hamburger", $this->constructMenuHamburger());
         $this->setupPart("menu-tiny", "layouts/menu-tiny", $this->constructMenuTiny());
         $this->setupPart("content", $contentLayout, $contentParams ?? []);
+
+        if (isset($notification)) {
+            if (array_key_exists("error", $notification)) {
+                $this->setupPart("notification", "layouts/error-notification", $notification);
+            }
+
+            if (array_key_exists("success", $notification)) {
+                $this->setupPart("notification", "layouts/success-notification", $notification);
+            }
+        }
 
         $this->partParams["page"]["title"] = $pageTitle;
 
@@ -50,17 +59,19 @@ class ViewBuilder
             $this->partParams["page"] = array_merge($this->partParams["page"], $this->pageParams);
         }
 
-        // rendre la page en premier
-        $this->renderPart("page");
-
         foreach ($this->partNames as $partName) {
-            if ($partName === "page") {
-                continue;
-            }
-
             $this->renderPart($partName);
-            $this->partRenders["page"] = str_replace("{{ $partName }}", $this->partRenders[$partName], $this->partRenders["page"]);
         }
+
+        if (isset($this->partRenders["notification"])) {
+            $this->partRenders["content"] = str_replace("{{ notification }}", $this->partRenders["notification"], $this->partRenders["content"]);
+        } else {
+            $this->partRenders["content"] = str_replace("{{ notification }}", "", $this->partRenders["content"]);
+        }
+
+        $this->partRenders["page"] = str_replace("{{ content }}", $this->partRenders["content"], $this->partRenders["page"]);
+        $this->partRenders["page"] = str_replace("{{ menu-hamburger }}", $this->partRenders["menu-hamburger"], $this->partRenders["page"]);
+        $this->partRenders["page"] = str_replace("{{ menu-tiny }}", $this->partRenders["menu-tiny"], $this->partRenders["page"]);
 
         return $this->partRenders["page"];
     }

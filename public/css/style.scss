@@ -86,6 +86,10 @@ $color-jet-black: #000000;
   --color-background-global: #{$color-snowy-white};
   --color-background-specific: #{$color-snowy-white};
   --color-background-highlight: #{$color-chocolate-1};
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #{$color-scarlet-red-2};
+  --color-background-succes: #{$color-chameleon-2};
 }
 
 %theme-dark {
@@ -96,6 +100,10 @@ $color-jet-black: #000000;
   --color-background-global: #{$color-aluminium-6};
   --color-background-specific: #{$color-aluminium-6};
   --color-background-highlight: #{$color-orange-3};
+  --color-text-error: white;
+  --color-text-success: white;
+  --color-background-error: #{$color-scarlet-red-2};
+  --color-background-succes: #{$color-chameleon-2};
 }
 
 @mixin color($tag: "base") {
@@ -368,6 +376,16 @@ main {
 .prominent {
   @include layout("horizontal");
   justify-content: right;
+
+  &-error {
+    color: var(--color-text-error);
+    background-color: var(--color-background-error);
+  }
+
+  &-success {
+    color: var(--color-text-success);
+    background-color: var(--color-background-succes);
+  }
 
   &__text {
     @extend %font-prominent;

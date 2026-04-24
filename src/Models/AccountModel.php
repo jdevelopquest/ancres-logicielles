@@ -90,6 +90,27 @@ class AccountModel
     }
 
     /**
+     * @throws Exception
+     */
+    public function loginWithPassword(string $username, string $password): array
+    {
+        $account = $this->getAccountByUsername($username);
+
+        if (empty($account)) {
+            return [];
+        }
+
+        if (password_verify($password, $account["accountPassword"])) {
+
+            unset($account["accountPassword"]);
+
+            return $account;
+        }
+
+        return [];
+    }
+
+    /**
      * Retrieves the profile details for a given username to facilitate login.
      *
      * @param string $username The username associated with the profile to retrieve.
@@ -104,7 +125,7 @@ class AccountModel
             return [];
         }
 
-        $this->checkSuspendedDuration($idAccount);
+        $this->checkSuspendedDurationByIdAccount($idAccount);
 
         return $this->getAccountByUsername($username);
     }
@@ -136,7 +157,7 @@ class AccountModel
      * @return void
      * @throws Exception
      */
-    private function checkSuspendedDuration(int $idAccount): void
+    private function checkSuspendedDurationByIdAccount(int $idAccount): void
     {
         $timestamp = time();
 
@@ -160,7 +181,7 @@ class AccountModel
 
     /**
      * @param int $idAccount
-     * @return void
+     * @return bool
      * @throws Exception
      */
     public function cancelSuspendAccount(int $idAccount): bool
@@ -181,11 +202,12 @@ class AccountModel
      * @return array
      * @throws Exception
      */
-    private function getAccountByUsername($username): array
+    private function getAccountByUsername(string $username): array
     {
         $request =
             "SELECT 
-                idAccount, 
+                idAccount,
+                accountUsername,
                 accountPassword, 
                 accountIsBanned, 
                 accountIsAdmin, 
@@ -278,16 +300,6 @@ class AccountModel
     }
 
     /**
-     * @param string $password
-     * @param string $hash
-     * @return bool
-     */
-    public function isPasswordMatchTheHash(string $password, string $hash): bool
-    {
-        return password_verify($password, $hash);
-    }
-
-    /**
      * @param $username
      * @return bool
      * @throws Exception
@@ -295,9 +307,11 @@ class AccountModel
     public function isUsernameExist($username): bool
     {
         $result = $this->getAccountIdByUsername($username);
+
         if (is_null($result)) {
             return false;
         }
+
         return true;
     }
 
