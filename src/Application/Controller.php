@@ -156,23 +156,4 @@ class Controller
         $this->setViewComponent("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
 
     }
-
-    /**
-     * Recursively escapes HTML special characters in a string or array.
-     *
-     * @param array|string|float|int|bool|null $data The input data to be escaped. Can be a string or an array.
-     *                            Strings are directly escaped, and arrays are processed recursively.
-     *
-     * @return void
-     */
-    protected function escapeHtmlRecursive(array|string|float|int|bool|null &$data): void
-    {
-        if (is_string($data)) {
-            $data = htmlspecialchars($data);
-        } else if (is_array($data)) {
-            array_walk($data, function (&$value) {
-                $this->escapeHtmlRecursive($value);
-            });
-        }
-    }
 }

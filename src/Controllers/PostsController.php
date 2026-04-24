@@ -75,8 +75,6 @@ class PostsController extends Controller
             $contentParams["softwares"] = [];
 
             foreach ($softwares as $software) {
-                $this->escapeHtmlRecursive($software);
-
                 $article = [];
                 $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
                 $article["softwareName"] = $software["softwareName"];
@@ -137,8 +135,6 @@ class PostsController extends Controller
             return $errorsController->error403();
         }
 
-        $this->escapeHtmlRecursive($software);
-
         $contentParams = [];
         $contentParams["software"] = [];
         $contentParams["software"]["idPost"] = $software["idPost"];
@@ -193,8 +189,6 @@ class PostsController extends Controller
             $contentParams["anchors"] = [];
 
             foreach ($anchors as $anchor) {
-                $this->escapeHtmlRecursive($anchor);
-
                 $article = [];
                 $article["idPost"] = $anchor["idPost"];
                 $article["href"] = $this->constructHref("posts", "showAnchor", $anchor["idPost"]);
@@ -248,7 +242,6 @@ class PostsController extends Controller
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Le nom du logiciel n'est pas valide.";
                 $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (maximum 100 caractères).";
-                $this->escapeHtmlRecursive($softwareName);
                 $contentParams["softwareName"] = $softwareName;
             }
 
@@ -258,7 +251,6 @@ class PostsController extends Controller
                 }
                 $notificationParams["error"][] = "La description du logiciel n'est pas valide.";
                 $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (minimum 10 caractères, maximum 2000 caractères).";
-                $this->escapeHtmlRecursive($softwareSummary);
                 $contentParams["softwareSummary"] = $softwareSummary;
             }
 
@@ -410,7 +402,6 @@ class PostsController extends Controller
         }
 
         $idPost = htmlspecialchars($idPost);
-        $this->escapeHtmlRecursive($postStatus);
 
         $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
 
@@ -462,8 +453,6 @@ class PostsController extends Controller
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
         }
-
-        $this->escapeHtmlRecursive($postStatus);
 
         $part = $this->renderHtmlComponent("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
 

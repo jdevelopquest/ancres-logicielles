@@ -42,7 +42,6 @@ class AccountsController extends Controller
             if (!$accountModel->isUsernameMatchPattern($username)) {
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Le pseudo doit contenir entre 3 et 200 caractères, et ne doit pas contenir de caractères spéciaux.";
-                $this->escapeHtmlRecursive($username);
                 $contentParams["accountUsername"] = $username;
             }
 
@@ -119,7 +118,6 @@ class AccountsController extends Controller
             if (empty($account)) {
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Pseudo ou Mot de passe incorrect.";
-                $this->escapeHtmlRecursive($username);
                 $contentParams["accountUsername"] = $username;
             } else if ($account["accountIsBanned"]) {
                 $notificationParams["error"] = [];
@@ -132,8 +130,6 @@ class AccountsController extends Controller
                 $notificationParams["success"][] = "Connexion réussie.";
 
                 $contentParams["login_success"] = true;
-
-                $this->escapeHtmlRecursive($account);
 
                 $this->setupUserSession($account);
             }

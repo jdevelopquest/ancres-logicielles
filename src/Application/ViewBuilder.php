@@ -2,6 +2,10 @@
 
 namespace App\Application;
 
+/**
+ * Class responsible for building and rendering views, managing components,
+ * and processing nested layouts for generating dynamic HTML content.
+ */
 class ViewBuilder
 {
     private array $viewComponents = [];
@@ -18,11 +22,11 @@ class ViewBuilder
     }
 
     /**
-     * Renders a component and returns its content as a string.
+     * Renders a component by including a PHP template file and passing sanitized parameters to it.
      *
-     * @param string $templatePath The file path of the partial to be included. Defaults to an empty string.
-     * @param array $parameters An associative array of parameters to extract and make available within the scope of the partial. Defaults to an empty array.
-     * @return string The rendered content of the partial file, or an empty string if the file does not exist.
+     * @param string $templatePath The path to the template file to be included. Defaults to an empty string.
+     * @param array $parameters An associative array of parameters to pass to the template. Default is an empty array.
+     * @return string The rendered output of the template. Returns an empty string if the template file does not exist.
      */
     public function renderComponent(string $templatePath = "", array $parameters = []): string
     {
@@ -30,6 +34,12 @@ class ViewBuilder
 
         if (file_exists($filePath)) {
             if (isset($parameters)) {
+                // sanitize
+                array_walk_recursive($parameters, function (&$value) {
+                    if (is_string($value)) {
+                        $value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    }
+                });
                 extract($parameters);
             }
 
