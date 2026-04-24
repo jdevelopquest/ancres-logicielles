@@ -177,6 +177,10 @@ class PostsController extends Controller
                 $article["anchorContent"] = $anchor["anchorContent"];
                 $article["status"] = $this->getPostStatusParams($anchor);
 
+                if ($this->userIsModerator() || $this->userIsAdmin()) {
+                    $article["anchorModTools"] = $this->getPostModToolsParams($anchor);
+                }
+
                 $contentParams["anchors"][] = $article;
             }
         }
@@ -309,17 +313,12 @@ class PostsController extends Controller
         $idPost = htmlspecialchars($idPost);
         $this->escapeHtmlRecursive($postStatus);
 
-        $partParams = [];
-        $partParams["software"] = [];
-        $partParams["software"]["idPost"] = $idPost;
-        $partParams["softwareModTools"] = $this->getPostModToolsParams($postStatus);
-
-        $part = $this->renderHtmlPartial("layouts/postbox-mod-tools", $partParams);
+        $part = $this->renderHtmlPartial("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
 
         if (empty($part)) {
             $this->logMessage("updatePostboxModTool le rendu est vide");
             $this->logData($idPost);
-            $this->logData($partParams);
+            $this->logData($postStatus);
 
             $errorsController = new ErrorsController($this->request, $this->response);
             return $errorsController->error503ByAjax();
