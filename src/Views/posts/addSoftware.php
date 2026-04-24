@@ -7,7 +7,7 @@
 
     <?php if (!isset($success)): ?>
         <form class="form content__subcontent"
-              action="index.php?ctr=posts&act=addSoftware" method="post" name="addSoftware" id="addSoftware">
+              action="/posts/addSoftware" method="post" name="addSoftware" id="addSoftware">
 
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="softwareName">Nom du logiciel</label>

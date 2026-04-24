@@ -48,13 +48,18 @@ class Request
     public function __construct()
     {
         $this->method = $_SERVER["REQUEST_METHOD"];
-        $this->path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+        $this->path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) ?? "/";
         $this->query = parse_url($_SERVER["REQUEST_URI"], PHP_URL_QUERY) ?? "";
         $this->params = array_merge($_GET, $_POST);
         $this->body = file_get_contents("php://input");
         $this->files = $_FILES;
         $this->headers = getallheaders();
         $this->cookies = $_COOKIE;
+
+        if (preg_match("#/id=\d+$#", $this->path)) {
+            $id = explode("=", $this->path)[1];
+            $this->params = array_merge($this->params, ["id" => $id]);
+        }
     }
 
     /**

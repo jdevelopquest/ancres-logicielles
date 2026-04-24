@@ -1,24 +1,14 @@
 <?php
 return [
 
-    // home
-    [
-        "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^$/",
-        "methodPattern" => "/^(GET)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
-        "controller" => "App\Controllers\PostsController",
-        "action" => "indexSoftwares"
-    ],
-
+// home
 // posts indexSoftwares
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=indexSoftwares$/",
-        "methodPattern" => "/^(GET)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
+        "pathPattern" => "#^(\/|\/posts\/indexSoftwares)$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET)$#",
+        "rolePattern" => "#^(guest|registered|moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "indexSoftwares"
     ],
@@ -26,10 +16,10 @@ return [
 // posts showSoftware
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=showSoftware&id=\d+$/",
-        "methodPattern" => "/^(GET)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
+        "pathPattern" => "#^\/posts/showSoftware/id=\d+$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET)$#",
+        "rolePattern" => "#^(guest|registered|moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "showSoftware"
     ],
@@ -37,10 +27,10 @@ return [
 // posts addSoftware
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=addSoftware$/",
-        "methodPattern" => "/^(GET|POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/addSoftware$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET|POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "addSoftware"
     ],
@@ -48,10 +38,10 @@ return [
 // posts unpublish
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=unpublish$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/unpublish$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "unpublish"
     ],
@@ -59,10 +49,10 @@ return [
 // posts publish
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=publish$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/publish$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "publish"
     ],
@@ -70,10 +60,10 @@ return [
 // posts ban
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=ban$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/ban$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "ban"
     ],
@@ -81,10 +71,10 @@ return [
 // posts unban
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=unban$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/unban$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "unban"
     ],
@@ -92,10 +82,10 @@ return [
 // posts updatePostboxModTool
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=updatePostboxModTool$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/updatePostboxModTool$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "updatePostboxModTool"
     ],
@@ -103,10 +93,10 @@ return [
 // posts updateSoftwareStatus
     [
         "isAjax" => true,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=posts&act=updateSoftwareStatus$/",
-        "methodPattern" => "/^(POST)$/",
-        "rolePattern" => "/^(moderator|admin)$/",
+        "pathPattern" => "#^/posts/updateSoftwareStatus$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(POST)$#",
+        "rolePattern" => "#^(moderator|admin)$#",
         "controller" => "App\Controllers\PostsController",
         "action" => "updateSoftwareStatus"
     ],
@@ -114,10 +104,10 @@ return [
 // supports about
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=supports&act=about$/",
-        "methodPattern" => "/^(GET)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
+        "pathPattern" => "#^/supports/about$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET)$#",
+        "rolePattern" => "#^(guest|registered|moderator|admin)$#",
         "controller" => "App\Controllers\SupportsController",
         "action" => "about"
     ],
@@ -125,10 +115,10 @@ return [
 // supports policies
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=supports&act=policies$/",
-        "methodPattern" => "/^(GET)$/",
-        "rolePattern" => "/^(guest|registered|moderator|admin)$/",
+        "pathPattern" => "#^/supports/policies$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET)$#",
+        "rolePattern" => "#^(guest|registered|moderator|admin)$#",
         "controller" => "App\Controllers\SupportsController",
         "action" => "policies"
     ],
@@ -136,10 +126,10 @@ return [
 // accounts signup
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=accounts&act=signup$/",
-        "methodPattern" => "/^(GET|POST)$/",
-        "rolePattern" => "/^(guest)$/",
+        "pathPattern" => "#^/accounts/signup$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET|POST)$#",
+        "rolePattern" => "#^(guest)$#",
         "controller" => "App\Controllers\AccountsController",
         "action" => "signup"
     ],
@@ -147,10 +137,10 @@ return [
 // accounts login
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=accounts&act=login$/",
-        "methodPattern" => "/^(GET|POST)$/",
-        "rolePattern" => "/^(guest)$/",
+        "pathPattern" => "#^/accounts/login$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET|POST)$#",
+        "rolePattern" => "#^(guest)$#",
         "controller" => "App\Controllers\AccountsController",
         "action" => "login"
     ],
@@ -158,10 +148,10 @@ return [
 // accounts logout
     [
         "isAjax" => false,
-        "pathPattern" => "/^(\/|\/public\/index\.php)$/",
-        "queryPattern" => "/^ctr=accounts&act=logout$/",
-        "methodPattern" => "/^(GET|POST)$/",
-        "rolePattern" => "/^(registered|moderator|admin)$/",
+        "pathPattern" => "#^/accounts/logout$#",
+        "queryPattern" => "#^$#",
+        "methodPattern" => "#^(GET|POST)$#",
+        "rolePattern" => "#^(registered|moderator|admin)$#",
         "controller" => "App\Controllers\AccountsController",
         "action" => "logout"
     ],

@@ -7,7 +7,7 @@
 
     <?php if (!isset($signup_success)): ?>
         <form class="form content__subcontent"
-              action="index.php?ctr=accounts&act=signup" method="post" name="signup" id="signup">
+              action="/accounts/signup" method="post" name="signup" id="signup">
 
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="accountUsername">Pseudo</label>

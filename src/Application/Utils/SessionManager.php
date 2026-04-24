@@ -20,7 +20,7 @@ trait SessionManager
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
             $_SESSION["user"]["id"] = "none";
-            $_SESSION["user"]["previousPage"] = $this->request->cookies["previousPage"] ?? "";
+            $_SESSION["user"]["previousPage"] = "";
         }
     }
 
@@ -37,7 +37,7 @@ trait SessionManager
      *
      * @return void
      */
-    protected function setupUserSession(array $account): void
+    protected function setupRegisteredUserSession(array $account): void
     {
         if (!isset($_SESSION["user"])) {
             $this->initSession();

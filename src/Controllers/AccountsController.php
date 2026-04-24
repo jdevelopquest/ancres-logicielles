@@ -131,7 +131,7 @@ class AccountsController extends Controller
 
                 $contentParams["login_success"] = true;
 
-                $this->setupUserSession($account);
+                $this->setupRegisteredUserSession($account);
             }
         }
 

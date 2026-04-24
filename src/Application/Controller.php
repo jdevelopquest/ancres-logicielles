@@ -3,6 +3,7 @@
 namespace App\Application;
 
 use App\Application\Utils\ConstructMenu;
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 
 class Controller
@@ -129,11 +130,6 @@ class Controller
         if ($previousPage) {
             $this->setPageParam("previousPage", $previousPage);
         }
-
-        // met à jour page précédente
-        $previousPage = $this->request->path . "?" . $this->request->query;
-
-        $this->setUserPreviousPage($previousPage);
 
         // menu hamburger et menu tiny
         $this->setupHamburgerAndTinyParams();

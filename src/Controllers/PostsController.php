@@ -96,7 +96,16 @@ class PostsController extends Controller
 
         $this->setViewComponent("content", "posts/indexSoftwares", $contentParams, "page");
 
-        return $this->getHtmlResponse($this->renderHtmlPage());
+        //return $this->getHtmlResponse($this->renderHtmlPage());
+        $this->response->addHeader("Content-Type: text/html");
+
+        $this->response->setCode(200);
+
+        $this->response->setBody($this->renderHtmlPage());
+
+        $this->response->send();
+
+        exit();
     }
 
     /**

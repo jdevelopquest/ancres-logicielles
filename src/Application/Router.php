@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Application\Utils\Logger;
 use App\Application\Utils\SessionManager;
 
 class Router
@@ -61,16 +62,20 @@ class Router
     /**
      * Matches a given request against the defined routes and returns the matching route.
      *
-     * @param Request $request The request object to be matched against the route patterns.
+     * @param Request $request The request objects to be matched against the route patterns.
      * @return array|bool Returns the matching route as an array if found, or false if no route matches.
      */
     public function match(Request $request): array|bool
     {
+        $logger = new Logger();
+        $logger->info("Matching request: " . " path=" . $request->path . " query=" . $request->query);
         foreach ($this->routes as $route) {
-//            if (!preg_match($route["pathPattern"], $request->getPath())) {
-//                continue;
-//            }
+            // Vérifier d'abord le chemin
+            if (!preg_match($route["pathPattern"], $request->path)) {
+                continue;
+            }
 
+            // Puis la requête
             if (!preg_match($route["queryPattern"], $request->query)) {
                 continue;
             }

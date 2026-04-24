@@ -7,7 +7,7 @@
 
     <?php if (!isset($login_success)): ?>
         <form class="form content__subcontent"
-              action="index.php?ctr=accounts&act=login" method="post" name="login" id="login">
+              action="/accounts/login" method="post" name="login" id="login">
 
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="accountUsername">Pseudo</label>

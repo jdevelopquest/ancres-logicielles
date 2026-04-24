@@ -83,11 +83,21 @@ class Dispatcher
 
                 // Tout est bon, si la méthode néssécite un argument, il faut lui passer
                 $action = $route["action"];
-                $response = isset($this->request->params["id"]) ? $controller->$action($this->request->params["id"]) : $controller->$action();
+                $id =$this->request->params["id"] ?? null;
+
+                $response = isset($id) ? $controller->$action($id) : $controller->$action();
+
                 // ajout du jeton
                 $this->setSessionToken();
+
+                // met à jour page précédente
+                if (!$this->request->isAjax()) {
+                    $query = $this->request->query;
+                    $previousPage = $this->request->path . ($query !== "" ? ("?" . $query) : "");
+                    $this->setUserPreviousPage($previousPage);
+                }
+
                 $response->send();
-                exit();
             } catch (Exception $exception) {
                 $log = new Logger();
                 $log->debug($exception->getMessage());
@@ -95,7 +105,6 @@ class Dispatcher
                 $log->debug($exception->getTraceAsString());
 
                 $this->triggerError503();
-                exit();
             }
         }
     }
