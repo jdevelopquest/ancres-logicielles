@@ -71,19 +71,19 @@ Points clés techniques :
 
 ## Prérequis
 - Docker et Docker Compose (v2) installés.
-- OS compatible (Linux, macOS, Windows avec WSL2 recommandé).
+- OS compatible (Linux) (à tester macOS, Windows).
 
 
 ## Démarrage rapide (Docker)
 1 : Cloner le dépôt :
-- git clone <url-du-depot>
+- git clone https://github.com/jdevelopquest/ancres-logicielles.git
 - cd ancres-logicielles
 
-2 : Lancer la stack :
+2 : Créer et lancer les conteneurs Docker :
 - docker compose up --build --wait --remove-orphans
 
 3 : Accéder à l’application :
-- https://localhost:8443/
+- https://localhost:8443/ (accepter le certificat auto-signé)
 
 4 : Arrêt et nettoyage du volume database (ATTENTION, supprime les données) :
 - docker compose down -v --remove-orphans

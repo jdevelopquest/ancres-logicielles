@@ -1,16 +1,13 @@
 services:
   appserver:
     build:
-      context: deployment/frankenphp
+      context: "deployment/frankenphp"
     env_file:
-      - deployment/default.env
+      - "deployment/default.env"
     volumes:
-      - ./app:/app:Z
+      - "./app:/app"
     ports:
-      - target: 443
-        host_ip: 127.0.0.1
-        published: 8443
-        protocol: tcp
+      - "127.0.0.1:8443:443"
     networks:
       - app-internal
     depends_on:
@@ -19,16 +16,16 @@ services:
 
   database:
     build:
-      context: deployment/database
+      context: "deployment/database"
     env_file:
-      - deployment/default.env
+      - "deployment/default.env"
     volumes:
-      - data-database:/var/lib/mysql
+      - "database:/var/lib/mysql"
     networks:
       - app-internal
 
 volumes:
-  data-database:
+  database:
 
 networks:
   app-internal: {}
