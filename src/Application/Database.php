@@ -99,8 +99,6 @@ class Database
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());
         }
-
-        return false;
     }
 
     /**
