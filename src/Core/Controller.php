@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application;
+namespace App\Core;
 
-use App\Application\Utils\ConstructHref;
-use App\Application\Utils\Menu;
-use App\Application\Utils\SessionManager;
+use App\Utils\ConstructHref;
+use App\Utils\Menu;
+use App\Utils\SessionManager;
 
 class Controller
 {

@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Application\Controller;
-use App\Application\Request;
-use App\Application\Response;
-use App\Application\Utils\Logger;
-use App\Application\Utils\SessionManager;
+use App\Core\Controller;
+use App\Core\Request;
+use App\Core\Response;
 use App\Models\AccountModel;
+use App\Utils\Logger;
+use App\Utils\SessionManager;
 use Exception;
 
 class AccountsController extends Controller

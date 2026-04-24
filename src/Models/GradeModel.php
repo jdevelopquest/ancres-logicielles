@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Application\Database;
+use App\Core\Database;
 use Exception;
 
 /**

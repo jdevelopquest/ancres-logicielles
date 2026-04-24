@@ -17,11 +17,11 @@ spl_autoload_register(
     }
 );
 
-use App\Application\Application;
-use App\Application\Request;
-use App\Application\Response;
-use App\Application\Utils\Logger;
 use App\Controllers\ErrorsController;
+use App\Core\Application;
+use App\Core\Request;
+use App\Core\Response;
+use App\Utils\Logger;
 
 //
 set_exception_handler(

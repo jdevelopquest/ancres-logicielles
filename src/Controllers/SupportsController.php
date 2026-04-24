@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Application\Controller;
-use App\Application\Response;
+use App\Core\Controller;
+use App\Core\Response;
 
 class SupportsController extends Controller
 {

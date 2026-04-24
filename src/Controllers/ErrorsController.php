@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Application\Controller;
-use App\Application\Response;
+use App\Core\Controller;
+use App\Core\Response;
 
 class ErrorsController extends Controller
 {

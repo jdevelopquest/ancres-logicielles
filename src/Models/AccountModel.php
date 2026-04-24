@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Application\Configure;
-use App\Application\Database;
+use App\Core\Configure;
+use App\Core\Database;
 use Exception;
 
 /**

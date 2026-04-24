@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application;
+namespace App\Core;
 
-use App\Application\Utils\Logger;
+use App\Utils\Logger;
 
 /**
  * Class responsible for building and rendering views, managing components,
