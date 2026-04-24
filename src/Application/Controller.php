@@ -12,9 +12,7 @@ class Controller
     use ConstructMenu;
     use LogPrinter;
 
-    protected ViewBuilder $viewBuilder;
-    protected array $pageParams = [];
-    private array $pagePartials = [];
+    private ViewBuilder $viewBuilder;
 
     public function __construct(protected Request $request, protected Response $response)
     {
@@ -60,23 +58,17 @@ class Controller
     }
 
     /**
-     * Configures a page partial with the specified parameters and stores it for rendering.
+     * Configures a view component with the specified name, layout, parameters, and optional write location.
      *
-     * @param string $name The name of the partial to identify it.
-     * @param string $layout The layout template associated with the partial.
-     * @param array $params An array of parameters to be passed to the partial.
-     * @param string|null $writeIn Optional target area for rendering the partial. Defaults to an empty string.
-     * @return void
+     * @param string $name The name of the view component to set.
+     * @param string $layout The layout template to use for the view component.
+     * @param array $params An associative array of parameters to pass to the view component.
+     * @param string|null $writeIn Optional. The location where the view component should be rendered. Defaults to an empty string.
+     * @return void This method does not return a value.
      */
-    protected function setPagePartial(string $name, string $layout, array $params, ?string $writeIn = ""): void
+    protected function setViewComponent(string $name, string $layout, array $params, ?string $writeIn = ""): void
     {
-        $this->pagePartials[$name] = [
-            "name" => $name,
-            "layout" => $layout,
-            "params" => $params,
-            "writeIn" => $writeIn,
-            "html" => ""
-        ];
+        $this->viewBuilder->setViewComponent($name, $layout, $params, $writeIn);
     }
 
     /**
@@ -86,9 +78,9 @@ class Controller
      * @param array $parameters An associative array of parameters to pass to the partial view.
      * @return string The rendered HTML content of the partial view.
      */
-    protected function renderHtmlPartial(string $partialFilePath = "", array $parameters = []): string
+    protected function renderHtmlComponent(string $partialFilePath = "", array $parameters = []): string
     {
-        return $this->viewBuilder->renderPartial($partialFilePath, $parameters);
+        return $this->viewBuilder->renderComponent($partialFilePath, $parameters);
     }
 
     /**
@@ -100,60 +92,26 @@ class Controller
     {
         $this->prepareHtmlPageForRender();
 
-        foreach ($this->pagePartials as $name => $part) {
-            $this->viewBuilder->setPagePartial(
-                $part["name"],
-                $part["layout"],
-                $part["params"],
-                $part["writeIn"]
-            );
+        return $this->viewBuilder->renderHtmlPage();
+    }
+
+    /**
+     * Sets a parameter for the page by assigning a key-value pair to the view component.
+     *
+     * This method allows specifying custom parameters that can be accessed within the view,
+     * enabling dynamic control over content or configuration for the page.
+     *
+     * @param string $key The parameter name to be set.
+     * @param string $value The value to associate with the specified parameter name.
+     * @return void This method does not return a value.
+     */
+    protected function setPageParam(string $key, string $value): void
+    {
+        if (!$this->viewBuilder->issetViewComponentParam("page")) {
+            $this->viewBuilder->setViewComponent("page", "layouts/page", ["title" => "Ancres Logicielles"], null);
         }
 
-        return $this->viewBuilder->renderHtmlPage($this->pageParams);
-    }
-
-    /**
-     * Recursively escapes HTML special characters in a string or array.
-     *
-     * @param array|string|float|int|bool|null $data The input data to be escaped. Can be a string or an array.
-     *                            Strings are directly escaped, and arrays are processed recursively.
-     *
-     * @return void
-     */
-    protected function escapeHtmlRecursive(array|string|float|int|bool|null &$data): void
-    {
-        if (is_string($data)) {
-            $data = htmlspecialchars($data);
-        } else if (is_array($data)) {
-            array_walk($data, function (&$value) {
-                $this->escapeHtmlRecursive($value);
-            });
-        }
-    }
-
-    /**
-     * Sets a parameter for the page with the specified name and value.
-     *
-     * @param string $name The key or name of the page parameter to set.
-     * @param string $value The value to assign to the specified page parameter.
-     *
-     * @return void
-     */
-    protected function setPageParam(string $name, string $value): void
-    {
-        $this->pageParams[$name] = $value;
-    }
-
-    /**
-     * Checks if a specific page parameter is set.
-     *
-     * @param string $name The name of the parameter to check for existence.
-     *
-     * @return bool Returns true if the parameter exists, false otherwise.
-     */
-    protected function issetPageParam(string $name): bool
-    {
-        return isset($this->pageParams[$name]);
+        $this->viewBuilder->addViewComponentParam("page", $key, $value);
     }
 
     /**
@@ -179,11 +137,6 @@ class Controller
 
         $this->setUserPreviousPage($previousPage);
 
-        // titre de la page
-        if ($this->issetPageParam("title")) {
-            $this->setPageParam("title", "Ancres Logicielles");
-        }
-
         // menu hamburger et menu tiny
         $this->setupHamburgerAndTinyParams();
     }
@@ -201,8 +154,27 @@ class Controller
         $menuHamburgerParams = $this->constructMenuHamburgerParams();
         $menuTinyParams = $this->constructMenuTinyParams();
 
-        $this->setPagePartial("menu-hamburger", "layouts/menu-hamburger", $menuHamburgerParams, "page");
-        $this->setPagePartial("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
+        $this->setViewComponent("menu-hamburger", "layouts/menu-hamburger", $menuHamburgerParams, "page");
+        $this->setViewComponent("menu-tiny", "layouts/menu-tiny", $menuTinyParams, "page");
 
+    }
+
+    /**
+     * Recursively escapes HTML special characters in a string or array.
+     *
+     * @param array|string|float|int|bool|null $data The input data to be escaped. Can be a string or an array.
+     *                            Strings are directly escaped, and arrays are processed recursively.
+     *
+     * @return void
+     */
+    protected function escapeHtmlRecursive(array|string|float|int|bool|null &$data): void
+    {
+        if (is_string($data)) {
+            $data = htmlspecialchars($data);
+        } else if (is_array($data)) {
+            array_walk($data, function (&$value) {
+                $this->escapeHtmlRecursive($value);
+            });
+        }
     }
 }

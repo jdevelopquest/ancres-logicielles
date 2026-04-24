@@ -13,7 +13,7 @@
                 </h3>
 
                 <div class="postbox postbox-status postbox-status-<?= $software["idPost"] ?>">
-                    <?= $this->renderPartial("layouts/postbox-status", ["postStatus" => $software["status"]]) ?>
+                    <?= $this->renderComponent("layouts/postbox-status", ["postStatus" => $software["status"]]) ?>
                 </div>
 
             </div>
@@ -27,7 +27,7 @@
             <?php if (isset($softwareModTools)): ?>
                 <aside class="menu">
                     <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= $software["idPost"] ?>">
-                        <?= $this->renderPartial("layouts/postbox-mod-tools", ["idPost" => $software["idPost"], "modTools" => $softwareModTools]) ?>
+                        <?= $this->renderComponent("layouts/postbox-mod-tools", ["idPost" => $software["idPost"], "modTools" => $softwareModTools]) ?>
                     </div>
                 </aside>
             <?php endif; ?>
@@ -59,7 +59,7 @@
                     </h3>
 
                     <div class="postbox postbox-status postbox-status-<?= $anchor["idPost"] ?>">
-                        <?= $this->renderPartial("layouts/postbox-status", ["postStatus" => $anchor["status"]]) ?>
+                        <?= $this->renderComponent("layouts/postbox-status", ["postStatus" => $anchor["status"]]) ?>
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
                 <?php if (isset($anchor["anchorModTools"])): ?>
                     <aside class="menu">
                         <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= $anchor["idPost"] ?>">
-                            <?= $this->renderPartial("layouts/postbox-mod-tools", ["idPost" => $anchor["idPost"], "modTools" => $anchor["anchorModTools"]]) ?>
+                            <?= $this->renderComponent("layouts/postbox-mod-tools", ["idPost" => $anchor["idPost"], "modTools" => $anchor["anchorModTools"]]) ?>
                         </div>
                     </aside>
                 <?php endif; ?>

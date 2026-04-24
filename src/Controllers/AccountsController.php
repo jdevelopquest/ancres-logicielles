@@ -80,8 +80,8 @@ class AccountsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Inscription");
 
-        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
-        $this->setPagePartial("content", "accounts/signup", $contentParams, "page");
+        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent("content", "accounts/signup", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -137,8 +137,8 @@ class AccountsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Connexion");
 
-        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
-        $this->setPagePartial("content", "accounts/login", $contentParams, "page");
+        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent("content", "accounts/login", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -162,7 +162,7 @@ class AccountsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Déconnexion");
 
-        $this->setPagePartial("content", "accounts/logout", [], "page");
+        $this->setViewComponent("content", "accounts/logout", [], "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }

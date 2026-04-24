@@ -96,7 +96,7 @@ class PostsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
 
-        $this->setPagePartial("content", "posts/indexSoftwares", $contentParams, "page");
+        $this->setViewComponent("content", "posts/indexSoftwares", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -208,9 +208,9 @@ class PostsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : " . $software["softwareName"] ?? "Nom du logiciel inconnu");
 
-        $this->setPagePartial("content", "posts/showSoftware", $contentParams, "page");
+        $this->setViewComponent("content", "posts/showSoftware", $contentParams, "page");
 
-        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -281,9 +281,9 @@ class PostsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Ajouter une fiche logicielle");
 
-        $this->setPagePartial("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
 
-        $this->setPagePartial("content", "posts/addSoftware", $contentParams, "page");
+        $this->setViewComponent("content", "posts/addSoftware", $contentParams, "page");
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -409,7 +409,7 @@ class PostsController extends Controller
         $idPost = htmlspecialchars($idPost);
         $this->escapeHtmlRecursive($postStatus);
 
-        $part = $this->renderHtmlPartial("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
+        $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
 
         if (empty($part)) {
             $this->logMessage("updatePostboxModTool le rendu est vide");
@@ -465,7 +465,7 @@ class PostsController extends Controller
         $idPost = htmlspecialchars($idPost);
         $this->escapeHtmlRecursive($postStatus);
 
-        $part = $this->renderHtmlPartial("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
+        $part = $this->renderHtmlComponent("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
 
         if (empty($part)) {
             $this->logMessage("updateSoftwareStatus le rendu est vide");
