@@ -225,7 +225,7 @@ trait SessionManager
         if (empty($_SESSION["token"])) {
             $this->logMessage("Impossible de générer un jeton de session");
         } else {
-            $this->logMessage("Jeton de session généré");
+//            $this->logMessage("Jeton de session généré");
             $this->response->addCookie(
                 'token',
                 $_SESSION["token"],

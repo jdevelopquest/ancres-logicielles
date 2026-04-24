@@ -56,24 +56,19 @@ function sendPostModAction(params) {
             }
             // Il n'y a pas de données à récupérer,
             // mettre à jour les status et la barre d'outils
-            getUpdatePostboxModTool(idPost);
-            // Ajout d'un temps d'attente pour mettre à jour le cookie token parce que l'enchaîne des actions ne permet pas de mettre à jour le cookie token par le navigateur
-            // todo : régler le problème de mise à jour du cookie token
-            setTimeout(() => {
-                getUpdateSoftwareStatus(idPost);
-            }, 100);
+            getUpdatePostboxModTool(idPost).then(r => getUpdateSoftwareStatus(idPost));
         })
         .catch(error => {
             // console.error('Il y a eu un problème avec la requête fetch:', error);
         });
 }
 
-function getUpdatePostboxModTool(idPost) {
+async function getUpdatePostboxModTool(idPost) {
     const body = {
         'idPost': idPost,
     };
     const url = `index.php?ctr=posts&act=updatePostboxModTool`;
-    fetch(
+    await fetch(
         url,
         {
             method: 'POST',
@@ -97,12 +92,12 @@ function getUpdatePostboxModTool(idPost) {
         });
 }
 
-function getUpdateSoftwareStatus(idPost) {
+async function getUpdateSoftwareStatus(idPost) {
     const body = {
         'idPost': idPost,
     };
     const url = `index.php?ctr=posts&act=updateSoftwareStatus`;
-    fetch(
+    await fetch(
         url,
         {
             method: 'POST',
