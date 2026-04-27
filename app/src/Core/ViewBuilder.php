@@ -65,14 +65,8 @@ class ViewBuilder
     private function sanitizeParameters(array $parameters): array
     {
         array_walk_recursive($parameters, function (&$value): void {
-            if (is_int($value)) {
-                $value = (string)$value;
-            } elseif (is_bool($value)) {
-                $value = $value ? "true" : "false";
-            } elseif ($value === null) {
-                $value = "null";
-            } elseif (is_string($value)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
+            if (is_string($value)) {
+                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
             }
         });
 
