@@ -18,7 +18,7 @@
                        minlength="3"
                        maxlength="200"
                        pattern="^[a-zA-Z0-9]{3,200}$"
-                       value="<?= $accountUsername ?? "" ?>"/>
+                       value="<?= htmlspecialchars($accountUsername ?? "") ?>"/>
             </div>
 
             <div class="form__subform form__subform-v regular">

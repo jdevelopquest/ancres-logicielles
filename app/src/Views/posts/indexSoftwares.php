@@ -7,9 +7,13 @@
         <?php foreach ($menuModTools as $submenuName => $submenu): ?>
             <nav class="menu__submenu menu__submenu-h menu__submenu-r">
                 <?php foreach ($submenu as $item): ?>
-                    <a class="menu__item menu__item-clickable prominent" href="<?= $item["href"] ?>"
-                       title="<?= $item["title"] ?>">
-                        <span class="prominent__icon icon-<?= $item["icon"] ?>"></span>
+                    <a class="menu__item menu__item-clickable prominent" href="<?= htmlspecialchars(
+                        $item["href"],
+                    ) ?>"
+                       title="<?= htmlspecialchars($item["title"]) ?>">
+                        <span class="prominent__icon icon-<?= htmlspecialchars(
+                            $item["icon"],
+                        ) ?>"></span>
                     </a>
                 <?php endforeach; ?>
             </nav>
@@ -26,11 +30,19 @@
                 <?php foreach ($softwares as $software): ?>
                     <div class="menu__submenu menu__submenu-v">
 
-                        <a class="menu__item menu__item-clickable prominent" href="<?= $software["href"] ?>">
-                            <span class="prominent__text"><?= $software["softwareName"] ?></span>
+                        <a class="menu__item menu__item-clickable prominent" href="<?= htmlspecialchars(
+                            $software["href"],
+                        ) ?>">
+                            <span class="prominent__text"><?= htmlspecialchars(
+                                $software["softwareName"],
+                            ) ?></span>
                             <?php foreach ($software["status"] as $status): ?>
-                                <span class="prominent__icon icon-<?= $status["icon"] ?>"
-                                      title="<?= $status["title"] ?>"></span>
+                                <span class="prominent__icon icon-<?= htmlspecialchars(
+                                    $status["icon"],
+                                ) ?>"
+                                      title="<?= htmlspecialchars(
+                                          $status["title"],
+                                      ) ?>"></span>
                             <?php endforeach; ?>
                         </a>
 

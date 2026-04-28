@@ -18,7 +18,7 @@
                        minlength="1"
                        maxlength="100"
                        pattern="^[\p{L}\p{N}\s\p{P}\p{S}]{1,100}$"
-                       value="<?= $softwareName ?? "" ?>"/>
+                       value="<?= htmlspecialchars($softwareName ?? "") ?>"/>
             </div>
 
             <div class="form__subform form__subform-v regular">
@@ -27,7 +27,9 @@
                           name="softwareSummary"
                           id="softwareSummary"
                           minlength="10"
-                          maxlength="2000"><?= $softwareSummary ?? null ?></textarea>
+                          maxlength="2000"><?= htmlspecialchars(
+                              $softwareSummary ?? null,
+                          ) ?></textarea>
             </div>
 
             <div class="form__subform prominent">
@@ -36,4 +38,3 @@
         </form>
     <?php endif; ?>
 </section>
-

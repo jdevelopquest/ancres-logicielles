@@ -9,12 +9,12 @@
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap">
     <link rel="stylesheet" href="/css/style.css">
 
-    <title><?= $title ?? "Ancres Logicielles" ?></title>
+    <title><?= htmlspecialchars($title ?? "Ancres Logicielles") ?></title>
     <meta name="description" content="Organisez, partagez et découvrez des liens web pour vos logiciels favoris.">
     <meta name="keywords"
           content="gestion de liens, partage de liens, application web collaborative, veille informationnelle, outils collaboratifs, partage de connaissances">
 </head>
-<body class="size-md <?= $theme ?? "theme-light" ?>">
+<body class="size-md <?= htmlspecialchars($theme ?? "theme-light") ?>">
 <div>
     <header class="menu" id="page-top">
         <div class="menu__submenu menu__submenu-h">
@@ -25,7 +25,9 @@
         </div>
         <div class="menu__submenu menu__submenu-h">
             <a class="menu__item menu__item-clickable prominent button-go-previous" title="Page précédente"
-               href="<?= $previousPage ?? "index.php" ?>"><span class="prominent__icon icon-go-previous"></span></a>
+               href="<?= htmlspecialchars(
+                   $previousPage ?? "index.php",
+               ) ?>"><span class="prominent__icon icon-go-previous"></span></a>
         </div>
     </header>
     <main>

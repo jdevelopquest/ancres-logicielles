@@ -5,9 +5,9 @@
     </div>
 
     <div class="regular">
-        <?php foreach ($success as $message) : ?>
+        <?php foreach ($success as $message): ?>
             <p class="regular__text">
-                <?= $message ?>
+                <?= htmlspecialchars($message) ?>
             </p>
         <?php endforeach; ?>
     </div>
@@ -21,9 +21,9 @@
     </div>
 
     <div class="regular">
-        <?php foreach ($error as $message) : ?>
+        <?php foreach ($error as $message): ?>
             <p class="regular__text">
-                <?= $message ?>
+                <?= htmlspecialchars($message) ?>
             </p>
         <?php endforeach; ?>
     </div>

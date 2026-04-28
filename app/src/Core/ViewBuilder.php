@@ -21,7 +21,8 @@ class ViewBuilder
      */
     private function constructFilePath(string $layoutFilePath): string
     {
-        return VIEWS_PATH . str_replace("/", DIRECTORY_SEPARATOR, $layoutFilePath . ".php");
+        return VIEWS_PATH .
+            str_replace("/", DIRECTORY_SEPARATOR, $layoutFilePath . ".php");
     }
 
     /**
@@ -31,13 +32,14 @@ class ViewBuilder
      * @param array $parameters An associative array of parameters to pass to the template. Default is an empty array.
      * @return string The rendered output of the template. Returns an empty string if the template file does not exist.
      */
-    public function renderComponent(string $templatePath = "errors/errors503", array $parameters = []): string
-    {
+    public function renderComponent(
+        string $templatePath = "errors/errors503",
+        array $parameters = [],
+    ): string {
         $filePath = $this->constructFilePath($templatePath);
 
         if (file_exists($filePath)) {
             if ($parameters !== []) {
-                $this->sanitizeParameters($parameters);
                 extract($parameters);
             }
 
@@ -48,7 +50,9 @@ class ViewBuilder
                 $output = ob_get_contents();
             } catch (\Throwable $e) {
                 $log = new Logger();
-                $log->debug("Fail to render component", ["exception message" => $e->getMessage()]);
+                $log->debug("Fail to render component", [
+                    "exception message" => $e->getMessage(),
+                ]);
             } finally {
                 ob_end_clean();
             }
@@ -62,17 +66,6 @@ class ViewBuilder
         return "";
     }
 
-    private function sanitizeParameters(array $parameters): array
-    {
-        array_walk_recursive($parameters, function (&$value): void {
-            if (is_string($value)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
-            }
-        });
-
-        return $parameters;
-    }
-
     /**
      * Defines a view component with the specified parameters.
      *
@@ -82,14 +75,18 @@ class ViewBuilder
      * @param string|null $writeIn Optional target area for rendering the component.
      * @return void
      */
-    public function setViewComponent(string $name, string $layout, array $params, ?string $writeIn = ""): void
-    {
+    public function setViewComponent(
+        string $name,
+        string $layout,
+        array $params,
+        ?string $writeIn = "",
+    ): void {
         $this->viewComponents[$name] = [
             "name" => $name,
             "layout" => $layout,
             "params" => $params,
             "writeIn" => $writeIn,
-            "html" => ""
+            "html" => "",
         ];
     }
 
@@ -101,8 +98,11 @@ class ViewBuilder
      * @param mixed $value The value of the parameter to add.
      * @return void
      */
-    public function addViewComponentParam(string $name, string $key, mixed $value): void
-    {
+    public function addViewComponentParam(
+        string $name,
+        string $key,
+        mixed $value,
+    ): void {
         // todo: déclencher une erreur ou renvoyer une valeur si le composant n'existe pas
         if (isset($this->viewComponents[$name])) {
             $this->viewComponents[$name]["params"][$key] = $value;
@@ -134,7 +134,10 @@ class ViewBuilder
 
         // Render all components
         foreach ($this->viewComponents as &$part) {
-            $part["html"] = $this->renderComponent($part["layout"], $part["params"]);
+            $part["html"] = $this->renderComponent(
+                $part["layout"],
+                $part["params"],
+            );
         }
 
         // Process nested templates
@@ -153,9 +156,11 @@ class ViewBuilder
      */
     private function processNestedComponents(string $dest): void
     {
-        $sources = array_keys(array_filter($this->viewComponents, function ($part) use ($dest) {
-            return $part["writeIn"] === $dest;
-        }));
+        $sources = array_keys(
+            array_filter($this->viewComponents, function ($part) use ($dest) {
+                return $part["writeIn"] === $dest;
+            }),
+        );
 
         foreach ($sources as $src) {
             $name = $this->viewComponents[$src]["name"];
@@ -165,7 +170,8 @@ class ViewBuilder
             $this->viewComponents[$dest]["html"] = str_replace(
                 "{{ $name }}",
                 $this->viewComponents[$src]["html"],
-                $this->viewComponents[$dest]["html"]);
+                $this->viewComponents[$dest]["html"],
+            );
         }
     }
 }

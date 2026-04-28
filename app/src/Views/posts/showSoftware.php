@@ -9,25 +9,45 @@
 
             <div class="prominent">
                 <h3 class="prominent__text">
-                    <span class="prominent__text"><?= $software["softwareName"] ?></span>
+                    <span class="prominent__text"><?= htmlspecialchars(
+                        $software["softwareName"],
+                    ) ?></span>
                 </h3>
 
-                <div class="postbox postbox-status postbox-status-<?= $software["idPost"] ?>">
-                    <?= $this->renderComponent("layouts/postbox-status", ["postStatus" => $software["status"]]) ?>
+                <div class="postbox postbox-status postbox-status-<?= htmlspecialchars(
+                    $software["idPost"],
+                ) ?>">
+                    <?= htmlspecialchars(
+                        $this->renderComponent("layouts/postbox-status", [
+                            "postStatus" => $software["status"],
+                        ]),
+                    ) ?>
                 </div>
 
             </div>
 
             <div class="regular">
-                <?php foreach ($software["summary"] as $summaryPart) : ?>
-                    <p class="regular__text"><?= $summaryPart ?></p>
+                <?php foreach ($software["summary"] as $summaryPart): ?>
+                    <p class="regular__text"><?= htmlspecialchars(
+                        $summaryPart,
+                    ) ?></p>
                 <?php endforeach; ?>
             </div>
 
             <?php if (isset($softwareModTools)): ?>
                 <aside class="menu">
-                    <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= $software["idPost"] ?>">
-                        <?= $this->renderComponent("layouts/postbox-mod-tools", ["idPost" => $software["idPost"], "modTools" => $softwareModTools]) ?>
+                    <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= htmlspecialchars(
+                        $software["idPost"],
+                    ) ?>">
+                        <?= htmlspecialchars(
+                            $this->renderComponent(
+                                "layouts/postbox-mod-tools",
+                                [
+                                    "idPost" => $software["idPost"],
+                                    "modTools" => $softwareModTools,
+                                ],
+                            ),
+                        ) ?>
                     </div>
                 </aside>
             <?php endif; ?>
@@ -36,7 +56,7 @@
             <div class="regular">
                 <p class="regular__text">Fiche vide !</p>
             </div>
-        <?php endif ?>
+        <?php endif; ?>
 
     </article>
 
@@ -54,23 +74,45 @@
 
                 <div class="prominent">
                     <h3 class="prominent__text">
-                        <a class="anchor" href="<?= $anchor["anchorUrl"] ?>"
-                           target="_blank"><?= $anchor["anchorUrl"] ?></a>
+                        <a class="anchor" href="<?= htmlspecialchars(
+                            $anchor["anchorUrl"],
+                        ) ?>"
+                           target="_blank"><?= htmlspecialchars(
+                               $anchor["anchorUrl"],
+                           ) ?></a>
                     </h3>
 
-                    <div class="postbox postbox-status postbox-status-<?= $anchor["idPost"] ?>">
-                        <?= $this->renderComponent("layouts/postbox-status", ["postStatus" => $anchor["status"]]) ?>
+                    <div class="postbox postbox-status postbox-status-<?= htmlspecialchars(
+                        $anchor["idPost"],
+                    ) ?>">
+                        <?= htmlspecialchars(
+                            $this->renderComponent("layouts/postbox-status", [
+                                "postStatus" => $anchor["status"],
+                            ]),
+                        ) ?>
                     </div>
                 </div>
 
                 <div class="regular">
-                    <p class="regular__text"><?= $anchor["anchorContent"] ?></p>
+                    <p class="regular__text"><?= htmlspecialchars(
+                        $anchor["anchorContent"],
+                    ) ?></p>
                 </div>
 
                 <?php if (isset($anchor["anchorModTools"])): ?>
                     <aside class="menu">
-                        <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= $anchor["idPost"] ?>">
-                            <?= $this->renderComponent("layouts/postbox-mod-tools", ["idPost" => $anchor["idPost"], "modTools" => $anchor["anchorModTools"]]) ?>
+                        <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= htmlspecialchars(
+                            $anchor["idPost"],
+                        ) ?>">
+                            <?= htmlspecialchars(
+                                $this->renderComponent(
+                                    "layouts/postbox-mod-tools",
+                                    [
+                                        "idPost" => $anchor["idPost"],
+                                        "modTools" => $anchor["anchorModTools"],
+                                    ],
+                                ),
+                            ) ?>
                         </div>
                     </aside>
                 <?php endif; ?>
@@ -89,6 +131,6 @@
 
         </article>
 
-    <?php endif ?>
+    <?php endif; ?>
 
 </section>
