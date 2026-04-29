@@ -8,36 +8,40 @@ $container-min-width: 360px;
 $container-max-width: 1440px;
 
 $size-variant: (
-        "xs": (
-                "size-unit": 1px,
-                "font-size-unit": 1.4rem,
-                "line-height-unit": 1.2,
-        ),
-        "md": (
-                "size-unit": 2px,
-                "font-size-unit": 1.5rem,
-                "line-height-unit": 1.5,
-        ),
-        "xl": (
-                "size-unit": 3px,
-                "font-size-unit": 1.6rem,
-                "line-height-unit": 2,
-        )
+    "xs": (
+        "size-unit": 1px,
+        "font-size-unit": 1.4rem,
+        "line-height-unit": 1.2,
+    ),
+    "md": (
+        "size-unit": 2px,
+        "font-size-unit": 1.5rem,
+        "line-height-unit": 1.5,
+    ),
+    "xl": (
+        "size-unit": 3px,
+        "font-size-unit": 1.6rem,
+        "line-height-unit": 2,
+    ),
 );
 
 @mixin apply-size-variant($variant) {
-  $size-unit: map.get(map.get($size-variant, $variant), "size-unit");
-  --size-xs: #{$size-unit * 2};
-  --size-sm: #{$size-unit * 4};
-  --size-md: #{$size-unit * 8};
-  --size-lg: #{$size-unit * 16};
-  --size-xl: #{$size-unit * 32};
-  $font-size-unit: map.get(map.get($size-variant, $variant), "font-size-unit");
-  --font-size-md: #{$font-size-unit};
-  --font-size-lg: #{$font-size-unit + 0.8};
-  $line-height-unit: map.get(map.get($size-variant, $variant), "line-height");
-  --line-height-md: #{$line-height-unit};
-  --line-height-lg: #{$line-height-unit + 0.8};
+    $size-variant-used: map-get($size-variant, $variant);
+    $size-unit: map-get($size-variant-used, "size-unit");
+    $font-size-unit: map-get($size-variant-used, "font-size-unit");
+    $line-height-unit: map-get($size-variant-used, "line-height-unit");
+
+    --size-xs: #{$size-unit * 2};
+    --size-sm: #{$size-unit * 4};
+    --size-md: #{$size-unit * 8};
+    --size-lg: #{$size-unit * 16};
+    --size-xl: #{$size-unit * 32};
+
+    --font-size-md: #{$font-size-unit};
+    --font-size-lg: #{$font-size-unit + 0.8};
+
+    --line-height-md: #{$line-height-unit};
+    --line-height-lg: #{$line-height-unit + 0.8};
 }
 
 //
@@ -45,22 +49,24 @@ $size-variant: (
 //
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/montserrat/Montserrat-VariableFont_wght.woff2") format("woff2"),
-  url("/fonts/montserrat/Montserrat-VariableFont_wght.ttf") format("ttf");
-  font-display: swap;
+    font-family: "Montserrat";
+    src:
+        url("/fonts/montserrat/Montserrat-VariableFont_wght.woff2")
+            format("woff2"),
+        url("/fonts/montserrat/Montserrat-VariableFont_wght.ttf") format("ttf");
+    font-display: swap;
 }
 
 %font-prominent {
-  font-family: "Montserrat", sans-serif;
-  font-size: var(--font-size-lg);
-  font-weight: 900;
+    font-family: "Montserrat", sans-serif;
+    font-size: var(--font-size-lg);
+    font-weight: 900;
 }
 
 %font-regular {
-  font-family: "Lato", sans-serif;
-  font-size: var(--font-size-md);
-  font-weight: 400;
+    font-family: "Lato", sans-serif;
+    font-size: var(--font-size-md);
+    font-weight: 400;
 }
 
 //
@@ -84,577 +90,582 @@ $color-aluminium-6: #2e3436;
 $color-jet-black: #000000;
 
 %theme-light {
-  --color-text: #{$color-aluminium-6};
-  --color-text-highlight: #{$color-sky-blue-2};
-  --color-background: #{$color-aluminium-1};
-  --color-background-overlay: #{$color-aluminium-5};
-  --color-background-global: #{$color-snowy-white};
-  --color-background-specific: #{$color-snowy-white};
-  --color-background-highlight: #{$color-chocolate-1};
-  --color-text-error: white;
-  --color-text-success: white;
-  --color-background-error: #{$color-scarlet-red-2};
-  --color-background-succes: #{$color-chameleon-2};
+    --color-text: #{$color-aluminium-6};
+    --color-text-highlight: #{$color-sky-blue-2};
+    --color-background: #{$color-aluminium-1};
+    --color-background-overlay: #{$color-aluminium-5};
+    --color-background-global: #{$color-snowy-white};
+    --color-background-specific: #{$color-snowy-white};
+    --color-background-highlight: #{$color-chocolate-1};
+    --color-text-error: white;
+    --color-text-success: white;
+    --color-background-error: #{$color-scarlet-red-2};
+    --color-background-succes: #{$color-chameleon-2};
 }
 
 %theme-dark {
-  --color-text: #{$color-aluminium-1};
-  --color-text-highlight: #{$color-sky-blue-1};
-  --color-background: #{$color-jet-black};
-  --color-background-overlay: #{$color-aluminium-5};
-  --color-background-global: #{$color-aluminium-6};
-  --color-background-specific: #{$color-aluminium-6};
-  --color-background-highlight: #{$color-orange-3};
-  --color-text-error: white;
-  --color-text-success: white;
-  --color-background-error: #{$color-scarlet-red-2};
-  --color-background-succes: #{$color-chameleon-2};
+    --color-text: #{$color-aluminium-1};
+    --color-text-highlight: #{$color-sky-blue-1};
+    --color-background: #{$color-jet-black};
+    --color-background-overlay: #{$color-aluminium-5};
+    --color-background-global: #{$color-aluminium-6};
+    --color-background-specific: #{$color-aluminium-6};
+    --color-background-highlight: #{$color-orange-3};
+    --color-text-error: white;
+    --color-text-success: white;
+    --color-background-error: #{$color-scarlet-red-2};
+    --color-background-succes: #{$color-chameleon-2};
 }
 
 @mixin color($tag: "base") {
-  color: var(--color-text);
+    color: var(--color-text);
 
-  @if ($tag == "transparant") {
-    background-color: #ffffff00;
-  } @else if ($tag == "overlay") {
-    background-color: var(--color-background-overlay);
-  } @else if ($tag == "global") {
-    background-color: var(--color-background-global);
-  } @else if ($tag == "specific") {
-    background-color: var(--color-background-specific);
-  } @else if ($tag == "highlight") {
-    background-color: var(--color-background-highlight);
-  } @else {
-    background-color: var(--color-background);
-  }
+    @if ($tag == "transparant") {
+        background-color: #ffffff00;
+    } @else if ($tag == "overlay") {
+        background-color: var(--color-background-overlay);
+    } @else if ($tag == "global") {
+        background-color: var(--color-background-global);
+    } @else if ($tag == "specific") {
+        background-color: var(--color-background-specific);
+    } @else if ($tag == "highlight") {
+        background-color: var(--color-background-highlight);
+    } @else {
+        background-color: var(--color-background);
+    }
 }
 
 $icon-img-path: (
-        "image-missing": "../img/icons-tango-scalable/image-missing.svg",
-        "menu-hamburger": "../img/icons-tango-scalable/menu-hamburger.svg",
-        "switch-on-off": "../img/icons-tango-scalable/switch-on-off.svg",
-        "close": "../img/icons-tango-scalable/close.svg",
-        "list-add": "../img/icons-tango-scalable/list-add.svg",
-        "list-remove": "../img/icons-tango-scalable/list-remove.svg",
-        "go-home": "../img/icons-tango-scalable/go-home.svg",
-        "go-bottom": "../img/icons-tango-scalable/go-bottom.svg",
-        "go-top": "../img/icons-tango-scalable/go-top.svg",
-        "go-previous": "../img/icons-tango-scalable/go-previous.svg",
-        "go-profile": "../img/icons-tango-scalable/go-profile.svg",
-        "go-logout": "../img/icons-tango-scalable/go-logout.svg",
-        "go-login": "../img/icons-tango-scalable/go-login.svg",
-        "go-signup": "../img/icons-tango-scalable/go-signup.svg",
-        "go-admin": "../img/icons-tango-scalable/go-admin.svg",
-        "switch-theme": "../img/icons-tango-scalable/switch-theme.svg",
-        "post-published": "../img/icons-tango-scalable/post-published.svg",
-        "post-pending": "../img/icons-tango-scalable/post-pending.svg",
-        "post-banned": "../img/icons-tango-scalable/post-banned.svg",
-        "post-publish": "../img/icons-tango-scalable/post-publish.svg",
-        "post-unpublish": "../img/icons-tango-scalable/post-unpublish.svg",
-        "post-ban": "../img/icons-tango-scalable/post-ban.svg",
-        "post-unban": "../img/icons-tango-scalable/post-unban.svg",
+    "image-missing": "../img/icons-tango-scalable/image-missing.svg",
+    "menu-hamburger": "../img/icons-tango-scalable/menu-hamburger.svg",
+    "switch-on-off": "../img/icons-tango-scalable/switch-on-off.svg",
+    "close": "../img/icons-tango-scalable/close.svg",
+    "list-add": "../img/icons-tango-scalable/list-add.svg",
+    "list-remove": "../img/icons-tango-scalable/list-remove.svg",
+    "go-home": "../img/icons-tango-scalable/go-home.svg",
+    "go-bottom": "../img/icons-tango-scalable/go-bottom.svg",
+    "go-top": "../img/icons-tango-scalable/go-top.svg",
+    "go-previous": "../img/icons-tango-scalable/go-previous.svg",
+    "go-profile": "../img/icons-tango-scalable/go-profile.svg",
+    "go-logout": "../img/icons-tango-scalable/go-logout.svg",
+    "go-login": "../img/icons-tango-scalable/go-login.svg",
+    "go-signup": "../img/icons-tango-scalable/go-signup.svg",
+    "go-admin": "../img/icons-tango-scalable/go-admin.svg",
+    "switch-theme": "../img/icons-tango-scalable/switch-theme.svg",
+    "post-published": "../img/icons-tango-scalable/post-published.svg",
+    "post-pending": "../img/icons-tango-scalable/post-pending.svg",
+    "post-banned": "../img/icons-tango-scalable/post-banned.svg",
+    "post-publish": "../img/icons-tango-scalable/post-publish.svg",
+    "post-unpublish": "../img/icons-tango-scalable/post-unpublish.svg",
+    "post-ban": "../img/icons-tango-scalable/post-ban.svg",
+    "post-unban": "../img/icons-tango-scalable/post-unban.svg",
 );
 
 @mixin set-icon-img($tag) {
-  $url: "../img/icons-tango-scalable/image-missing.svg";
+    $url: "../img/icons-tango-scalable/image-missing.svg";
 
-  @if map.has-key($icon-img-path, $tag) {
-    $url: map.get($icon-img-path, $tag);
-  }
+    @if map-has-key($icon-img-path, $tag) {
+        $url: map-get($icon-img-path, $tag);
+    }
 
-  background-image: url(#{$url});
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+    background-image: url(#{$url});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 @mixin layout($flow, $gap: 0) {
-  @if ($flow == "horizontal") {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: #{$gap};
-  }
+    @if ($flow == "horizontal") {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: #{$gap};
+    }
 
-  @if ($flow == "vertical") {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: #{$gap};
-  }
+    @if ($flow == "vertical") {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: #{$gap};
+    }
 }
 
 @mixin subLayout {
-  &-h {
-    @include layout("horizontal", var(--size-xs));
-  }
+    &-h {
+        @include layout("horizontal", var(--size-xs));
+    }
 
-  &-v {
-    @include layout("vertical", var(--size-xs));
-  }
+    &-v {
+        @include layout("vertical", var(--size-xs));
+    }
 
-  &-r {
-    justify-content: right;
-  }
+    &-r {
+        justify-content: right;
+    }
 }
 
 @mixin focus-active-outline {
-  &:focus,
-  &:active {
-    outline: var(--color-background-highlight) var(--size-xs) solid;
-  }
+    &:focus,
+    &:active {
+        outline: var(--color-background-highlight) var(--size-xs) solid;
+    }
 }
 
 %clickable {
-  color: inherit;
-  background-color: inherit;
-  border: none;
-  outline: none;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+    outline: none;
 
-  @include focus-active-outline;
+    @include focus-active-outline;
 
-  &:hover {
-    cursor: pointer;
-    background-color: var(--color-background-highlight);
-  }
+    &:hover {
+        cursor: pointer;
+        background-color: var(--color-background-highlight);
+    }
 }
 
 :root {
-  .size {
-    &-xs {
-      @include apply-size-variant("xs");
+    .size {
+        &-xs {
+            @include apply-size-variant("xs");
+        }
+
+        &-md {
+            @include apply-size-variant("md");
+        }
+
+        &-xl {
+            @include apply-size-variant("xl");
+        }
     }
 
-    &-md {
-      @include apply-size-variant("md");
+    .theme-light {
+        @extend %theme-light;
     }
 
-    &-xl {
-      @include apply-size-variant("xl");
+    .theme-dark {
+        @extend %theme-dark;
     }
-  }
-
-  .theme-light {
-    @extend %theme-light;
-  }
-
-  .theme-dark {
-    @extend %theme-dark;
-  }
 }
 
 html {
-  font-size: 62.5%;
+    font-size: 62.5%;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 ul,
 ol {
-  list-style: none;
+    list-style: none;
 }
 
 body {
-  @include color();
-  @extend %font-regular;
-
-  cursor: default;
-
-  line-height: 1.2;
-
-  background: linear-gradient(
-                  90deg,
-                  var(--color-background) 5%,
-                  var(--color-background-highlight) 30%,
-                  var(--color-background-highlight) 70%,
-                  var(--color-background) 95%);
-
-  > div {
-    @include layout("vertical");
     @include color();
+    @extend %font-regular;
 
-    min-width: $container-min-width;
-    max-width: $container-max-width;
-    min-height: 100vh;
+    cursor: default;
 
-    margin: 0 auto;
-  }
+    line-height: 1.2;
+
+    background: linear-gradient(
+        90deg,
+        var(--color-background) 5%,
+        var(--color-background-highlight) 30%,
+        var(--color-background-highlight) 70%,
+        var(--color-background) 95%
+    );
+
+    > div {
+        @include layout("vertical");
+        @include color();
+
+        min-width: $container-min-width;
+        max-width: $container-max-width;
+        min-height: 100vh;
+
+        margin: 0 auto;
+    }
 }
 
 header,
 footer {
-  @include color("global");
+    @include color("global");
 
-  width: 100%;
-  margin: var(--size-lg) auto;
+    width: 100%;
+    margin: var(--size-lg) auto;
 }
 
 main {
-  @include layout("horizontal", var(--size-md));
-  margin: 0 auto;
+    @include layout("horizontal", var(--size-md));
+    margin: 0 auto;
 
-  position: relative;
-  z-index: 0;
+    position: relative;
+    z-index: 0;
 
-  width: 100%;
-  flex: 1;
+    width: 100%;
+    flex: 1;
 }
 
 .content {
-  @include color();
-  @include layout("vertical", var(--size-md));
+    @include color();
+    @include layout("vertical", var(--size-md));
 
-  width: 100%;
+    width: 100%;
 
-  &__subcontent {
-    @include color("specific");
-  }
-
-  h2 {
-    &.prominent__text {
-      margin-left: var(--size-xl);
+    &__subcontent {
+        @include color("specific");
     }
-  }
+
+    h2 {
+        &.prominent__text {
+            margin-left: var(--size-xl);
+        }
+    }
 }
 
 .menu {
-  @include layout("vertical", var(--size-xs));
-  padding: var(--size-xs);
+    @include layout("vertical", var(--size-xs));
+    padding: var(--size-xs);
 
-  &__submenu {
-    @include subLayout;
-  }
+    &__submenu {
+        @include subLayout;
+    }
 
-  &-hamburger {
-    @include color("overlay");
-
-    .menu__submenu {
-      @include layout("vertical", var(--size-xs));
-
-      &-close {
+    &-hamburger {
         @include color("overlay");
 
-        .clickable {
-          margin-left: auto;
-          align-self: revert;
+        .menu__submenu {
+            @include layout("vertical", var(--size-xs));
+
+            &-close {
+                @include color("overlay");
+
+                .clickable {
+                    margin-left: auto;
+                    align-self: revert;
+                }
+            }
         }
-      }
+
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1000;
+
+        width: max-content;
+        height: max-content;
     }
 
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1000;
+    &-tiny {
+        @include color("overlay");
 
-    width: max-content;
-    height: max-content;
-  }
+        .menu__submenu {
+            @include layout("vertical", var(--size-xs));
+        }
 
-  &-tiny {
-    @include color("overlay");
+        position: fixed;
+        top: 25vh;
+        right: 0;
+        z-index: 500;
 
-    .menu__submenu {
-      @include layout("vertical", var(--size-xs));
+        width: max-content;
+        height: max-content;
     }
 
-    position: fixed;
-    top: 25vh;
-    right: 0;
-    z-index: 500;
+    &-info {
+        @include color("global");
 
-    width: max-content;
-    height: max-content;
-  }
+        width: 100%;
 
-  &-info {
-    @include color("global");
-
-    width: 100%;
-
-    .menu__submenu {
-      @include layout("horizontal", var(--size-xs));
+        .menu__submenu {
+            @include layout("horizontal", var(--size-xs));
+        }
     }
-  }
 
-  &__submenu {
-    @include color("global");
-  }
-
-  &__item {
-    &-clickable {
-      @extend %clickable;
+    &__submenu {
+        @include color("global");
     }
-  }
+
+    &__item {
+        &-clickable {
+            @extend %clickable;
+        }
+    }
 }
 
 .form {
-  @include layout("vertical", var(--size-xs));
-  align-items: center;
+    @include layout("vertical", var(--size-xs));
 
-  padding: var(--size-xl);
+    align-items: center;
 
-  input {
-    @include focus-active-outline;
-  }
+    padding: var(--size-xl);
 
-  &__subform {
-    @include subLayout;
-  }
-
-  &__subform {
-    @include color("specific");
-  }
-
-  &__item {
-    &-clickable {
-      @extend %clickable;
+    input,
+    textarea {
+        @include focus-active-outline;
+        min-width: 300px;
     }
-  }
+
+    textarea {
+        height: 400px;
+    }
+
+    &__subform {
+        @include subLayout;
+        @include color("specific");
+    }
+
+    &__item {
+        &-clickable {
+            @extend %clickable;
+        }
+    }
 }
 
 .icon {
-  @include set-icon-img("image-missing");
+    @include set-icon-img("image-missing");
 
-  &-menu-hamburger {
-    @include set-icon-img("menu-hamburger");
-  }
+    &-menu-hamburger {
+        @include set-icon-img("menu-hamburger");
+    }
 
-  &-switch-on-off {
-    @include set-icon-img("switch-on-off");
-  }
+    &-switch-on-off {
+        @include set-icon-img("switch-on-off");
+    }
 
-  &-close {
-    @include set-icon-img("close");
-  }
+    &-close {
+        @include set-icon-img("close");
+    }
 
-  &-previous-page {
-    @include set-icon-img("previous-page");
-  }
+    &-previous-page {
+        @include set-icon-img("previous-page");
+    }
 
-  &-go-home {
-    @include set-icon-img("go-home");
-  }
+    &-go-home {
+        @include set-icon-img("go-home");
+    }
 
-  &-go-bottom {
-    @include set-icon-img("go-bottom");
-  }
+    &-go-bottom {
+        @include set-icon-img("go-bottom");
+    }
 
-  &-go-top {
-    @include set-icon-img("go-top");
-  }
+    &-go-top {
+        @include set-icon-img("go-top");
+    }
 
-  &-go-previous {
-    @include set-icon-img("go-previous");
-  }
+    &-go-previous {
+        @include set-icon-img("go-previous");
+    }
 
-  &-go-profile {
-    @include set-icon-img("go-profile");
-  }
+    &-go-profile {
+        @include set-icon-img("go-profile");
+    }
 
-  &-go-logout {
-    @include set-icon-img("go-logout");
-  }
+    &-go-logout {
+        @include set-icon-img("go-logout");
+    }
 
-  &-go-login {
-    @include set-icon-img("go-login");
-  }
+    &-go-login {
+        @include set-icon-img("go-login");
+    }
 
-  &-go-signup {
-    @include set-icon-img("go-signup");
-  }
+    &-go-signup {
+        @include set-icon-img("go-signup");
+    }
 
-  &-go-admin {
-    @include set-icon-img("go-admin");
-  }
+    &-go-admin {
+        @include set-icon-img("go-admin");
+    }
 
-  &-switch-theme {
-    @include set-icon-img("switch-theme");
-  }
+    &-switch-theme {
+        @include set-icon-img("switch-theme");
+    }
 
-  &-post-published {
-    @include set-icon-img("post-published");
-  }
+    &-post-published {
+        @include set-icon-img("post-published");
+    }
 
-  &-post-pending {
-    @include set-icon-img("post-pending");
-  }
+    &-post-pending {
+        @include set-icon-img("post-pending");
+    }
 
-  &-post-banned {
-    @include set-icon-img("post-banned");
-  }
+    &-post-banned {
+        @include set-icon-img("post-banned");
+    }
 
-  &-post-unpublish {
-    @include set-icon-img("post-unpublish");
-  }
+    &-post-unpublish {
+        @include set-icon-img("post-unpublish");
+    }
 
-  &-post-publish {
-    @include set-icon-img("post-publish");
-  }
+    &-post-publish {
+        @include set-icon-img("post-publish");
+    }
 
-  &-post-ban {
-    @include set-icon-img("post-ban");
-  }
+    &-post-ban {
+        @include set-icon-img("post-ban");
+    }
 
-  &-post-unban {
-    @include set-icon-img("post-unban");
-  }
+    &-post-unban {
+        @include set-icon-img("post-unban");
+    }
 
-  &-list-add {
-    @include set-icon-img("list-add");
-  }
+    &-list-add {
+        @include set-icon-img("list-add");
+    }
 
-  &-list-remove {
-    @include set-icon-img("list-remove");
-  }
+    &-list-remove {
+        @include set-icon-img("list-remove");
+    }
 }
 
 .prominent {
-  @include layout("horizontal");
-  justify-content: right;
+    @include layout("horizontal");
+    justify-content: right;
 
-  &-error {
-    color: var(--color-text-error);
-    background-color: var(--color-background-error);
-  }
+    &-error {
+        color: var(--color-text-error);
+        background-color: var(--color-background-error);
+    }
 
-  &-success {
-    color: var(--color-text-success);
-    background-color: var(--color-background-succes);
-  }
+    &-success {
+        color: var(--color-text-success);
+        background-color: var(--color-background-succes);
+    }
 
-  &__text {
-    @extend %font-prominent;
+    &__text {
+        @extend %font-prominent;
 
-    height: var(--size-xl);
-    line-height: var(--size-xl);
+        height: var(--size-xl);
+        line-height: var(--size-xl);
 
-    margin-right: auto;
-    padding-left: var(--size-md);
-    padding-right: var(--size-md);
-  }
+        margin-right: auto;
+        padding-left: var(--size-md);
+        padding-right: var(--size-md);
+    }
 
-  &__icon {
-    width: var(--size-xl);
-    height: var(--size-xl);
+    &__icon {
+        width: var(--size-xl);
+        height: var(--size-xl);
 
-    margin: var(--size-xs);
+        margin: var(--size-xs);
 
-    display: inline-block;
-  }
+        display: inline-block;
+    }
 }
 
 .regular {
-  margin: var(--size-lg);
+    margin: var(--size-lg);
 
-  &__text {
-    @extend %font-regular;
+    &__text {
+        @extend %font-regular;
 
-    line-height: var(--line-height-md);
+        line-height: var(--line-height-md);
 
-    &:not(:first-of-type) {
-      margin-top: var(--size-sm);
+        &:not(:first-of-type) {
+            margin-top: var(--size-sm);
+        }
     }
-  }
 }
 
 .anchor {
-  @include color("specific");
+    @include color("specific");
 
-  cursor: pointer;
-  text-decoration: underline;
+    cursor: pointer;
+    text-decoration: underline;
 
-  &:hover {
-    color: var(--color-text-highlight);
-  }
+    &:hover {
+        color: var(--color-text-highlight);
+    }
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 @media screen and (min-width: 810px) {
-  main {
-    padding-left: var(--size-md);
-    padding-right: var(--size-md);
-  }
-
-  .button-menu-tiny {
-    display: none;
-  }
-
-  .menu {
-    &-tiny {
-      &.hide {
-        display: flex;
-      }
-
-      @include color();
-
-      .menu__submenu {
-        @include color();
-      }
-
-      position: sticky;
-      top: 25vh;
+    main {
+        padding-left: var(--size-md);
+        padding-right: var(--size-md);
     }
-  }
+
+    .button-menu-tiny {
+        display: none;
+    }
+
+    .menu {
+        &-tiny {
+            &.hide {
+                display: flex;
+            }
+
+            @include color();
+
+            .menu__submenu {
+                @include color();
+            }
+
+            position: sticky;
+            top: 25vh;
+        }
+    }
 }
 
 @media screen and (min-width: 1440px) {
-  body {
-    > div {
-      max-width: fit-content($container-max-width);
-    }
-  }
-
-  header {
-    &.menu {
-      @include layout("horizontal");
-    }
-
-    > div:first-child {
-      width: max-content;
-    }
-
-    .button-menu-hamburger {
-      display: none;
-    }
-  }
-
-  main {
-    display: flex;
-    gap: var(--size-md);
-  }
-
-  .content {
-    width: 100%;
-  }
-
-  .menu {
-    &-hamburger {
-      &.hide {
-        display: flex;
-      }
-
-      @include color();
-
-      position: static;
-
-      .menu__submenu {
-        &-close {
-          display: none;
+    body {
+        > div {
+            max-width: fit-content($container-max-width);
         }
-      }
-
-      .button-menu-tiny {
-        display: none;
-      }
     }
-  }
+
+    header {
+        &.menu {
+            @include layout("horizontal");
+        }
+
+        > div:first-child {
+            width: max-content;
+        }
+
+        .button-menu-hamburger {
+            display: none;
+        }
+    }
+
+    main {
+        display: flex;
+        gap: var(--size-md);
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .menu {
+        &-hamburger {
+            &.hide {
+                display: flex;
+            }
+
+            @include color();
+
+            position: static;
+
+            .menu__submenu {
+                &-close {
+                    display: none;
+                }
+            }
+
+            .button-menu-tiny {
+                display: none;
+            }
+        }
+    }
 }
