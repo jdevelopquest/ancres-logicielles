@@ -11,9 +11,11 @@ return [
     "username_pattern" => "/^[a-zA-Z0-9]{3,200}$/",
     "username_pattern_html" => "^[a-zA-Z0-9]{3,200}$",
     "password_min_length" => 12,
-    "password_pattern" => "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$/",
-    "password_pattern_html" => "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$",
-    "password_algo" => "PASSWORD_BCRYPT",
+    "password_pattern" =>
+        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$/",
+    "password_pattern_html" =>
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{12,}$",
+    "password_algo" => PASSWORD_BCRYPT,
     "password_max_bytes" => 72,
     "contact_message_min_length" => 10,
     "contact_message_max_length" => 1000,

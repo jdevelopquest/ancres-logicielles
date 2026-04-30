@@ -32,9 +32,7 @@ class Application
 
         $configurations = require CONFIG_PATH . "config.php";
         if (is_array($configurations)) {
-            foreach ($configurations as $key => $value) {
-                Configure::set($key, $value);
-            }
+            Configure::merge($configurations);
         } else {
             throw new Exception("Config file is not an array");
         }
@@ -54,7 +52,11 @@ class Application
      */
     public function run(): void
     {
-        $dispatcher = new Dispatcher($this->request, $this->response, $this->router);
+        $dispatcher = new Dispatcher(
+            $this->request,
+            $this->response,
+            $this->router,
+        );
         $dispatcher->run();
     }
 }

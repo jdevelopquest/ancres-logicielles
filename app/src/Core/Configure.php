@@ -8,7 +8,18 @@ namespace App\Core;
  */
 class Configure
 {
-    private static array $configurations;
+    private static array $configurations = [];
+
+    /**
+     * Merge a array with the configurations.
+     *
+     * @param array $arr The array to merge with the configurations.
+     * @return void
+     */
+    static function merge(array $arr): void
+    {
+        self::$configurations = array_merge(self::$configurations, $arr);
+    }
 
     /**
      * Sets a configuration value for the specified key.
@@ -31,9 +42,9 @@ class Configure
     static function get(string $key): mixed
     {
         // todo: déclencher une exception
-//        if (empty(self::$configurations)) {
-//
-//        }
+        //        if (empty(self::$configurations)) {
+        //
+        //        }
         return self::$configurations[$key];
     }
 }

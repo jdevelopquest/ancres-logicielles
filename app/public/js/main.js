@@ -7,7 +7,10 @@
  * @return {string} A formatted URL string.
  */
 function constructUrl(controller, action, id = null) {
-    return `/${controller}/${action}` + (id !== null && id !== undefined ? `?id=${encodeURIComponent(id)}` : "");
+  return (
+    `/${controller}/${action}` +
+    (id !== null && id !== undefined ? `?id=${encodeURIComponent(id)}` : "")
+  );
 }
 
 /**
@@ -21,25 +24,25 @@ function constructUrl(controller, action, id = null) {
  * @return {void} This function does not return a value.
  */
 function initMenuButtons(menuTag) {
-    const buttonSelector = '.button-menu-' + menuTag;
-    const menuSelector = '.menu-' + menuTag;
-    document.querySelectorAll(buttonSelector)?.forEach((button) => {
-        button.addEventListener('click', function () {
-            const menu = document.querySelector(menuSelector);
-            menu?.classList.toggle('hide');
-            if (menuTag === 'tiny') {
-                setTinyMenuVisibility(!menu?.classList.contains('hide'));
-            }
-            menu?.querySelectorAll('.button-close')?.forEach((button) => {
-                button?.addEventListener('click', function () {
-                    menu?.classList.add('hide');
-                    if (menuTag === 'tiny') {
-                        setTinyMenuVisibility(false);
-                    }
-                });
-            });
-        })
+  const buttonSelector = ".button-menu-" + menuTag;
+  const menuSelector = ".menu-" + menuTag;
+  document.querySelectorAll(buttonSelector)?.forEach((button) => {
+    button.addEventListener("click", function () {
+      const menu = document.querySelector(menuSelector);
+      menu?.classList.toggle("hide");
+      if (menuTag === "tiny") {
+        setTinyMenuVisibility(!menu?.classList.contains("hide"));
+      }
+      menu?.querySelectorAll(".button-close")?.forEach((button) => {
+        button?.addEventListener("click", function () {
+          menu?.classList.add("hide");
+          if (menuTag === "tiny") {
+            setTinyMenuVisibility(false);
+          }
+        });
+      });
     });
+  });
 }
 
 /**
@@ -49,7 +52,7 @@ function initMenuButtons(menuTag) {
  * @return {void} This method does not return a value.
  */
 function setTinyMenuVisibility(visible = false) {
-    localStorage.setItem('menu-tiny-visible', visible ? 'true' : 'false');
+  localStorage.setItem("menu-tiny-visible", visible ? "true" : "false");
 }
 
 /**
@@ -59,7 +62,7 @@ function setTinyMenuVisibility(visible = false) {
  *                          or `false` if not set in local storage.
  */
 function getTinyMenuVisibility() {
-    return localStorage.getItem('menu-tiny-visible') ?? false;
+  return localStorage.getItem("menu-tiny-visible") ?? false;
 }
 
 /**
@@ -70,13 +73,13 @@ function getTinyMenuVisibility() {
  * @return {void} This method does not return any value.
  */
 function applyTinyMenuVisibility() {
-    const menuSelector = '.menu-tiny';
-    const menu = document.querySelector(menuSelector);
-    if (getTinyMenuVisibility() === 'true') {
-        menu?.classList.remove('hide');
-    } else {
-        menu?.classList.add('hide');
-    }
+  const menuSelector = ".menu-tiny";
+  const menu = document.querySelector(menuSelector);
+  if (getTinyMenuVisibility() === "true") {
+    menu?.classList.remove("hide");
+  } else {
+    menu?.classList.add("hide");
+  }
 }
 
 /**
@@ -86,16 +89,16 @@ function applyTinyMenuVisibility() {
  * @return {void} This function does not return a value.
  */
 function initPostboxModButtons(buttonAction) {
-    const buttonSelector = '.button-post-' + buttonAction;
-    document.querySelectorAll(buttonSelector)?.forEach((button) => {
-        button.addEventListener('click', function () {
-            const params = {
-                idPost: button.getAttribute('data-id-post'),
-                action: buttonAction,
-            }
-            sendPostModAction(params);
-        })
+  const buttonSelector = ".button-post-" + buttonAction;
+  document.querySelectorAll(buttonSelector)?.forEach((button) => {
+    button.addEventListener("click", function () {
+      const params = {
+        idPost: button.dataset.idPost,
+        action: buttonAction,
+      };
+      sendPostModAction(params);
     });
+  });
 }
 
 /**
@@ -105,10 +108,10 @@ function initPostboxModButtons(buttonAction) {
  * @return {void} Does not return a value.
  */
 function initPostboxMod() {
-    initPostboxModButtons('publish');
-    initPostboxModButtons('unpublish');
-    initPostboxModButtons('ban');
-    initPostboxModButtons('unban');
+  initPostboxModButtons("publish");
+  initPostboxModButtons("unpublish");
+  initPostboxModButtons("ban");
+  initPostboxModButtons("unban");
 }
 
 /**
@@ -120,35 +123,35 @@ function initPostboxMod() {
  * @return {void} This function does not return any value but performs a fetch operation to send the request.
  */
 function sendPostModAction(params) {
-    const posts = 'posts';
-    const action = params.action;
-    const idPost = params.idPost;
-    const data = {
-        'idPost': idPost,
-    };
-    const url = constructUrl(posts, action);
-    fetch(
-        url,
-        {
-            method: 'POST',
-            headers: {
-                'X-Ajax-Request': 'true',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            // Il n'y a pas de données à récupérer,
-            // mettre à jour les status et la barre d'outils
-            getUpdatePostboxModTool(idPost).then(response => getUpdateSoftwareStatus(idPost));
-        })
-        .catch(error => {
-            // console.error('Il y a eu un problème avec la requête fetch:', error);
-        });
+  const posts = "posts";
+  const action = params.action;
+  const idPost = params.idPost;
+  const data = {
+    idPost: idPost,
+  };
+  const url = constructUrl(posts, action);
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "X-Ajax-Request": "true",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      // Il n'y a pas de données à récupérer,
+      // mettre à jour les status et la barre d'outils
+      getUpdatePostboxModTool(idPost).then((response) =>
+        getUpdateSoftwareStatus(idPost),
+      );
+    })
+    .catch((error) => {
+      // console.error('Il y a eu un problème avec la requête fetch:', error);
+    });
 }
 
 /**
@@ -158,35 +161,33 @@ function sendPostModAction(params) {
  * @return {Promise<void>} A promise that resolves when the update operation is completed.
  */
 async function getUpdatePostboxModTool(idPost) {
-    const posts = 'posts';
-    const action = 'updatePostboxModTool';
-    const body = {
-        'idPost': idPost,
-    };
-    const url = constructUrl(posts, action);
-    await fetch(
-        url,
-        {
-            method: 'POST',
-            headers: {
-                'X-Ajax-Request': 'true',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            updatePostboxModTool(idPost, data);
-        })
-        .catch(error => {
-            // console.error(error);
-        });
+  const posts = "posts";
+  const action = "updatePostboxModTool";
+  const body = {
+    idPost: idPost,
+  };
+  const url = constructUrl(posts, action);
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "X-Ajax-Request": "true",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      updatePostboxModTool(idPost, data);
+    })
+    .catch((error) => {
+      // console.error(error);
+    });
 }
 
 /**
@@ -196,35 +197,33 @@ async function getUpdatePostboxModTool(idPost) {
  * @return {Promise<void>} A promise that resolves when the request is successfully processed or rejects if an error occurs.
  */
 async function getUpdateSoftwareStatus(idPost) {
-    const posts = 'posts';
-    const action = 'updateSoftwareStatus';
-    const body = {
-        'idPost': idPost,
-    };
-    const url = constructUrl(posts, action);
-    await fetch(
-        url,
-        {
-            method: 'POST',
-            headers: {
-                'X-Ajax-Request': 'true',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            updateSoftwareStatus(idPost, data);
-        })
-        .catch(error => {
-            // console.error(error);
-        });
+  const posts = "posts";
+  const action = "updateSoftwareStatus";
+  const body = {
+    idPost: idPost,
+  };
+  const url = constructUrl(posts, action);
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "X-Ajax-Request": "true",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      updateSoftwareStatus(idPost, data);
+    })
+    .catch((error) => {
+      // console.error(error);
+    });
 }
 
 /**
@@ -235,12 +234,12 @@ async function getUpdateSoftwareStatus(idPost) {
  * @return {void} - Does not return a value.
  */
 function updatePostboxModTool(idPost, data) {
-    const postboxSelector = `.postbox-mod-tools-${idPost}`;
-    document.querySelectorAll(postboxSelector)?.forEach(postbox => {
-        // todo attention à la sécurité
-        postbox.innerHTML = data;
-    })
-    initPostboxMod();
+  const postboxSelector = `.postbox-mod-tools-${idPost}`;
+  document.querySelectorAll(postboxSelector)?.forEach((postbox) => {
+    // todo attention à la sécurité
+    postbox.innerHTML = data;
+  });
+  initPostboxMod();
 }
 
 /**
@@ -252,11 +251,11 @@ function updatePostboxModTool(idPost, data) {
  * @return {void} This function does not return a value.
  */
 function updateSoftwareStatus(idPost, data) {
-    const postboxStatusSelector = `.postbox-status-${idPost}`;
-    document.querySelectorAll(postboxStatusSelector)?.forEach(postbox => {
-        // todo attention à la sécurité
-        postbox.innerHTML = data;
-    })
+  const postboxStatusSelector = `.postbox-status-${idPost}`;
+  document.querySelectorAll(postboxStatusSelector)?.forEach((postbox) => {
+    // todo attention à la sécurité
+    postbox.innerHTML = data;
+  });
 }
 
 /**
@@ -268,15 +267,17 @@ function updateSoftwareStatus(idPost, data) {
  * @return {void} This method does not return any value.
  */
 function initSwitchThemeButtons() {
-    document.querySelectorAll('.button-switch-theme')?.forEach(button => {
-        button.addEventListener('click', function () {
-            const body = document.querySelector('body');
-            body?.classList.toggle('theme-light');
-            body?.classList.toggle('theme-dark');
-            const theme = body?.classList.contains('theme-light') ? 'theme-light' : 'theme-dark';
-            setTheme(theme);
-        })
+  document.querySelectorAll(".button-switch-theme")?.forEach((button) => {
+    button.addEventListener("click", function () {
+      const body = document.querySelector("body");
+      body?.classList.toggle("theme-light");
+      body?.classList.toggle("theme-dark");
+      const theme = body?.classList.contains("theme-light")
+        ? "theme-light"
+        : "theme-dark";
+      setTheme(theme);
     });
+  });
 }
 
 /**
@@ -286,8 +287,8 @@ function initSwitchThemeButtons() {
  * @param {string} [theme='theme-light'] - The name of the theme to set.
  * @return {void} - This method does not return any value.
  */
-function setTheme(theme = 'theme-light') {
-    localStorage.setItem('theme', theme);
+function setTheme(theme = "theme-light") {
+  localStorage.setItem("theme", theme);
 }
 
 /**
@@ -297,7 +298,7 @@ function setTheme(theme = 'theme-light') {
  * @return {string} The current theme name or the default theme 'theme-light'.
  */
 function getTheme() {
-    return localStorage.getItem('theme') ?? 'theme-light';
+  return localStorage.getItem("theme") ?? "theme-light";
 }
 
 /**
@@ -307,21 +308,21 @@ function getTheme() {
  * @return {void} Does not return any value.
  */
 function applyTheme() {
-    const body = document.querySelector('body');
-    if (getTheme() === 'theme-dark') {
-        body?.classList.remove('theme-light');
-        body?.classList.add('theme-dark');
-    } else {
-        body?.classList.add('theme-light');
-        body?.classList.remove('theme-dark');
-    }
+  const body = document.querySelector("body");
+  if (getTheme() === "theme-dark") {
+    body?.classList.remove("theme-light");
+    body?.classList.add("theme-dark");
+  } else {
+    body?.classList.add("theme-light");
+    body?.classList.remove("theme-dark");
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    initMenuButtons('hamburger');
-    initMenuButtons('tiny');
-    initPostboxMod();
-    initSwitchThemeButtons();
-    applyTheme();
-    applyTinyMenuVisibility();
-})
+document.addEventListener("DOMContentLoaded", function () {
+  initMenuButtons("hamburger");
+  initMenuButtons("tiny");
+  initPostboxMod();
+  initSwitchThemeButtons();
+  applyTheme();
+  applyTinyMenuVisibility();
+});

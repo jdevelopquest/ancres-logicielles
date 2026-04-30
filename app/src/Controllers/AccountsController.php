@@ -34,14 +34,15 @@ class AccountsController extends Controller
         $notificationParams = [];
 
         if ($this->request->isPost()) {
-            $username = $this->request->params["accountUsername"] ?? "";
-            $password = $this->request->params["accountPassword"] ?? "";
+            $username = $this->request->params["accountUsername"] ?? null;
+            $password = $this->request->params["accountPassword"] ?? null;
 
             $accountModel = new AccountModel();
 
             if (!$accountModel->isUsernameMatchPattern($username)) {
                 $notificationParams["error"] = [];
-                $notificationParams["error"][] = "Le pseudo doit contenir entre 3 et 200 caractères, et ne doit pas contenir de caractères spéciaux.";
+                $notificationParams["error"][] =
+                    "Le pseudo doit contenir entre 3 et 200 caractères, et ne doit pas contenir de caractères spéciaux.";
                 $contentParams["accountUsername"] = $username;
             }
 
@@ -49,41 +50,64 @@ class AccountsController extends Controller
                 if (!isset($notificationParams["error"])) {
                     $notificationParams["error"] = [];
                 }
-                $notificationParams["error"][] = "Le mot de passe doit contenir au minimum 12 caractères, et ne doit pas contenir de caractères spéciaux.";
-                $notificationParams["error"][] = "Le mot de passe doit contenir au minimum 1 minuscule, 1 majuscule, 1 chiffre.";
+                $notificationParams["error"][] =
+                    "Le mot de passe doit contenir au minimum 12 caractères, et ne doit pas contenir de caractères spéciaux.";
+                $notificationParams["error"][] =
+                    "Le mot de passe doit contenir au minimum 1 minuscule, 1 majuscule, 1 chiffre.";
             }
 
             try {
                 if (!isset($notificationParams["error"])) {
                     if ($accountModel->isUsernameExists($username)) {
                         $notificationParams["error"] = [];
-                        $notificationParams["error"][] = "Ce pseudo est déjà utilisé.";
+                        $notificationParams["error"][] =
+                            "Ce pseudo est déjà utilisé.";
                     } else {
-                        $success = $accountModel->registerAccount($username, $password);
+                        $success = $accountModel->registerAccount(
+                            $username,
+                            $password,
+                        );
 
                         if ($success) {
                             $notificationParams["success"] = [];
-                            $notificationParams["success"][] = "Inscription réussie.";
+                            $notificationParams["success"][] =
+                                "Inscription réussie.";
                             $contentParams["signup_success"] = true;
                         } else {
                             $notificationParams["error"] = [];
-                            $notificationParams["error"][] = "Une erreur est survenue lors de l'inscription.";
+                            $notificationParams["error"][] =
+                                "Une erreur est survenue lors de l'inscription.";
                             $contentParams["signup_success"] = false;
                         }
                     }
                 }
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to signup", ["exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug("Fail to signup", [
+                    "exception message" => $e->getMessage(),
+                ]);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503();
             }
         }
 
         $this->setPageParam("title", "Ancres Logicielles : Inscription");
 
-        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
-        $this->setViewComponent("content", "accounts/signup", $contentParams, "page");
+        $this->setViewComponent(
+            "notification",
+            "layouts/notification",
+            $notificationParams,
+            "content",
+        );
+        $this->setViewComponent(
+            "content",
+            "accounts/signup",
+            $contentParams,
+            "page",
+        );
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -107,22 +131,31 @@ class AccountsController extends Controller
             $accountModel = new AccountModel();
 
             try {
-                $account = $accountModel->loginWithPassword($username, $password);
+                $account = $accountModel->loginWithPassword(
+                    $username,
+                    $password,
+                );
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to login", ["exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug("Fail to login", [
+                    "exception message" => $e->getMessage(),
+                ]);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503();
             }
 
             if (empty($account)) {
                 $notificationParams["error"] = [];
-                $notificationParams["error"][] = "Pseudo ou Mot de passe incorrect.";
+                $notificationParams["error"][] =
+                    "Pseudo ou Mot de passe incorrect.";
                 $contentParams["accountUsername"] = $username;
-            } else if ($account["accountIsBanned"]) {
+            } elseif ($account["accountIsBanned"]) {
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Compte bannis.";
-            } else if ($account["accountIsSuspended"]) {
+            } elseif ($account["accountIsSuspended"]) {
                 $notificationParams["error"] = [];
                 $notificationParams["error"][] = "Compte suspendu.";
             } else {
@@ -137,8 +170,18 @@ class AccountsController extends Controller
 
         $this->setPageParam("title", "Ancres Logicielles : Connexion");
 
-        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
-        $this->setViewComponent("content", "accounts/login", $contentParams, "page");
+        $this->setViewComponent(
+            "notification",
+            "layouts/notification",
+            $notificationParams,
+            "content",
+        );
+        $this->setViewComponent(
+            "content",
+            "accounts/login",
+            $contentParams,
+            "page",
+        );
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -156,7 +199,10 @@ class AccountsController extends Controller
             $this->userLogout();
 
             // todo : rediriger vers la page d'accueil après déconnexion
-            $postsController = new PostsController(new Request(), new Response());
+            $postsController = new PostsController(
+                new Request(),
+                new Response(),
+            );
             return $postsController->indexSoftwares();
         }
 

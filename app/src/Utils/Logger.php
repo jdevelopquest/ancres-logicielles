@@ -17,7 +17,7 @@ class Logger
      */
     public function debug(string $message, mixed $context = []): void
     {
-        $this->log('DEBUG', $message, $context);
+        $this->log("DEBUG", $message, $context);
     }
 
     /**
@@ -29,7 +29,7 @@ class Logger
      */
     public function info(string $message, mixed $context = []): void
     {
-        $this->log('INFO', $message, $context);
+        $this->log("INFO", $message, $context);
     }
 
     /**
@@ -41,7 +41,7 @@ class Logger
      */
     public function warning(string $message, mixed $context = []): void
     {
-        $this->log('WARNING', $message, $context);
+        $this->log("WARNING", $message, $context);
     }
 
     /**
@@ -53,7 +53,7 @@ class Logger
      */
     public function error(string $message, mixed $context = []): void
     {
-        $this->log('ERROR', $message, $context);
+        $this->log("ERROR", $message, $context);
     }
 
     /**
@@ -67,14 +67,31 @@ class Logger
     private function log(string $level, string $message, mixed $context): void
     {
         $logEntry = [
-            'timestamp' => date(self::DATE_FORMAT),
-            'level' => $level,
-            'message' => $message,
-            'context' => $context
+            "timestamp" => date(self::DATE_FORMAT),
+            "level" => $level,
+            "message" => $message,
+            "context" => $context,
         ];
 
         // todo
         // tester l'existence du ficher de log
-        error_log(json_encode($logEntry, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n", 3, self::LOG_FILE);
+        if (!file_exists(self::LOG_FILE)) {
+            $directory = dirname(self::LOG_FILE);
+
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            touch(self::LOG_FILE);
+        }
+
+        error_log(
+            json_encode(
+                $logEntry,
+                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+            ) . "\n",
+            3,
+            self::LOG_FILE,
+        );
     }
 }

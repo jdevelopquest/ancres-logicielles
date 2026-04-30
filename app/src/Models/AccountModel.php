@@ -19,7 +19,7 @@ final class AccountModel
     {
         $this->databaseHandler = new DatabaseHandler();
     }
-    
+
     /**
      * Deletes an account from the database based on the provided account ID.
      *
@@ -29,8 +29,7 @@ final class AccountModel
      */
     public function deleteAccount(int $idAccount): bool
     {
-        $request =
-            "DELETE FROM Accounts WHERE idAccount = :idAccount";
+        $request = "DELETE FROM Accounts WHERE idAccount = :idAccount";
         $params = [":idAccount" => $idAccount];
         return $this->databaseHandler->execute($request, $params);
     }
@@ -43,9 +42,8 @@ final class AccountModel
      */
     public function getAllAccounts(): array
     {
-        $request =
-            "SELECT 
-                idAccount, 
+        $request = "SELECT
+                idAccount,
                 accountUsername,
                 accountIsBanned,
                 accountIsAdmin,
@@ -63,11 +61,10 @@ final class AccountModel
      */
     public function getAccountStatus(string $idAccount): array
     {
-        $request =
-            "SELECT 
+        $request = "SELECT
                 Accounts.idAccount,
-                accountIsBanned, 
-                accountIsAdmin, 
+                accountIsBanned,
+                accountIsAdmin,
                 accountIsModerator,
                 accountIsSuspended
               FROM Accounts
@@ -90,7 +87,10 @@ final class AccountModel
     {
         $account = $this->getAccountByUsername($username);
 
-        if (is_array($account) && password_verify($password, $account["accountPassword"])) {
+        if (
+            is_array($account) &&
+            password_verify($password, $account["accountPassword"])
+        ) {
             unset($account["accountPassword"]);
             return $account;
         }
@@ -105,12 +105,11 @@ final class AccountModel
      */
     private function getAccountIdByUsername(string $username): mixed
     {
-        $request =
-            "SELECT 
+        $request = "SELECT
                     idAccount
-            FROM 
-                Accounts 
-            WHERE 
+            FROM
+                Accounts
+            WHERE
                 accountUsername = :username";
 
         $params = ["username" => $username];
@@ -131,13 +130,14 @@ final class AccountModel
      */
     public function cancelSuspendAccount(int $idAccount): bool
     {
-        $request =
-            "UPDATE 
-                Accounts 
-            SET accountIsSuspended = 0, failedLoginAttempts = :failedLoginAttempts
+        $request = "UPDATE
+                Accounts
+            SET accountIsSuspended = 0
             WHERE idAccount = :idAccount";
 
-        $params = ["idAccount" => $idAccount, "failedLoginAttempts" => Configure::get("account_max_login_attempts")];
+        $params = [
+            "idAccount" => $idAccount,
+        ];
 
         return $this->databaseHandler->execute($request, $params);
     }
@@ -152,18 +152,17 @@ final class AccountModel
      */
     private function getAccountByUsername(string $username): mixed
     {
-        $request =
-            "SELECT 
+        $request = "SELECT
                 idAccount,
                 accountUsername,
-                accountPassword, 
-                accountIsBanned, 
-                accountIsAdmin, 
+                accountPassword,
+                accountIsBanned,
+                accountIsAdmin,
                 accountIsModerator,
                 accountIsSuspended
-            FROM 
-                Accounts 
-            WHERE 
+            FROM
+                Accounts
+            WHERE
                 accountUsername = :username";
 
         $params = ["username" => $username];
@@ -181,8 +180,10 @@ final class AccountModel
      * @return bool True if the account was successfully registered; false otherwise.
      * @throws Exception
      */
-    public function registerAccount(string $accountUsername, string $accountPassword): bool
-    {
+    public function registerAccount(
+        string $accountUsername,
+        string $accountPassword,
+    ): bool {
         if (!$this->isUsernameMatchPattern($accountUsername)) {
             return false;
         }
@@ -191,26 +192,26 @@ final class AccountModel
             return false;
         }
 
-        $accountPassword = password_hash($accountPassword, Configure::get("password_algo"));
+        $accountPassword = password_hash(
+            $accountPassword,
+            Configure::get("password_algo"),
+        );
 
-        $request =
-            "INSERT INTO 
+        $request = "INSERT INTO
                 Accounts(
                     accountUsername,
                     accountPassword,
                     accountIsBanned,
                     accountIsAdmin,
                     accountIsModerator,
-                    accountIsSuspended,
-                    failedLoginAttempts)
+                    accountIsSuspended)
             VALUES(
                 :accountUsername,
                 :accountPassword,
                 :accountIsBanned,
                 :accountIsAdmin,
                 :accountIsModerator,
-                :accountIsSuspended,
-                :failedLoginAttempts)";
+                :accountIsSuspended)";
 
         $params = [
             ":accountUsername" => $accountUsername,
@@ -219,7 +220,6 @@ final class AccountModel
             ":accountIsAdmin" => 0,
             ":accountIsModerator" => 0,
             ":accountIsSuspended" => 0,
-            ":failedLoginAttempts" => Configure::get("account_max_login_attempts")
         ];
 
         return $this->databaseHandler->execute($request, $params);
@@ -246,7 +246,9 @@ final class AccountModel
     {
         // L'utilisation de la constante PASSWORD_BCRYPT pour l'algorithme fera que le paramètre password sera tronqué
         // à une longueur maximale de 72 octets.
-        if (mb_strlen($password, "8bit") > Configure::get("password_max_bytes")) {
+        if (
+            mb_strlen($password, "8bit") > Configure::get("password_max_bytes")
+        ) {
             return false;
         }
 
@@ -272,43 +274,6 @@ final class AccountModel
     }
 
     /**
-     * Decreases the failed login attempts count for a specified account by one
-     * and triggers a check on the updated failed login attempts count.
-     *
-     * @param string $idAccount The unique identifier of the account whose failed login attempts will be updated.
-     * @return void
-     * @throws Exception
-     */
-    public function addFailedLoginAttempts(string $idAccount): void
-    {
-        $request =
-            "UPDATE Accounts SET failedLoginAttempts = failedLoginAttempts - 1 WHERE idAccount = :idAccount";
-        $params = ["idAccount" => $idAccount];
-        $this->databaseHandler->execute($request, $params);
-        $this->checkFailedLoginAttempts($idAccount);
-    }
-
-    /**
-     * Checks the number of failed login attempts for a specified account.
-     * If the number of failed login attempts is less than or equal to zero,
-     * the account will be suspended.
-     *
-     * @param int $idAccount The unique identifier of the account to be checked.
-     * @return void
-     * @throws Exception
-     */
-    private function checkFailedLoginAttempts(int $idAccount): void
-    {
-        $request =
-            "SELECT failedLoginAttempts FROM Accounts WHERE idAccount = :idAccount";
-        $params = ["idAccount" => $idAccount];
-        $results = $this->databaseHandler->fetch($request, $params);
-        if (!empty($results) && $results["failedLoginAttempts"] <= 0) {
-            $this->suspendAccount($idAccount);
-        }
-    }
-
-    /**
      * Suspends an account by setting its suspension status and end time.
      * The account will remain suspended until the specified suspension duration elapses.
      *
@@ -318,13 +283,13 @@ final class AccountModel
      */
     public function suspendAccount(int $idAccount): bool
     {
-        $timestampFutur = Time() + Configure::get("account_suspension_duration");
-        $request =
-            "UPDATE 
-                Accounts 
-            SET accountIsSuspended = 1,  = :timestampFutur 
+        $request = "UPDATE
+                Accounts
+            SET accountIsSuspended = 1
             WHERE idAccount = :idAccount";
-        $params = ["idAccount" => $idAccount, "timestampFutur" => $timestampFutur];
+        $params = [
+            "idAccount" => $idAccount,
+        ];
         return $this->databaseHandler->execute($request, $params);
     }
 
