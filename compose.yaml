@@ -1,4 +1,4 @@
-name: software_anchors
+name: ancres-logicielles
 
 services:
   appserver:
@@ -10,7 +10,7 @@ services:
       - "./app:/app:Z"
     ports:
       - target: 443
-        published: 127.0.0.1:8443
+        published: 8443
         protocol: tcp
     networks:
       - app-internal
