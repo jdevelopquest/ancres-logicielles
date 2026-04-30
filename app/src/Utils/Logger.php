@@ -73,8 +73,6 @@ class Logger
             "context" => $context,
         ];
 
-        // todo
-        // tester l'existence du ficher de log
         if (!file_exists(self::LOG_FILE)) {
             $directory = dirname(self::LOG_FILE);
 
