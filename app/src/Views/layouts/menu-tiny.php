@@ -1,3 +1,6 @@
+<?php
+$menuTiny = $menuTiny ?? null; ?>
+
 <aside class="menu menu-tiny hide">
     <div class="menu__submenu menu__submenu-v">
         <a class="menu__item menu__item-clickable prominent" title="Aller en haut de la page" href="#page-top"><span

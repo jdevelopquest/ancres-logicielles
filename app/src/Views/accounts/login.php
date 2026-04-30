@@ -1,3 +1,8 @@
+<?php
+$login_success = $login_success ?? null;
+$accountUsername = $accountUsername ?? "";
+?>
+
 <section class="content">
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Connexion</h2>
@@ -18,7 +23,7 @@
                        minlength="3"
                        maxlength="200"
                        pattern="^[a-zA-Z0-9]{3,200}$"
-                       value="<?= htmlspecialchars($accountUsername ?? "") ?>"/>
+                       value="<?= htmlspecialchars($accountUsername) ?>"/>
             </div>
 
             <div class="form__subform form__subform-v regular">

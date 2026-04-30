@@ -1,3 +1,6 @@
+<?php
+$menuHamburger = $menuHamburger ?? null; ?>
+
 <aside class="menu menu-hamburger hide">
     <div class="menu__submenu menu__submenu-v menu__submenu-close">
         <button class="menu__item menu__item-clickable prominent button-close" title="Fermer le menu">

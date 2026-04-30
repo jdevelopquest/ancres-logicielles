@@ -1,3 +1,8 @@
+<?php
+$success = $success ?? null;
+$error = $error ?? null;
+?>
+
 <?php if (isset($success)): ?>
 
     <div class="prominent prominent-success">

@@ -1,3 +1,6 @@
+<?php
+$signup_success = $signup_success ?? null; ?>
+
 <section class="content">
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Inscription</h2>

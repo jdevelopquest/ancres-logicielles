@@ -1,3 +1,8 @@
+<?php
+$menuModTools = $menuModTools ?? null;
+$softwares = $softwares ?? null;
+?>
+
 <section class="content">
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Logiciels</h2>

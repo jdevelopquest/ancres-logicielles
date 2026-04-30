@@ -1,3 +1,9 @@
+<?php
+$success = $success ?? null;
+$softwareName = $softwareName ?? "";
+$softwareSummary = $softwareSummary ?? "";
+?>
+
 <section class="content">
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Ajouter une fiche logicielle</h2>
@@ -12,24 +18,24 @@
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="softwareName">Nom du logiciel</label>
                 <input class="form__item regular__text" required
-                       name="softwareName"
-                       type="text"
-                       id="softwareName"
-                       minlength="1"
-                       maxlength="100"
-                       pattern="^[\p{L}\p{N}\s\p{P}\p{S}]{1,100}$"
-                       value="<?= htmlspecialchars($softwareName ?? "") ?>"/>
+                    name="softwareName"
+                    type="text"
+                    id="softwareName"
+                    minlength="1"
+                    maxlength="100"
+                    pattern="^[\p{L}\p{N}\s\p{P}\p{S}]{1,100}$"
+                    value="<?= htmlspecialchars($softwareName) ?>"/>
             </div>
 
             <div class="form__subform form__subform-v regular">
                 <label class="form__item regular__text" for="softwareSummary">Description du logiciel</label>
                 <textarea class="form__item regular__text" required
-                          name="softwareSummary"
-                          id="softwareSummary"
-                          minlength="10"
-                          maxlength="2000"><?= htmlspecialchars(
-                              $softwareSummary ?? null,
-                          ) ?></textarea>
+                    name="softwareSummary"
+                    id="softwareSummary"
+                    minlength="10"
+                    maxlength="2000"><?= htmlspecialchars(
+                        $softwareSummary,
+                    ) ?></textarea>
             </div>
 
             <div class="form__subform prominent">

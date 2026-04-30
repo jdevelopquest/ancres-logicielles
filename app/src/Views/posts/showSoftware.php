@@ -1,3 +1,9 @@
+<?php
+$softwareModTools = $softwareModTools ?? null;
+$software = $software ?? null;
+$anchors = $anchors ?? null;
+?>
+
 <section class="content">
     <div class="content__subcontent prominent">
         <h2 class="prominent__text">Logiciel</h2>
@@ -17,13 +23,10 @@
                 <div class="postbox postbox-status postbox-status-<?= htmlspecialchars(
                     $software["idPost"],
                 ) ?>">
-                    <?= htmlspecialchars(
-                        $this->renderComponent("layouts/postbox-status", [
-                            "postStatus" => $software["status"],
-                        ]),
-                    ) ?>
+                    <?= $this->renderComponent("layouts/postbox-status", [
+                        "postStatus" => $software["status"],
+                    ]) ?>
                 </div>
-
             </div>
 
             <div class="regular">
@@ -39,14 +42,12 @@
                     <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= htmlspecialchars(
                         $software["idPost"],
                     ) ?>">
-                        <?= htmlspecialchars(
-                            $this->renderComponent(
-                                "layouts/postbox-mod-tools",
-                                [
-                                    "idPost" => $software["idPost"],
-                                    "modTools" => $softwareModTools,
-                                ],
-                            ),
+                        <?= $this->renderComponent(
+                            "layouts/postbox-mod-tools",
+                            [
+                                "idPost" => $software["idPost"],
+                                "modTools" => $softwareModTools,
+                            ],
                         ) ?>
                     </div>
                 </aside>
@@ -85,11 +86,9 @@
                     <div class="postbox postbox-status postbox-status-<?= htmlspecialchars(
                         $anchor["idPost"],
                     ) ?>">
-                        <?= htmlspecialchars(
-                            $this->renderComponent("layouts/postbox-status", [
-                                "postStatus" => $anchor["status"],
-                            ]),
-                        ) ?>
+                        <?= $this?->renderComponent("layouts/postbox-status", [
+                            "postStatus" => $anchor["status"],
+                        ]) ?>
                     </div>
                 </div>
 
@@ -104,14 +103,12 @@
                         <div class="menu__submenu menu__submenu-h menu__submenu-r postbox postbox-mod-tools-<?= htmlspecialchars(
                             $anchor["idPost"],
                         ) ?>">
-                            <?= htmlspecialchars(
-                                $this->renderComponent(
-                                    "layouts/postbox-mod-tools",
-                                    [
-                                        "idPost" => $anchor["idPost"],
-                                        "modTools" => $anchor["anchorModTools"],
-                                    ],
-                                ),
+                            <?= $this?->renderComponent(
+                                "layouts/postbox-mod-tools",
+                                [
+                                    "idPost" => $anchor["idPost"],
+                                    "modTools" => $anchor["anchorModTools"],
+                                ],
                             ) ?>
                         </div>
                     </aside>
