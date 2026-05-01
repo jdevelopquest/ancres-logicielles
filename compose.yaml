@@ -1,36 +1,69 @@
 name: ancres-logicielles
 
 services:
-  appserver:
+  php:
+    image: jdevelopquest/library/ancres-logicielles-php-dev
+    # uncomment the following line if you want to use a custom Dockerfile
     build:
-      context: "deployment/frankenphp"
-    env_file:
-      - "deployment/default.env"
-    volumes:
-      - "./app:/app:Z"
+      context: "./deployment/frankenphp"
+    # uncomment the following line if you want to run this in a production environment
+    # restart: always
     ports:
-      - target: 443
-        published: 8443
-        protocol: tcp
-    networks:
-      - app-internal
-    depends_on:
-      database:
-        condition: service_started
-
-  database:
-    build:
-      context: "deployment/database"
-    env_file:
-      - "deployment/default.env"
+      - "8080:80" # HTTP
+      - "8443:443" # HTTPS
+      - "8443:443/udp" # HTTP/3
     volumes:
-      - "database:/var/lib/mysql"
-    networks:
-      - app-internal
+      - ./app:/app:Z
+      - caddy_data:/data
+      - caddy_config:/config
+    # comment the following line in production, it allows to have nice human-readable logs in dev
+    tty: true
+    env_file:
+      - ".env"
+    depends_on:
+      db:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--get",
+          "--silent",
+          "--fail",
+          "--insecure",
+          "https://localhost:443/health",
+        ]
+      interval: 10s
+      start_period: 5s
 
+  db:
+    image: jdevelopquest/library/ancres-logicielles-db-dev
+    build:
+      context: "./deployment/database"
+    env_file:
+      - ".env"
+    volumes:
+      - "db:/var/lib/mysql"
+    ports:
+      - "8306:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mariadb",
+          "--host=localhost",
+          "--port=3306",
+          "--user=$MARIADB_USER",
+          "--password=$MARIADB_PASSWORD",
+          "--execute",
+          "SHOW DATABASES;",
+        ]
+      interval: 10s
+      start_period: 5s
+
+# Volumes needed for Caddy certificates and configuration
 volumes:
-  database:
-    driver: local
-
-networks:
-  app-internal: {}
+  caddy_data:
+  caddy_config:
+  db:
