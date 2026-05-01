@@ -14,8 +14,10 @@ class Controller
 
     private ViewBuilder $viewBuilder;
 
-    public function __construct(protected Request $request, protected Response $response)
-    {
+    public function __construct(
+        protected Request $request,
+        protected Response $response,
+    ) {
         $this->viewBuilder = new ViewBuilder();
     }
 
@@ -26,8 +28,10 @@ class Controller
      * @param int $code The HTTP status code for the response. Defaults to 200.
      * @return Response The response object containing the headers, status code, and body.
      */
-    protected function getHtmlResponse(string $pageHtml = "", int $code = 200): Response
-    {
+    protected function getHtmlResponse(
+        string $pageHtml = "",
+        int $code = 200,
+    ): Response {
         return $this->response
             ->addHeader("Content-Type: text/html")
             ->setCode($code)
@@ -37,17 +41,20 @@ class Controller
     /**
      * Prepares and returns a JSON formatted HTTP response.
      *
-     * @param string|null $data The data to be encoded into JSON format and included in the response body. If null, the body will not include any data.
+     * @param mixed $data The data to be encoded into JSON format and included in the response body. If null, the body will not include any data.
      * @param int $code The HTTP status code for the response. Defaults to 200.
      * @return Response The prepared HTTP response with JSON content and defined status code.
      */
-    protected function getJsonResponse(?string $data = null, int $code = 200): Response
-    {
-        if ($data !== null) {
-            //todo à revoir
-            $data = iconv('UTF-8', 'UTF-8//IGNORE', $data);
-            $data = json_encode($data);
+    protected function getJsonResponse(
+        mixed $data = null,
+        int $code = 200,
+    ): Response {
+        if (is_string($data)) {
+            $data = iconv("UTF-8", "UTF-8//IGNORE", $data);
         }
+
+        $data = json_encode($data);
+
         return $this->response
             ->addHeader("Content-Type: application/json")
             ->setCode($code)
@@ -63,8 +70,12 @@ class Controller
      * @param string|null $writeIn Optional. The location where the view component should be rendered. Defaults to an empty string.
      * @return void This method does not return a value.
      */
-    protected function setViewComponent(string $name, string $layout, array $params, ?string $writeIn = ""): void
-    {
+    protected function setViewComponent(
+        string $name,
+        string $layout,
+        array $params,
+        ?string $writeIn = "",
+    ): void {
         $this->viewBuilder->setViewComponent($name, $layout, $params, $writeIn);
     }
 
@@ -75,9 +86,14 @@ class Controller
      * @param array $parameters An associative array of parameters to pass to the partial view.
      * @return string The rendered HTML content of the partial view.
      */
-    protected function renderHtmlComponent(string $partialFilePath = "", array $parameters = []): string
-    {
-        return $this->viewBuilder->renderComponent($partialFilePath, $parameters);
+    protected function renderHtmlComponent(
+        string $partialFilePath = "",
+        array $parameters = [],
+    ): string {
+        return $this->viewBuilder->renderComponent(
+            $partialFilePath,
+            $parameters,
+        );
     }
 
     /**
@@ -105,7 +121,12 @@ class Controller
     protected function setPageParam(string $key, string $value): void
     {
         if (!$this->viewBuilder->issetViewComponentParam("page")) {
-            $this->viewBuilder->setViewComponent("page", "layouts/page", ["title" => "Ancres Logicielles"], null);
+            $this->viewBuilder->setViewComponent(
+                "page",
+                "layouts/page",
+                ["title" => "Ancres Logicielles"],
+                null,
+            );
         }
 
         $this->viewBuilder->addViewComponentParam("page", $key, $value);
@@ -146,30 +167,72 @@ class Controller
     {
         $menuConfigurations = [
             ["layoutName" => "menu-hamburger", "menuName" => "menuHamburger"],
-            ["layoutName" => "menu-tiny", "menuName" => "menuTiny"]
+            ["layoutName" => "menu-tiny", "menuName" => "menuTiny"],
         ];
 
         foreach ($menuConfigurations as $configuration) {
             $menu = new Menu($configuration["menuName"])
                 ->addSubMenu("homepage")
-                ->addSubMenuItem($this->constructHref("posts", "indexSoftwares"), "Accueil", "Accueil", "go-home");
+                ->addSubMenuItem(
+                    $this->constructHref("posts", "indexSoftwares"),
+                    "Accueil",
+                    "Accueil",
+                    "go-home",
+                );
 
             if ($this->userIsLoggedIn()) {
-                $menu->addSubMenu("registeredMenu")
-                    ->addSubMenuItem($this->constructHref("accounts", "show", $this->getUserId()), "Profil", "Profil", "go-profile")
-                    ->addSubMenuItem($this->constructHref("accounts", "logout"), "Déconnexion", "Déconnexion", "go-logout");
+                $menu
+                    ->addSubMenu("registeredMenu")
+                    ->addSubMenuItem(
+                        $this->constructHref(
+                            "accounts",
+                            "show",
+                            $this->getUserId(),
+                        ),
+                        "Profil",
+                        "Profil",
+                        "go-profile",
+                    )
+                    ->addSubMenuItem(
+                        $this->constructHref("accounts", "logout"),
+                        "Déconnexion",
+                        "Déconnexion",
+                        "go-logout",
+                    );
             } else {
-                $menu->addSubMenu("guestMenu")
-                    ->addSubMenuItem($this->constructHref("accounts", "login"), "Connexion", "Connexion", "go-login")
-                    ->addSubMenuItem($this->constructHref("accounts", "signup"), "Inscription", "Inscription", "go-signup");
+                $menu
+                    ->addSubMenu("guestMenu")
+                    ->addSubMenuItem(
+                        $this->constructHref("accounts", "login"),
+                        "Connexion",
+                        "Connexion",
+                        "go-login",
+                    )
+                    ->addSubMenuItem(
+                        $this->constructHref("accounts", "signup"),
+                        "Inscription",
+                        "Inscription",
+                        "go-signup",
+                    );
             }
 
             if ($this->userIsAdmin()) {
-                $menu->addSubMenu("adminMenu")
-                    ->addSubMenuItem($this->constructHref("admins", "index"), "Administration", "Administration", "go-admin");
+                $menu
+                    ->addSubMenu("adminMenu")
+                    ->addSubMenuItem(
+                        $this->constructHref("admins", "index"),
+                        "Administration",
+                        "Administration",
+                        "go-admin",
+                    );
             }
 
-            $this->setViewComponent($configuration["layoutName"], "layouts/" . $configuration["layoutName"], $menu->getMenu(), "page");
+            $this->setViewComponent(
+                $configuration["layoutName"],
+                "layouts/" . $configuration["layoutName"],
+                $menu->getMenu(),
+                "page",
+            );
         }
     }
 }

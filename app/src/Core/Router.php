@@ -14,13 +14,23 @@ class Router
      * URL patterns, HTTP methods, and access roles required to execute specific actions.
      * It ensures that requests are routed to their corresponding controllers and methods.
      *
+     * @@param array $routeDefinitions
+     *
      * @return void
      */
     public function __construct(array $routeDefinitions = [])
     {
         foreach ($routeDefinitions as $routeDefinition) {
             extract($routeDefinition);
-            $this->add($isAjax, $pathPattern, $queryPattern, $methodPattern, $rolePattern, $controller, $action);
+            $this->add(
+                $isAjax,
+                $pathPattern,
+                $queryPattern,
+                $methodPattern,
+                $rolePattern,
+                $controller,
+                $action,
+            );
         }
     }
 
@@ -38,14 +48,14 @@ class Router
      * @return void
      */
     public function add(
-        bool   $isAjax,
+        bool $isAjax,
         string $pathPattern,
         string $queryPattern,
         string $methodPattern,
         string $rolePattern,
         string $controller,
-        string $action): void
-    {
+        string $action,
+    ): void {
         $this->routes[] = [
             "isAjax" => $isAjax,
             "pathPattern" => $pathPattern,
@@ -53,7 +63,7 @@ class Router
             "methodPattern" => $methodPattern,
             "rolePattern" => $rolePattern,
             "controller" => $controller,
-            "action" => $action
+            "action" => $action,
         ];
     }
 

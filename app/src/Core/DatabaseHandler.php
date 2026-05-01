@@ -17,27 +17,32 @@ final class DatabaseHandler
     /**
      * @throws Exception
      */
+    //TODO: argument de type DATABASE_URL
     public function __construct()
     {
         if (!isset(self::$pdo)) {
             try {
-                $connectionParams = [];
-                // le fichier databases.php doit returner un tableau associatif
-                // avec les clefs db_driver, db_host, db_name, db_username et db_password
-                if (file_exists(CONFIG_PATH . "databases.php")) {
-                    $connectionParams = require CONFIG_PATH . "databases.php";
-                } else {
-                    throw new Exception("Missing database configuration file.");
-                }
+                // $connectionParams = [];
+                // // le fichier databases.php doit returner un tableau associatif
+                // // avec les clefs db_driver, db_host, db_name, db_username et db_password
+                // if (file_exists(CONFIG_PATH . "databases.php")) {
+                //     $connectionParams = require CONFIG_PATH . "databases.php";
+                // } else {
+                //     throw new Exception("Missing database configuration file.");
+                // }
 
-                extract($connectionParams);
+                // extract($connectionParams);
+                $driver = getenv("DATABASE_DRIVER");
+                $host = getenv("DATABASE_HOST");
+                $dbname = getenv("DATABASE_DATABASE");
+                $dsn = "$driver:dbname=$dbname;host=$host";
+                $user = getenv("DATABASE_USER");
+                $password = getenv("DATABASE_PASSWORD");
 
-                self::$pdo = new PDO(
-                    $db_driver . ":host=" . $db_host . ";dbname=" . $db_name,
-                    $db_username,
-                    $db_password,
-                    array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-                );
+                self::$pdo = new PDO($dsn, $user, $password, [
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                ]);
             } catch (Throwable $t) {
                 throw new Exception($t->getMessage());
             }

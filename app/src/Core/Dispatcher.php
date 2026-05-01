@@ -21,9 +21,11 @@ class Dispatcher
      *
      * @return void
      */
-    public function __construct(protected Request $request, protected Response $response, protected Router $router)
-    {
-    }
+    public function __construct(
+        protected Request $request,
+        protected Response $response,
+        protected Router $router,
+    ) {}
 
     /**
      * Executes the routing process by matching the incoming request to a defined route
@@ -40,28 +42,42 @@ class Dispatcher
 
         if (!$route) {
             $log = new Logger();
-            $log->debug("No route found for requested path", ["path" => $this->request->path, "query" => $this->request->query]);
+            $log->debug("No route found for requested path", [
+                "path" => $this->request->path,
+                "query" => $this->request->query,
+            ]);
             $this->triggerError404();
             exit();
         } else {
             // todo affiner le code erreur
             if ($route["isAjax"] !== $this->request->isAjax()) {
                 $log = new Logger();
-                $log->debug("Not an AJAX request", ["path" => $this->request->path, "query" => $this->request->query]);
+                $log->debug("Not an AJAX request", [
+                    "path" => $this->request->path,
+                    "query" => $this->request->query,
+                ]);
                 $this->triggerError404();
                 exit();
             }
 
             if (!preg_match($route["methodPattern"], $this->request->method)) {
                 $log = new Logger();
-                $log->debug("Bad method", ["path" => $this->request->path, "query" => $this->request->query, "method" => $this->request->method]);
+                $log->debug("Bad method", [
+                    "path" => $this->request->path,
+                    "query" => $this->request->query,
+                    "method" => $this->request->method,
+                ]);
                 $this->triggerError404();
                 exit();
             }
 
             if (!preg_match($route["rolePattern"], $this->getUserRole())) {
                 $log = new Logger();
-                $log->debug("Bad role", ["path" => $this->request->path, "query" => $this->request->query, "role" => $this->getUserRole()]);
+                $log->debug("Bad role", [
+                    "path" => $this->request->path,
+                    "query" => $this->request->query,
+                    "role" => $this->getUserRole(),
+                ]);
                 $this->triggerError404();
                 exit();
             }
@@ -79,22 +95,38 @@ class Dispatcher
 
             try {
                 if (!class_exists($route["controller"])) {
-                    $message = sprintf("%s class not exists on line %s in %s\n", $route["controller"], "56", "Dispatcher.php");
+                    $message = sprintf(
+                        "%s class not exists on line %s in %s\n",
+                        $route["controller"],
+                        "56",
+                        "Dispatcher.php",
+                    );
                     throw new Exception($message);
                 }
 
-                $controller = new $route["controller"]($this->request, $this->response);
+                $controller = new ($route["controller"])(
+                    $this->request,
+                    $this->response,
+                );
 
                 if (!method_exists($controller, $route["action"])) {
-                    $message = sprintf("Inside class %s method not exists %s on line %s in %s\n", $route["controller"], $route["action"], "63", "Dispatcher.php");
+                    $message = sprintf(
+                        "Inside class %s method not exists %s on line %s in %s\n",
+                        $route["controller"],
+                        $route["action"],
+                        "63",
+                        "Dispatcher.php",
+                    );
                     throw new Exception($message);
                 }
 
                 // Tout est bon, si la méthode néssécite un argument, il faut lui passer
                 $action = $route["action"];
-                $id =$this->request->params["id"] ?? null;
+                $id = $this->request->params["id"] ?? null;
 
-                $response = isset($id) ? $controller->$action($id) : $controller->$action();
+                $response = isset($id)
+                    ? $controller->$action($id)
+                    : $controller->$action();
 
                 // ajout du jeton
                 $this->setSessionToken();
@@ -102,7 +134,9 @@ class Dispatcher
                 // met à jour page précédente
                 if (!$this->request->isAjax()) {
                     $query = $this->request->query;
-                    $previousPage = $this->request->path . ($query !== "" ? ("?" . $query) : "");
+                    $previousPage =
+                        $this->request->path .
+                        ($query !== "" ? "?" . $query : "");
                     $this->setUserPreviousPage($previousPage);
                 }
 
@@ -110,7 +144,6 @@ class Dispatcher
             } catch (Exception $exception) {
                 $log = new Logger();
                 $log->debug($exception->getMessage());
-                $log = new Logger();
                 $log->debug($exception->getTraceAsString());
 
                 $this->triggerError503();
@@ -128,7 +161,10 @@ class Dispatcher
      */
     private function triggerError404(): void
     {
-        $errorsController = new ErrorsController($this->request, $this->response);
+        $errorsController = new ErrorsController(
+            $this->request,
+            $this->response,
+        );
         if ($this->request->isAjax()) {
             $errorsController->error404Json()->send();
         } else {
@@ -144,7 +180,10 @@ class Dispatcher
      */
     private function triggerError503(): void
     {
-        $errorsController = new ErrorsController($this->request, $this->response);
+        $errorsController = new ErrorsController(
+            $this->request,
+            $this->response,
+        );
         if ($this->request->isAjax()) {
             $errorsController->error503Json()->send();
         } else {
