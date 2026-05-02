@@ -5,16 +5,7 @@ session_start();
 
 require_once dirname(__DIR__) . "/config/paths.php";
 
-spl_autoload_register(
-    function ($class) {
-        // charge les classes de l'espace App
-        $path = str_replace("App\\", "src\\", $class);
-        $file = ROOT_PATH . DIRECTORY_SEPARATOR . str_replace("\\", DIRECTORY_SEPARATOR, $path) . ".php";
-        if (file_exists($file)) {
-            require $file;
-        }
-    }
-);
+require_once dirname(__DIR__) . "/src/autoload.php";
 
 use App\Controllers\ErrorsController;
 use App\Core\Application;
