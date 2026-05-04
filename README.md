@@ -171,6 +171,13 @@ Pistes futures :
 - Rôles et permissions plus granulaires.
 - API REST/JSON pour intégrations tierces.
 
+## Captures d'écran
+
+![Écran d'accueil petit](screenshots/screenshot-al-home-guest-dark-smartphone.png)
+
+![Écran d'accueil moyen](screenshots/screenshot-al-home-guest-dark-tablet.png)
+
+![Écran d'accueil grand](screenshots/screenshot-al-home-guest-dark-desktop.png)
 
 ## Licence
 Code : MIT License © 2025 jacques jdevelopquest — voir le fichier LICENSE.
