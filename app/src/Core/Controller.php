@@ -143,13 +143,6 @@ class Controller
      */
     private function prepareHtmlPageForRender(): void
     {
-        // page précédente
-        $previousPage = $this->getUserPreviousPage();
-
-        if ($previousPage) {
-            $this->setPageParam("previousPage", $previousPage);
-        }
-
         // menu hamburger et menu tiny
         $this->setupHamburgerAndTinyMenus();
     }

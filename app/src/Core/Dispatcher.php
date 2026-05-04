@@ -131,15 +131,6 @@ class Dispatcher
                 // ajout du jeton
                 $this->setSessionToken();
 
-                // met à jour page précédente
-                if (!$this->request->isAjax()) {
-                    $query = $this->request->query;
-                    $previousPage =
-                        $this->request->path .
-                        ($query !== "" ? "?" . $query : "");
-                    $this->setUserPreviousPage($previousPage);
-                }
-
                 $response->send();
             } catch (Exception $exception) {
                 $log = new Logger();

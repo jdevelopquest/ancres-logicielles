@@ -22,7 +22,6 @@ trait SessionManager
             $_SESSION["user"] = [];
             $_SESSION["user"]["role"] = "guest";
             $_SESSION["user"]["id"] = self::GUEST_ID;
-            $_SESSION["user"]["previousPage"] = "";
         }
     }
 
@@ -141,7 +140,6 @@ trait SessionManager
     protected function userLogout(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
-
             // todo : faire un logout en base de données
             // todo : traiter les cookies de la session
 
@@ -154,34 +152,16 @@ trait SessionManager
     }
 
     /**
-     * Sets the user's previous page in the session.
-     *
-     * @param string $previousPage The URL or identifier of the previous page to be stored.
-     * @return void
-     */
-    protected function setUserPreviousPage(string $previousPage): void
-    {
-        $_SESSION["user"]["previousPage"] = $previousPage;
-    }
-
-    /**
-     * Retrieves the previous page visited by the user from the session.
-     *
-     * @return string The URL of the previous page visited by the user, or an empty string if not set.
-     */
-    protected function getUserPreviousPage(): string
-    {
-        return $_SESSION["user"]["previousPage"] ?? "";
-    }
-
-    /**
      * Validates if the session token matches the token in the request cookies.
      *
      * @return bool True if the tokens match, false otherwise.
      */
     protected function isValidToken(): bool
     {
-        if (!isset($_SESSION["token"]) || !isset($this->request->cookies["token"])) {
+        if (
+            !isset($_SESSION["token"]) ||
+            !isset($this->request->cookies["token"])
+        ) {
             $log = new Logger();
             $log->debug("Token is not set in session or request cookies");
             return false;
@@ -203,12 +183,12 @@ trait SessionManager
             $log->debug("Impossible to generate token");
         } else {
             $this->response->addCookie(
-                'token',
+                "token",
                 $_SESSION["token"],
                 time() + 3600, // 1 heure
                 "/",
                 "",
-                true
+                true,
             );
         }
     }
@@ -224,7 +204,9 @@ trait SessionManager
             return bin2hex(random_bytes(32));
         } catch (Exception $e) {
             $log = new Logger();
-            $log->debug("Impossible to generate token", ["exception message" => $e->getMessage()]);
+            $log->debug("Impossible to generate token", [
+                "exception message" => $e->getMessage(),
+            ]);
             // todo prévoir une action si la génération du jeton échoue
             return "";
         }

@@ -1,7 +1,6 @@
 <?php
 $title = $title ?? "Ancres Logicielles";
 $theme = $theme ?? "theme-light";
-$previousPage = $previousPage ?? "index.php";
 ?>
 
 <!DOCTYPE html>
@@ -28,12 +27,6 @@ $previousPage = $previousPage ?? "index.php";
             <button class="menu__item menu__item-clickable prominent button-menu-hamburger"
                     title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span>
             </button>
-        </div>
-        <div class="menu__submenu menu__submenu-h">
-            <a class="menu__item menu__item-clickable prominent button-go-previous" title="Page précédente"
-               href="<?= htmlspecialchars(
-                   $previousPage,
-               ) ?>"><span class="prominent__icon icon-go-previous"></span></a>
         </div>
     </header>
     <main>
