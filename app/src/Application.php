@@ -1,9 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core;
+namespace App;
+
+session_start();
+
+require_once dirname(__DIR__) . "/config/paths.php";
 
 use App\Utils\SessionManager;
+use App\Core\Configure;
+use App\Core\Dispatcher;
+use App\Core\Request;
+use App\Core\Response;
+use App\Core\Router;
+use App\Utils\Logger;
+use App\Controllers\ErrorsController;
 use Exception;
 
 /**
@@ -26,6 +37,40 @@ class Application
      */
     public function __construct()
     {
+        //
+        set_exception_handler(function ($exception) {
+            $log = new Logger();
+            $log->debug("From exception handler function", [
+                "exception message" => $exception->getMessage(),
+                "exception line" => $exception->getLine(),
+                "exception file" => $exception->getFile(),
+            ]);
+            // todo il faut pouvoir gérer les requête ajax
+            $errorsController = new ErrorsController(
+                new Request(),
+                new Response(),
+            );
+            $errorsController->error503()->send();
+            exit();
+        });
+
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            $log = new Logger();
+            $log->debug("From error handler function", [
+                "errno" => $errno,
+                "errstr" => $errstr,
+                "errfile" => $errfile,
+                "errline" => $errline,
+            ]);
+            // todo il faut pouvoir gérer les requête ajax
+            $errorsController = new ErrorsController(
+                new Request(),
+                new Response(),
+            );
+            $errorsController->error503()->send();
+            exit();
+        });
+
         $this->request = new Request();
         $this->response = new Response();
         $this->initSession();
