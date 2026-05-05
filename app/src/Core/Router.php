@@ -3,86 +3,39 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-class Router
+final class Router
 {
-    private array $routes = [];
+    private static array $routes = [];
+
+    private function __construct() {}
 
     /**
-     * Constructor method for initializing routes.
+     * Adds a route to the route array.
      *
-     * This method sets up the routing for various controllers and their methods by defining
-     * URL patterns, HTTP methods, and access roles required to execute specific actions.
-     * It ensures that requests are routed to their corresponding controllers and methods.
-     *
-     * @@param array $routeDefinitions
-     *
+     * @param Route $route
      * @return void
      */
-    public function __construct(array $routeDefinitions = [])
+    public static function add(Route $route): void
     {
-        foreach ($routeDefinitions as $routeDefinition) {
-            extract($routeDefinition);
-            $this->add(
-                $isAjax,
-                $pathPattern,
-                $queryPattern,
-                $methodPattern,
-                $rolePattern,
-                $controller,
-                $action,
-            );
-        }
-    }
-
-    /**
-     * Adds a route to the route array with the specified parameters.
-     *
-     * @param bool $isAjax Indicates whether the route is for an AJAX request.
-     * @param string $pathPattern The pattern for matching the URL path.
-     * @param string $queryPattern The pattern for matching the query string.
-     * @param string $methodPattern The pattern for matching the HTTP method.
-     * @param string $rolePattern The pattern for matching the user role.
-     * @param string $controller The controller associated with the route.
-     * @param string $action The action or method to be invoked within the controller.
-     *
-     * @return void
-     */
-    public function add(
-        bool $isAjax,
-        string $pathPattern,
-        string $queryPattern,
-        string $methodPattern,
-        string $rolePattern,
-        string $controller,
-        string $action,
-    ): void {
-        $this->routes[] = [
-            "isAjax" => $isAjax,
-            "pathPattern" => $pathPattern,
-            "queryPattern" => $queryPattern,
-            "methodPattern" => $methodPattern,
-            "rolePattern" => $rolePattern,
-            "controller" => $controller,
-            "action" => $action,
-        ];
+        self::$routes[] = $route;
     }
 
     /**
      * Matches a given request against the defined routes and returns the matching route.
      *
      * @param Request $request The request objects to be matched against the route patterns.
-     * @return array|bool Returns the matching route as an array if found, or false if no route matches.
+     * @return Route|bool Returns the matching route as a Route if found, or false if no route matches.
      */
-    public function match(Request $request): array|bool
+    public static function match(Request $request): Route|bool
     {
-        foreach ($this->routes as $route) {
+        foreach (self::$routes as $route) {
             // Vérifier d'abord le chemin
-            if (!preg_match($route["pathPattern"], $request->path)) {
+            if (!preg_match($route->pathPattern, $request->path)) {
                 continue;
             }
 
             // Puis la requête
-            if (!preg_match($route["queryPattern"], $request->query)) {
+            if (!preg_match($route->queryPattern, $request->query)) {
                 continue;
             }
 

@@ -24,7 +24,6 @@ class Dispatcher
     public function __construct(
         protected Request $request,
         protected Response $response,
-        protected Router $router,
     ) {}
 
     /**
@@ -38,7 +37,7 @@ class Dispatcher
      */
     public function run(): void
     {
-        $route = $this->router->match($this->request);
+        $route = Router::match($this->request);
 
         if (!$route) {
             $log = new Logger();
@@ -50,7 +49,7 @@ class Dispatcher
             exit();
         } else {
             // todo affiner le code erreur
-            if ($route["isAjax"] !== $this->request->isAjax()) {
+            if ($route->isAjax !== $this->request->isAjax()) {
                 $log = new Logger();
                 $log->debug("Not an AJAX request", [
                     "path" => $this->request->path,
@@ -60,7 +59,7 @@ class Dispatcher
                 exit();
             }
 
-            if (!preg_match($route["methodPattern"], $this->request->method)) {
+            if (!preg_match($route->methodPattern, $this->request->method)) {
                 $log = new Logger();
                 $log->debug("Bad method", [
                     "path" => $this->request->path,
@@ -71,7 +70,7 @@ class Dispatcher
                 exit();
             }
 
-            if (!preg_match($route["rolePattern"], $this->getUserRole())) {
+            if (!preg_match($route->rolePattern, $this->getUserRole())) {
                 $log = new Logger();
                 $log->debug("Bad role", [
                     "path" => $this->request->path,
@@ -94,34 +93,34 @@ class Dispatcher
             }
 
             try {
-                if (!class_exists($route["controller"])) {
+                if (!class_exists($route->controller)) {
                     $message = sprintf(
                         "%s class not exists on line %s in %s\n",
-                        $route["controller"],
-                        "56",
+                        $route->controller,
+                        "?",
                         "Dispatcher.php",
                     );
                     throw new Exception($message);
                 }
 
-                $controller = new ($route["controller"])(
+                $controller = new $route->controller(
                     $this->request,
                     $this->response,
                 );
 
-                if (!method_exists($controller, $route["action"])) {
+                if (!method_exists($controller, $route->action)) {
                     $message = sprintf(
                         "Inside class %s method not exists %s on line %s in %s\n",
-                        $route["controller"],
-                        $route["action"],
-                        "63",
+                        $route->controller,
+                        $route->action,
+                        "?",
                         "Dispatcher.php",
                     );
                     throw new Exception($message);
                 }
 
                 // Tout est bon, si la méthode néssécite un argument, il faut lui passer
-                $action = $route["action"];
+                $action = $route->action;
                 $id = $this->request->params["id"] ?? null;
 
                 $response = isset($id)

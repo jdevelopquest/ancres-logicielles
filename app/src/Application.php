@@ -6,13 +6,13 @@ namespace App;
 session_start();
 
 require_once dirname(__DIR__) . "/config/paths.php";
+require_once dirname(__DIR__) . "/config/routes.php";
 
 use App\Utils\SessionManager;
 use App\Core\Configure;
 use App\Core\Dispatcher;
 use App\Core\Request;
 use App\Core\Response;
-use App\Core\Router;
 use App\Utils\Logger;
 use App\Controllers\ErrorsController;
 use Exception;
@@ -30,7 +30,6 @@ class Application
 
     private Request $request;
     private Response $response;
-    private Router $router;
 
     /**
      * @throws Exception
@@ -81,13 +80,6 @@ class Application
         } else {
             throw new Exception("Config file is not an array");
         }
-
-        $routeDefinitions = require CONFIG_PATH . "routes.php";
-        if (is_array($routeDefinitions)) {
-            $this->router = new Router($routeDefinitions);
-        } else {
-            throw new Exception("Routes file is not an array");
-        }
     }
 
     /**
@@ -97,11 +89,7 @@ class Application
      */
     public function run(): void
     {
-        $dispatcher = new Dispatcher(
-            $this->request,
-            $this->response,
-            $this->router,
-        );
+        $dispatcher = new Dispatcher($this->request, $this->response);
         $dispatcher->run();
     }
 }
