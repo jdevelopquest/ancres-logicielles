@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
-
 namespace App;
 
 session_start();
 
+require_once dirname(__DIR__) . "/config/databases.php";
 require_once dirname(__DIR__) . "/config/paths.php";
 require_once dirname(__DIR__) . "/config/routes.php";
 

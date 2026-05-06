@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Core\DatabaseHandler;
@@ -14,9 +13,9 @@ final class GradeModel
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler();
+        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
     }
-    
+
     /**
      * @param int $idPost
      * @param int $idAccount
@@ -25,7 +24,8 @@ final class GradeModel
      */
     public function registerGrade(int $idPost, int $idAccount): bool
     {
-        $request = "INSERT INTO Grades(idPost,idAccount) VALUES (:idPost,:idAccount)";
+        $request =
+            "INSERT INTO Grades(idPost,idAccount) VALUES (:idPost,:idAccount)";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
         return $this->databaseHandler->execute($request, $params);
     }
@@ -38,7 +38,8 @@ final class GradeModel
      */
     public function getGrade(int $idPost, int $idAccount): mixed
     {
-        $request = "SELECT * FROM Grades WHERE idPost = :idPost AND idAccount = :idAccount";
+        $request =
+            "SELECT * FROM Grades WHERE idPost = :idPost AND idAccount = :idAccount";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
         return $this->databaseHandler->fetch($request, $params);
     }
@@ -50,7 +51,8 @@ final class GradeModel
      */
     public function upGrade(int $idGrade): bool
     {
-        $request = "UPDATE Grades SET gradeUp = 1, gradeDown = 0, gradeReported = 0 WHERE idGrade = :idGrade";
+        $request =
+            "UPDATE Grades SET gradeUp = 1, gradeDown = 0, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
         return $this->databaseHandler->execute($request, $params);
     }
@@ -62,7 +64,8 @@ final class GradeModel
      */
     public function downGrade(int $idGrade): bool
     {
-        $request = "UPDATE Grades SET gradeUp = 0, gradeDown = 1, gradeReported = 0 WHERE idGrade = :idGrade";
+        $request =
+            "UPDATE Grades SET gradeUp = 0, gradeDown = 1, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
         return $this->databaseHandler->execute($request, $params);
     }
@@ -74,7 +77,8 @@ final class GradeModel
      */
     public function reportGrade(int $idGrade): bool
     {
-        $request = "UPDATE Grades SET gradeUp = 0, gradeDown = 0, gradeReported = 1 WHERE idGrade = :idGrade";
+        $request =
+            "UPDATE Grades SET gradeUp = 0, gradeDown = 0, gradeReported = 1 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
         return $this->databaseHandler->execute($request, $params);
     }

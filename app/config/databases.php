@@ -1,10 +1,12 @@
 <?php
-declare(strict_types=1);
-
-return [
-    "db_driver" => getenv("DATABASE_DRIVER") ?: "mysql",
-    "db_host" => getenv("MARIADB_HOST") ?: "database",
-    "db_name" => getenv("MARIADB_DATABASE") ?: "ancres-logicielles",
-    "db_username" => getenv("MARIADB_USER") ?: "al",
-    "db_password" => getenv("MARIADB_PASSWORD") ?: "al-password",
-];
+use App\Core\DatabaseMariaDB;
+define(
+    constant_name: "DATABASE_MARIADB",
+    value: new DatabaseMariaDB(
+        driver: getenv("DATABASE_DRIVER") ?: "mysql",
+        host: getenv("DATABASE_HOST") ?: "database",
+        name: getenv("DATABASE_DATABASE") ?: "ancres-logicielles",
+        password: getenv("DATABASE_PASSWORD") ?: "al-password",
+        username: getenv("DATABASE_USER") ?: "al",
+    ),
+);

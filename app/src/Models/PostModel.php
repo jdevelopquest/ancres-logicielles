@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Core\Configure;
@@ -15,9 +14,9 @@ final class PostModel
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler();
+        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// status
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,8 +79,7 @@ final class PostModel
      */
     public function getPostStatus(mixed $idPost): mixed
     {
-        $request =
-            "SELECT
+        $request = "SELECT
                 Posts.idPost,
                 postIsPublished,
                 postIsBanned
@@ -100,8 +98,7 @@ final class PostModel
      */
     public function getSoftwareByIdPost($idPost): mixed
     {
-        $request =
-            "SELECT
+        $request = "SELECT
                 Posts.idPost,
                 idSoftware,
                 softwareName,
@@ -121,8 +118,7 @@ final class PostModel
      */
     public function getSoftwares(): array
     {
-        $request =
-            "SELECT
+        $request = "SELECT
             Posts.idPost,
             idSoftware,
             softwareName,
@@ -140,8 +136,7 @@ final class PostModel
      */
     public function getSoftwaresPublished(): array
     {
-        $request =
-            "SELECT
+        $request = "SELECT
             Posts.idPost,
             idSoftware,
             softwareName,
@@ -160,8 +155,7 @@ final class PostModel
      */
     public function getSoftwaresPublishedAndPending(): array
     {
-        $request =
-            "SELECT
+        $request = "SELECT
             Posts.idPost,
             idSoftware,
             softwareName,
@@ -181,18 +175,19 @@ final class PostModel
      * @return bool
      * @throws Exception
      */
-    public function registerSoftware(int $idAccount, string $softwareName, string $softwareSummary): bool
-    {
+    public function registerSoftware(
+        int $idAccount,
+        string $softwareName,
+        string $softwareSummary,
+    ): bool {
         if ($this->databaseHandler->beginTransaction()) {
-            $request =
-                "INSERT INTO Posts(
-                  postIsBanned, postIsPublished, idAccount) 
+            $request = "INSERT INTO Posts(
+                  postIsBanned, postIsPublished, idAccount)
                   VALUES (0, 0, :idAccount)";
             $params = [":idAccount" => $idAccount];
 
             if ($this->databaseHandler->execute($request, $params)) {
-                $request =
-                    "INSERT INTO Softwares(
+                $request = "INSERT INTO Softwares(
                         idPost,
                         softwareName,
                         softwareSummary
@@ -205,7 +200,7 @@ final class PostModel
                 $params = [
                     ":idPost" => $this->databaseHandler->getLastInsertId(),
                     ":softwareName" => $softwareName,
-                    ":softwareSummary" => $softwareSummary
+                    ":softwareSummary" => $softwareSummary,
                 ];
 
                 if ($this->databaseHandler->execute($request, $params)) {
@@ -230,7 +225,10 @@ final class PostModel
      */
     public function isValidSoftwareName(string $softwareName): bool
     {
-        return preg_match(Configure::get("software_name_pattern"), $softwareName) === 1;
+        return preg_match(
+            Configure::get("software_name_pattern"),
+            $softwareName,
+        ) === 1;
     }
 
     /**
@@ -239,7 +237,10 @@ final class PostModel
      */
     public function isValidSoftwareSummary(string $softwareDescription): bool
     {
-        return preg_match(Configure::get("software_summary_pattern"), $softwareDescription) === 1;
+        return preg_match(
+            Configure::get("software_summary_pattern"),
+            $softwareDescription,
+        ) === 1;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,8 +253,7 @@ final class PostModel
      */
     public function getAnchorsByIdPostSoftware(int $idPostSoftware): array
     {
-        $request =
-            "SELECT
+        $request = "SELECT
                 Posts.idPost,
                 idAnchor,
                 anchorUrl,
@@ -272,10 +272,10 @@ final class PostModel
      * @return array
      * @throws Exception
      */
-    public function getPublishedAnchorsByIdPostSoftware(int $idPostSoftware): array
-    {
-        $request =
-            "SELECT
+    public function getPublishedAnchorsByIdPostSoftware(
+        int $idPostSoftware,
+    ): array {
+        $request = "SELECT
                 Posts.idPost,
                 idAnchor,
                 anchorUrl,
@@ -294,10 +294,10 @@ final class PostModel
      * @return array
      * @throws Exception
      */
-    public function getPublishedAndPendingAnchorsByIdPostSoftware(int $idPostSoftware): array
-    {
-        $request =
-            "SELECT
+    public function getPublishedAndPendingAnchorsByIdPostSoftware(
+        int $idPostSoftware,
+    ): array {
+        $request = "SELECT
                 Posts.idPost,
                 idAnchor,
                 anchorUrl,
@@ -319,18 +319,20 @@ final class PostModel
      * @return bool
      * @throws Exception
      */
-    public function registerAnchor(int $idAccount, int $idPostSoftware, string $anchorUrl, string $anchorContent): bool
-    {
+    public function registerAnchor(
+        int $idAccount,
+        int $idPostSoftware,
+        string $anchorUrl,
+        string $anchorContent,
+    ): bool {
         if ($this->databaseHandler->beginTransaction()) {
-            $request =
-                "INSERT INTO Posts(
-                  postIsBanned, postIsPublished, idAccount) 
+            $request = "INSERT INTO Posts(
+                  postIsBanned, postIsPublished, idAccount)
                   VALUES (0, 0, :idAccount)";
             $params = [":idAccount" => $idAccount];
 
             if ($this->databaseHandler->execute($request, $params)) {
-                $request =
-                    "INSERT INTO Anchors(
+                $request = "INSERT INTO Anchors(
                         idPost,
                         idPostSoftware,
                         anchorUrl,
@@ -346,7 +348,7 @@ final class PostModel
                     ":idPost" => $this->databaseHandler->getLastInsertId(),
                     ":idPostSoftware" => $idPostSoftware,
                     ":anchorUrl" => $anchorUrl,
-                    ":anchorContent" => $anchorContent
+                    ":anchorContent" => $anchorContent,
                 ];
 
                 if ($this->databaseHandler->execute($request, $params)) {
@@ -371,7 +373,10 @@ final class PostModel
      */
     public function isValidAnchorUrl(string $softwareName): bool
     {
-        return preg_match(Configure::get("anchor_url_pattern"), $softwareName) === 1;
+        return preg_match(
+            Configure::get("anchor_url_pattern"),
+            $softwareName,
+        ) === 1;
     }
 
     /**
@@ -380,6 +385,9 @@ final class PostModel
      */
     public function isValidAnchorContent(string $softwareDescription): bool
     {
-        return preg_match(Configure::get("anchor_content_pattern"), $softwareDescription) === 1;
+        return preg_match(
+            Configure::get("anchor_content_pattern"),
+            $softwareDescription,
+        ) === 1;
     }
 }

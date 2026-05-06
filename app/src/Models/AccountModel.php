@@ -17,7 +17,7 @@ final class AccountModel
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler();
+        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
     }
 
     /**

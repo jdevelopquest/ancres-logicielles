@@ -12,42 +12,10 @@ use Throwable;
  */
 final class DatabaseHandler
 {
-    private static PDO $pdo;
-
     /**
      * @throws Exception
      */
-    //TODO: argument de type DATABASE_URL
-    public function __construct()
-    {
-        if (!isset(self::$pdo)) {
-            try {
-                // $connectionParams = [];
-                // // le fichier databases.php doit returner un tableau associatif
-                // // avec les clefs db_driver, db_host, db_name, db_username et db_password
-                // if (file_exists(CONFIG_PATH . "databases.php")) {
-                //     $connectionParams = require CONFIG_PATH . "databases.php";
-                // } else {
-                //     throw new Exception("Missing database configuration file.");
-                // }
-
-                // extract($connectionParams);
-                $driver = getenv("DATABASE_DRIVER");
-                $host = getenv("DATABASE_HOST");
-                $dbname = getenv("DATABASE_DATABASE");
-                $dsn = "$driver:dbname=$dbname;host=$host";
-                $user = getenv("DATABASE_USER");
-                $password = getenv("DATABASE_PASSWORD");
-
-                self::$pdo = new PDO($dsn, $user, $password, [
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                ]);
-            } catch (Throwable $t) {
-                throw new Exception($t->getMessage());
-            }
-        }
-    }
+    public function __construct(private PDO $pdo) {}
 
     /**
      * Fetches a single record from the database based on the provided SQL request and parameters.
@@ -60,7 +28,7 @@ final class DatabaseHandler
     public function fetch(string $request, array $params = []): mixed
     {
         try {
-            $query = self::$pdo->prepare($request);
+            $query = $this->pdo->prepare($request);
 
             foreach ($params as $key => $value) {
                 $query->bindValue("$key", $value);
@@ -92,7 +60,7 @@ final class DatabaseHandler
     public function execute(string $request, array $params = []): bool
     {
         try {
-            $query = self::$pdo->prepare($request);
+            $query = $this->pdo->prepare($request);
 
             foreach ($params as $key => $value) {
                 $query->bindValue("$key", $value);
@@ -119,7 +87,7 @@ final class DatabaseHandler
     public function fetchAll(string $request, array $params = []): array
     {
         try {
-            $query = self::$pdo->prepare($request);
+            $query = $this->pdo->prepare($request);
 
             foreach ($params as $key => $value) {
                 $query->bindValue("$key", $value);
@@ -147,7 +115,7 @@ final class DatabaseHandler
     public function beginTransaction(): bool
     {
         try {
-            return self::$pdo->beginTransaction();
+            return $this->pdo->beginTransaction();
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());
         }
@@ -160,7 +128,7 @@ final class DatabaseHandler
     public function commit(): bool
     {
         try {
-            return self::$pdo->commit();
+            return $this->pdo->commit();
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());
         }
@@ -173,7 +141,7 @@ final class DatabaseHandler
     public function rollback(): bool
     {
         try {
-            return self::$pdo->rollBack();
+            return $this->pdo->rollBack();
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());
         }
@@ -186,7 +154,7 @@ final class DatabaseHandler
     public function getLastInsertId(): false|string
     {
         try {
-            return self::$pdo->lastInsertId();
+            return $this->pdo->lastInsertId();
         } catch (Throwable $t) {
             throw new Exception($t->getMessage());
         }
