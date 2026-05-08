@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Core\DatabaseHandler;
+use App\Core\Database;
 use Exception;
 
 /**
@@ -9,11 +9,11 @@ use Exception;
  */
 final class GradeModel
 {
-    private DatabaseHandler $databaseHandler;
+    private Database $db;
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
+        $this->db = new Database(DATABASE->getPDO());
     }
 
     /**
@@ -27,7 +27,7 @@ final class GradeModel
         $request =
             "INSERT INTO Grades(idPost,idAccount) VALUES (:idPost,:idAccount)";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -41,7 +41,7 @@ final class GradeModel
         $request =
             "SELECT * FROM Grades WHERE idPost = :idPost AND idAccount = :idAccount";
         $params = ["idPost" => $idPost, "idAccount" => $idAccount];
-        return $this->databaseHandler->fetch($request, $params);
+        return $this->db->fetch($request, $params);
     }
 
     /**
@@ -54,7 +54,7 @@ final class GradeModel
         $request =
             "UPDATE Grades SET gradeUp = 1, gradeDown = 0, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -67,7 +67,7 @@ final class GradeModel
         $request =
             "UPDATE Grades SET gradeUp = 0, gradeDown = 1, gradeReported = 0 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -80,6 +80,6 @@ final class GradeModel
         $request =
             "UPDATE Grades SET gradeUp = 0, gradeDown = 0, gradeReported = 1 WHERE idGrade = :idGrade";
         $params = ["idGrade" => $idGrade];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 }

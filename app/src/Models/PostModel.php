@@ -2,7 +2,7 @@
 namespace App\Models;
 
 use App\Core\Configure;
-use App\Core\DatabaseHandler;
+use App\Core\Database;
 use Exception;
 
 /**
@@ -10,11 +10,11 @@ use Exception;
  */
 final class PostModel
 {
-    private DatabaseHandler $databaseHandler;
+    private Database $db;
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
+        $this->db = new Database(DATABASE->getPDO());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ final class PostModel
         $request =
             "UPDATE Posts SET postIsBanned = 1, postIsPublished = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -43,7 +43,7 @@ final class PostModel
         $request =
             "UPDATE Posts SET postIsBanned = 0, postIsPublished = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -56,7 +56,7 @@ final class PostModel
         $request =
             "UPDATE Posts SET postIsPublished = 1, postIsBanned = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -69,7 +69,7 @@ final class PostModel
         $request =
             "UPDATE Posts SET postIsPublished = 0, postIsBanned = 0 WHERE idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -86,7 +86,7 @@ final class PostModel
             FROM Posts
             WHERE Posts.idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->fetch($request, $params);
+        return $this->db->fetch($request, $params);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// softwares
@@ -109,7 +109,7 @@ final class PostModel
             JOIN Softwares on Posts.idPost = Softwares.idPost
             WHERE Posts.idPost = :idPost";
         $params = [":idPost" => $idPost];
-        return $this->databaseHandler->fetch($request, $params);
+        return $this->db->fetch($request, $params);
     }
 
     /**
@@ -127,7 +127,7 @@ final class PostModel
             postIsBanned
         FROM Posts
         JOIN Softwares on Posts.idPost = Softwares.idPost";
-        return $this->databaseHandler->fetchAll($request);
+        return $this->db->fetchAll($request);
     }
 
     /**
@@ -146,7 +146,7 @@ final class PostModel
         FROM Posts
         JOIN Softwares on Posts.idPost = Softwares.idPost
         WHERE postIsPublished = 1";
-        return $this->databaseHandler->fetchAll($request);
+        return $this->db->fetchAll($request);
     }
 
     /**
@@ -165,7 +165,7 @@ final class PostModel
         FROM Posts
         JOIN Softwares on Posts.idPost = Softwares.idPost
         WHERE postIsBanned = 0";
-        return $this->databaseHandler->fetchAll($request);
+        return $this->db->fetchAll($request);
     }
 
     /**
@@ -180,13 +180,13 @@ final class PostModel
         string $softwareName,
         string $softwareSummary,
     ): bool {
-        if ($this->databaseHandler->beginTransaction()) {
+        if ($this->db->beginTransaction()) {
             $request = "INSERT INTO Posts(
                   postIsBanned, postIsPublished, idAccount)
                   VALUES (0, 0, :idAccount)";
             $params = [":idAccount" => $idAccount];
 
-            if ($this->databaseHandler->execute($request, $params)) {
+            if ($this->db->execute($request, $params)) {
                 $request = "INSERT INTO Softwares(
                         idPost,
                         softwareName,
@@ -198,20 +198,20 @@ final class PostModel
                         :softwareSummary)";
 
                 $params = [
-                    ":idPost" => $this->databaseHandler->getLastInsertId(),
+                    ":idPost" => $this->db->getLastInsertId(),
                     ":softwareName" => $softwareName,
                     ":softwareSummary" => $softwareSummary,
                 ];
 
-                if ($this->databaseHandler->execute($request, $params)) {
-                    $this->databaseHandler->commit();
+                if ($this->db->execute($request, $params)) {
+                    $this->db->commit();
                     return true;
                 } else {
-                    $this->databaseHandler->rollback();
+                    $this->db->rollback();
                     return false;
                 }
             } else {
-                $this->databaseHandler->rollback();
+                $this->db->rollback();
                 return false;
             }
         }
@@ -264,7 +264,7 @@ final class PostModel
             JOIN Anchors on Posts.idPost = Anchors.idPost
             WHERE Anchors.idPostSoftware = :idPostSoftware";
         $params = [":idPostSoftware" => $idPostSoftware];
-        return $this->databaseHandler->fetchAll($request, $params);
+        return $this->db->fetchAll($request, $params);
     }
 
     /**
@@ -286,7 +286,7 @@ final class PostModel
             JOIN Anchors on Posts.idPost = Anchors.idPost
             WHERE Anchors.idPostSoftware = :idPostSoftware AND postIsPublished = 1 AND postIsBanned = 0";
         $params = [":idPostSoftware" => $idPostSoftware];
-        return $this->databaseHandler->fetchAll($request, $params);
+        return $this->db->fetchAll($request, $params);
     }
 
     /**
@@ -308,7 +308,7 @@ final class PostModel
             JOIN Anchors on Posts.idPost = Anchors.idPost
             WHERE Anchors.idPostSoftware = :idPostSoftware AND postIsBanned = 0";
         $params = [":idPostSoftware" => $idPostSoftware];
-        return $this->databaseHandler->fetchAll($request, $params);
+        return $this->db->fetchAll($request, $params);
     }
 
     /**
@@ -325,13 +325,13 @@ final class PostModel
         string $anchorUrl,
         string $anchorContent,
     ): bool {
-        if ($this->databaseHandler->beginTransaction()) {
+        if ($this->db->beginTransaction()) {
             $request = "INSERT INTO Posts(
                   postIsBanned, postIsPublished, idAccount)
                   VALUES (0, 0, :idAccount)";
             $params = [":idAccount" => $idAccount];
 
-            if ($this->databaseHandler->execute($request, $params)) {
+            if ($this->db->execute($request, $params)) {
                 $request = "INSERT INTO Anchors(
                         idPost,
                         idPostSoftware,
@@ -345,21 +345,21 @@ final class PostModel
                            :anchorContent)";
 
                 $params = [
-                    ":idPost" => $this->databaseHandler->getLastInsertId(),
+                    ":idPost" => $this->db->getLastInsertId(),
                     ":idPostSoftware" => $idPostSoftware,
                     ":anchorUrl" => $anchorUrl,
                     ":anchorContent" => $anchorContent,
                 ];
 
-                if ($this->databaseHandler->execute($request, $params)) {
-                    $this->databaseHandler->commit();
+                if ($this->db->execute($request, $params)) {
+                    $this->db->commit();
                     return true;
                 } else {
-                    $this->databaseHandler->rollback();
+                    $this->db->rollback();
                     return false;
                 }
             } else {
-                $this->databaseHandler->rollback();
+                $this->db->rollback();
                 return false;
             }
         }

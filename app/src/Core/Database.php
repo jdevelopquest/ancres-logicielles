@@ -8,7 +8,7 @@ use Throwable;
 /**
  *
  */
-final class DatabaseHandler
+final class Database
 {
     /**
      * @throws Exception

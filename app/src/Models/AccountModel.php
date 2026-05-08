@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Core\Configure;
-use App\Core\DatabaseHandler;
+use App\Core\Database;
 use Exception;
 
 /**
@@ -13,11 +13,11 @@ use Exception;
  */
 final class AccountModel
 {
-    private DatabaseHandler $databaseHandler;
+    private Database $db;
 
     public function __construct()
     {
-        $this->databaseHandler = new DatabaseHandler(DATABASE_MARIADB->pdo());
+        $this->db = new Database(DATABASE->getPDO());
     }
 
     /**
@@ -31,7 +31,7 @@ final class AccountModel
     {
         $request = "DELETE FROM Accounts WHERE idAccount = :idAccount";
         $params = [":idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -51,7 +51,7 @@ final class AccountModel
                 accountIsSuspended
             FROM Accounts";
 
-        return $this->databaseHandler->fetchAll($request);
+        return $this->db->fetchAll($request);
     }
 
     /**
@@ -72,7 +72,7 @@ final class AccountModel
 
         $params = [":idAccount" => $idAccount];
 
-        return $this->databaseHandler->fetch($request, $params) ?? [];
+        return $this->db->fetch($request, $params) ?? [];
     }
 
     /**
@@ -114,7 +114,7 @@ final class AccountModel
 
         $params = ["username" => $username];
 
-        $results = $this->databaseHandler->fetch($request, $params);
+        $results = $this->db->fetch($request, $params);
 
         return $results["idAccount"] ?? null;
     }
@@ -139,7 +139,7 @@ final class AccountModel
             "idAccount" => $idAccount,
         ];
 
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -167,7 +167,7 @@ final class AccountModel
 
         $params = ["username" => $username];
 
-        return $this->databaseHandler->fetch($request, $params);
+        return $this->db->fetch($request, $params);
     }
 
     /**
@@ -222,7 +222,7 @@ final class AccountModel
             ":accountIsSuspended" => 0,
         ];
 
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -290,7 +290,7 @@ final class AccountModel
         $params = [
             "idAccount" => $idAccount,
         ];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -305,7 +305,7 @@ final class AccountModel
         $request =
             "UPDATE Accounts SET accountIsBanned = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -320,7 +320,7 @@ final class AccountModel
         $request =
             "UPDATE Accounts SET accountIsAdmin = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -335,7 +335,7 @@ final class AccountModel
         $request =
             "UPDATE Accounts SET accountIsModerator = 0 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -350,7 +350,7 @@ final class AccountModel
         $request =
             "UPDATE Accounts SET accountIsAdmin = 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 
     /**
@@ -365,6 +365,6 @@ final class AccountModel
         $request =
             "UPDATE Accounts SET accountIsModerator = 1 WHERE idAccount = :idAccount";
         $params = ["idAccount" => $idAccount];
-        return $this->databaseHandler->execute($request, $params);
+        return $this->db->execute($request, $params);
     }
 }
