@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Src\Models;
 
 use App\Core\Configure;
-use App\Core\Database;
+use App\CoreUtils\Database\Database;
 use Exception;
 
 /**

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Utils\Logger;
+use App\CoreUtils\Logger\Logger;
 
 class Response
 {
@@ -20,8 +20,11 @@ class Response
      * @param int $responseCode The HTTP response code associated with the header. Defaults to 0.
      * @return self Returns the current instance.
      */
-    public function addHeader(string $header, bool $replace = true, int $responseCode = 0): self
-    {
+    public function addHeader(
+        string $header,
+        bool $replace = true,
+        int $responseCode = 0,
+    ): self {
         $this->headers[] = [
             "header" => $header,
             "replace" => $replace,
@@ -42,14 +45,15 @@ class Response
      * @param bool $httpOnly Whether the cookie is accessible only through the HTTP protocol. Defaults to false.
      * @return self
      */
-    public function addCookie(string $name,
-                              string $value = "",
-                              int    $expiresOrOptions = 0,
-                              string $path = "/",
-                              string $domain = "/",
-                              bool   $secure = false,
-                              bool   $httpOnly = false): self
-    {
+    public function addCookie(
+        string $name,
+        string $value = "",
+        int $expiresOrOptions = 0,
+        string $path = "/",
+        string $domain = "/",
+        bool $secure = false,
+        bool $httpOnly = false,
+    ): self {
         $this->cookies[] = [
             "name" => $name,
             "value" => $value,
@@ -57,7 +61,7 @@ class Response
             "path" => $path,
             "domain" => $domain,
             "secure" => $secure,
-            "httponly" => $httpOnly
+            "httponly" => $httpOnly,
         ];
         return $this;
     }
@@ -100,7 +104,10 @@ class Response
     {
         if (headers_sent($file, $line)) {
             $logger = new Logger();
-            $logger->warning('Headers already sent before Response::send()', ['file' => $file, 'line' => $line]);
+            $logger->warning("Headers already sent before Response::send()", [
+                "file" => $file,
+                "line" => $line,
+            ]);
         }
 
         $this->sendHeaders();
@@ -122,7 +129,7 @@ class Response
             header(
                 $header["header"],
                 $header["replace"],
-                $header["response_code"]
+                $header["response_code"],
             );
         }
     }
@@ -145,7 +152,7 @@ class Response
                 $cookie["path"],
                 $cookie["domain"],
                 $cookie["secure"],
-                $cookie["httponly"]
+                $cookie["httponly"],
             );
 
             if (!$success) {

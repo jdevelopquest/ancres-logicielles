@@ -1,5 +1,7 @@
 <?php
-namespace App;
+declare(strict_types=1);
+
+namespace App\Src;
 
 session_start();
 
@@ -7,13 +9,13 @@ require_once dirname(__DIR__) . "/config/databases.php";
 require_once dirname(__DIR__) . "/config/paths.php";
 require_once dirname(__DIR__) . "/config/routes.php";
 
-use App\Utils\SessionManager;
 use App\Core\Configure;
 use App\Core\Dispatcher;
 use App\Core\Request;
 use App\Core\Response;
-use App\Utils\Logger;
-use App\Controllers\ErrorsController;
+use App\CoreUtils\Logger\Logger;
+use App\CoreUtils\Session\SessionManager;
+use App\Src\Controllers\ErrorsController;
 use Exception;
 
 /**
@@ -73,7 +75,7 @@ class Application
         $this->response = new Response();
         $this->initSession();
 
-        $configurations = require CONFIG_PATH . "config.php";
+        $configurations = require CONFIG_PATH . "app.php";
         if (is_array($configurations)) {
             Configure::merge($configurations);
         } else {

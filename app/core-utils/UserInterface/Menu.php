@@ -1,11 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Utils;
+namespace App\CoreUtils\UserInterface;
+
+use App\CoreUtils\Session\SessionManager;
 
 class Menu
 {
     use SessionManager;
+
     private array $menus = [];
     private string $lastSubMenuTag = "submenu";
 
@@ -15,9 +18,7 @@ class Menu
      * @param string $name The name to initialize the object with. Defaults to "menu".
      * @return void
      */
-    public function __construct(private readonly string $name = "menu")
-    {
-    }
+    public function __construct(private readonly string $name = "menu") {}
 
     /**
      * Retrieves the menu items associated with the current instance.
@@ -51,13 +52,17 @@ class Menu
      * @param string $icon The icon associated with the menu item.
      * @return static The current Menu instance for chaining.
      */
-    public function addSubMenuItem(string $href, string $title, string $text, string $icon): static
-    {
-        $this->menus[$this->lastSubMenuTag][] =  [
+    public function addSubMenuItem(
+        string $href,
+        string $title,
+        string $text,
+        string $icon,
+    ): static {
+        $this->menus[$this->lastSubMenuTag][] = [
             "href" => $href,
             "title" => $title,
             "text" => $text,
-            "icon" => $icon
+            "icon" => $icon,
         ];
         return $this;
     }

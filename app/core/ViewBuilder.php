@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Utils\Logger;
+use App\CoreUtils\Logger\Logger;
 
 /**
  * Class responsible for building and rendering views, managing components,

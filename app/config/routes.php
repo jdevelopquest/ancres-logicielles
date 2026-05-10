@@ -10,7 +10,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET)$#",
         rolePattern: "#^(guest|registered|moderator|admin)$#",
-        controller: "App\Controllers\HealthsController",
+        controller: "App\Src\Controllers\HealthsController",
         action: "healthJson",
     ),
 );
@@ -24,7 +24,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET)$#",
         rolePattern: "#^(guest|registered|moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "indexSoftwares",
     ),
 );
@@ -37,7 +37,7 @@ Router::add(
         queryPattern: "#^id=\d+$#",
         methodPattern: "#^(GET)$#",
         rolePattern: "#^(guest|registered|moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "showSoftware",
     ),
 );
@@ -50,7 +50,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET|POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "addSoftware",
     ),
 );
@@ -63,7 +63,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "unpublish",
     ),
 );
@@ -76,7 +76,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "publish",
     ),
 );
@@ -89,7 +89,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "ban",
     ),
 );
@@ -102,7 +102,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "unban",
     ),
 );
@@ -115,7 +115,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "updatePostboxModTool",
     ),
 );
@@ -128,7 +128,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(POST)$#",
         rolePattern: "#^(moderator|admin)$#",
-        controller: "App\Controllers\PostsController",
+        controller: "App\Src\Controllers\PostsController",
         action: "updateSoftwareStatus",
     ),
 );
@@ -141,7 +141,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET)$#",
         rolePattern: "#^(guest|registered|moderator|admin)$#",
-        controller: "App\Controllers\SupportsController",
+        controller: "App\Src\Controllers\SupportsController",
         action: "about",
     ),
 );
@@ -154,7 +154,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET)$#",
         rolePattern: "#^(guest|registered|moderator|admin)$#",
-        controller: "App\Controllers\SupportsController",
+        controller: "App\Src\Controllers\SupportsController",
         action: "policies",
     ),
 );
@@ -167,7 +167,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET|POST)$#",
         rolePattern: "#^(guest)$#",
-        controller: "App\Controllers\AccountsController",
+        controller: "App\Src\Controllers\AccountsController",
         action: "signup",
     ),
 );
@@ -180,7 +180,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET|POST)$#",
         rolePattern: "#^(guest)$#",
-        controller: "App\Controllers\AccountsController",
+        controller: "App\Src\Controllers\AccountsController",
         action: "login",
     ),
 );
@@ -193,7 +193,7 @@ Router::add(
         queryPattern: "#^$#",
         methodPattern: "#^(GET|POST)$#",
         rolePattern: "#^(registered|moderator|admin)$#",
-        controller: "App\Controllers\AccountsController",
+        controller: "App\Src\Controllers\AccountsController",
         action: "logout",
     ),
 );

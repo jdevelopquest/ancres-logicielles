@@ -1,7 +1,9 @@
 <?php
-namespace App\Models;
+declare(strict_types=1);
 
-use App\Core\Database;
+namespace App\Src\Models;
+
+use App\CoreUtils\Database\Database;
 use Exception;
 
 /**

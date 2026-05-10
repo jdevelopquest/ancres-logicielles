@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Utils\ConstructHref;
-use App\Utils\Menu;
-use App\Utils\SessionManager;
+use App\CoreUtils\UserInterface\ConstructHref;
+use App\CoreUtils\UserInterface\Menu;
+use App\CoreUtils\Session\SessionManager;
 
 class Controller
 {

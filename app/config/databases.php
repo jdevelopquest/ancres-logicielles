@@ -1,5 +1,5 @@
 <?php
-use App\Core\DatabaseMariaDB;
+use App\CoreUtils\Database\DatabaseMariaDB;
 define(
     constant_name: "DATABASE",
     value: new DatabaseMariaDB(

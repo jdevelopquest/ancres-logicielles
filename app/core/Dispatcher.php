@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Controllers\ErrorsController;
-use App\Utils\Logger;
-use App\Utils\SessionManager;
+use App\CoreUtils\Logger\Logger;
+use App\CoreUtils\Session\SessionManager;
+use App\Src\Controllers\ErrorsController;
 use Exception;
 
 class Dispatcher

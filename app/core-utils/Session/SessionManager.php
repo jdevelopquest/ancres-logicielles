@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Utils;
+namespace App\CoreUtils\Session;
 
+use App\CoreUtils\Logger\Logger;
 use Exception;
 
 trait SessionManager

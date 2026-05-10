@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Src\Controllers;
 
 use App\Core\Controller;
 use App\Core\Response;

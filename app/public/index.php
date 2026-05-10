@@ -2,7 +2,7 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "autoload.php";
 
-use App\Application;
+use App\Src\Application;
 
 $application = new Application();
 $application->run();

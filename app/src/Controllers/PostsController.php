@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Src\Controllers;
 
 use App\Core\Controller;
 use App\Core\Response;
-use App\Models\PostModel;
-use App\Utils\Logger;
-use App\Utils\Menu;
-use App\Utils\SessionManager;
+use App\CoreUtils\Logger\Logger;
+use App\CoreUtils\UserInterface\Menu;
+use App\CoreUtils\Session\SessionManager;
+use App\Src\Models\PostModel;
 use Exception;
 
 class PostsController extends Controller
@@ -38,8 +38,13 @@ class PostsController extends Controller
                 $softwares = $postModel->getSoftwaresPublished();
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug("Fail to get published softwares.", [
+                    "Exception message" => $e->getMessage(),
+                ]);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503();
             }
         }
@@ -49,8 +54,13 @@ class PostsController extends Controller
                 $softwares = $postModel->getSoftwaresPublishedAndPending();
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get published and pending softwares.", ["Exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug("Fail to get published and pending softwares.", [
+                    "Exception message" => $e->getMessage(),
+                ]);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503();
             }
         }
@@ -60,8 +70,14 @@ class PostsController extends Controller
                 $softwares = $postModel->getSoftwares();
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get banned, published and pending softwares.", ["Exception message" => $e->getMessage()]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug(
+                    "Fail to get banned, published and pending softwares.",
+                    ["Exception message" => $e->getMessage()],
+                );
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503();
             }
         }
@@ -73,7 +89,11 @@ class PostsController extends Controller
 
             foreach ($softwares as $software) {
                 $article = [];
-                $article["href"] = $this->constructHref("posts", "showSoftware", $software["idPost"]);
+                $article["href"] = $this->constructHref(
+                    "posts",
+                    "showSoftware",
+                    $software["idPost"],
+                );
                 $article["softwareName"] = $software["softwareName"];
                 $article["status"] = $this->getPostStatusParams($software);
 
@@ -82,15 +102,28 @@ class PostsController extends Controller
         }
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
-            $contentParams = array_merge($contentParams, new Menu("menuModTools")
-                ->addSubMenu("addSoftware")
-                ->addSubMenuItem($this->constructHref("posts", "addSoftware"), "Ajouter une fiche logicielle", "Ajouter une fiche logicielle", "list-add")
-                ->getMenu());
+            $contentParams = array_merge(
+                $contentParams,
+                new Menu("menuModTools")
+                    ->addSubMenu("addSoftware")
+                    ->addSubMenuItem(
+                        $this->constructHref("posts", "addSoftware"),
+                        "Ajouter une fiche logicielle",
+                        "Ajouter une fiche logicielle",
+                        "list-add",
+                    )
+                    ->getMenu(),
+            );
         }
 
         $this->setPageParam("title", "Ancres Logicielles : Fiches logicielles");
 
-        $this->setViewComponent("content", "posts/indexSoftwares", $contentParams, "page");
+        $this->setViewComponent(
+            "content",
+            "posts/indexSoftwares",
+            $contentParams,
+            "page",
+        );
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -111,23 +144,37 @@ class PostsController extends Controller
 
             // idPost est inexistant
             if (!$software) {
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error404();
             }
         } catch (Exception $e) {
             $log = new Logger();
-            $log->debug("Fail to get software data.", ["Exception message" => $e->getMessage()]);
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $log->debug("Fail to get software data.", [
+                "Exception message" => $e->getMessage(),
+            ]);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503();
         }
 
         if ($this->userIsGuest() && !$software["postIsPublished"]) {
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error403();
         }
 
         if ($this->userIsRegistered() && $software["postIsBanned"]) {
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error403();
         }
 
@@ -141,10 +188,14 @@ class PostsController extends Controller
             $contentParams["software"]["summary"][] = $summaryPart;
         }
 
-        $contentParams["software"]["status"] = $this->getPostStatusParams($software);
+        $contentParams["software"]["status"] = $this->getPostStatusParams(
+            $software,
+        );
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
-            $contentParams["softwareModTools"] = $this->getPostModToolsParams($software);
+            $contentParams["softwareModTools"] = $this->getPostModToolsParams(
+                $software,
+            );
         }
 
         // récupérer les liens associés à la fiche
@@ -153,31 +204,46 @@ class PostsController extends Controller
 
         if ($this->userIsGuest()) {
             try {
-                $anchors = $postModel->getPublishedAnchorsByIdPostSoftware((int)$idPostSoftware);
+                $anchors = $postModel->getPublishedAnchorsByIdPostSoftware(
+                    (int) $idPostSoftware,
+                );
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
-                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
+                $log->debug("Fail to get published softwares.", [
+                    "Exception message" => $e->getMessage(),
+                ]);
+                $notificationParams["error"] =
+                    "Impossible de récupérer les ancres associées.";
             }
         }
 
         if ($this->userIsRegistered()) {
             try {
-                $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware((int)$idPostSoftware);
+                $anchors = $postModel->getPublishedAndPendingAnchorsByIdPostSoftware(
+                    (int) $idPostSoftware,
+                );
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get linked anchors.", ["Exception message" => $e->getMessage()]);
-                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
+                $log->debug("Fail to get linked anchors.", [
+                    "Exception message" => $e->getMessage(),
+                ]);
+                $notificationParams["error"] =
+                    "Impossible de récupérer les ancres associées.";
             }
         }
 
         if ($this->userIsModerator() || $this->userIsAdmin()) {
             try {
-                $anchors = $postModel->getAnchorsByIdPostSoftware((int)$idPostSoftware);
+                $anchors = $postModel->getAnchorsByIdPostSoftware(
+                    (int) $idPostSoftware,
+                );
             } catch (Exception $e) {
                 $log = new Logger();
-                $log->debug("Fail to get published softwares.", ["Exception message" => $e->getMessage()]);
-                $notificationParams["error"] = "Impossible de récupérer les ancres associées.";
+                $log->debug("Fail to get published softwares.", [
+                    "Exception message" => $e->getMessage(),
+                ]);
+                $notificationParams["error"] =
+                    "Impossible de récupérer les ancres associées.";
             }
         }
 
@@ -187,24 +253,44 @@ class PostsController extends Controller
             foreach ($anchors as $anchor) {
                 $article = [];
                 $article["idPost"] = $anchor["idPost"];
-                $article["href"] = $this->constructHref("posts", "showAnchor", $anchor["idPost"]);
+                $article["href"] = $this->constructHref(
+                    "posts",
+                    "showAnchor",
+                    $anchor["idPost"],
+                );
                 $article["anchorUrl"] = $anchor["anchorUrl"];
                 $article["anchorContent"] = $anchor["anchorContent"];
                 $article["status"] = $this->getPostStatusParams($anchor);
 
                 if ($this->userIsModerator() || $this->userIsAdmin()) {
-                    $article["anchorModTools"] = $this->getPostModToolsParams($anchor);
+                    $article["anchorModTools"] = $this->getPostModToolsParams(
+                        $anchor,
+                    );
                 }
 
                 $contentParams["anchors"][] = $article;
             }
         }
 
-        $this->setPageParam("title", "Ancres Logicielles : " . $software["softwareName"] ?? "Nom du logiciel inconnu");
+        $this->setPageParam(
+            "title",
+            "Ancres Logicielles : " . $software["softwareName"] ??
+                "Nom du logiciel inconnu",
+        );
 
-        $this->setViewComponent("content", "posts/showSoftware", $contentParams, "page");
+        $this->setViewComponent(
+            "content",
+            "posts/showSoftware",
+            $contentParams,
+            "page",
+        );
 
-        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent(
+            "notification",
+            "layouts/notification",
+            $notificationParams,
+            "content",
+        );
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -236,8 +322,10 @@ class PostsController extends Controller
 
             if (!$postModel->isValidSoftwareName($softwareName)) {
                 $notificationParams["error"] = [];
-                $notificationParams["error"][] = "Le nom du logiciel n'est pas valide.";
-                $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (maximum 100 caractères).";
+                $notificationParams["error"][] =
+                    "Le nom du logiciel n'est pas valide.";
+                $notificationParams["error"][] =
+                    "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (maximum 100 caractères).";
                 $contentParams["softwareName"] = $softwareName;
             }
 
@@ -245,38 +333,64 @@ class PostsController extends Controller
                 if (!isset($notificationParams["error"])) {
                     $notificationParams["error"] = [];
                 }
-                $notificationParams["error"][] = "La description du logiciel n'est pas valide.";
-                $notificationParams["error"][] = "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (minimum 10 caractères, maximum 2000 caractères).";
+                $notificationParams["error"][] =
+                    "La description du logiciel n'est pas valide.";
+                $notificationParams["error"][] =
+                    "Veuillez utiliser uniquement des lettres, chiffres, espaces, ponctuations et symboles (minimum 10 caractères, maximum 2000 caractères).";
                 $contentParams["softwareSummary"] = $softwareSummary;
             }
 
             if (!isset($notificationParams["error"])) {
                 try {
-                    $result = $postModel->registerSoftware($this->getUserId(), $softwareName, $softwareSummary);
+                    $result = $postModel->registerSoftware(
+                        $this->getUserId(),
+                        $softwareName,
+                        $softwareSummary,
+                    );
 
                     if ($result) {
                         $notificationParams["success"] = [];
-                        $notificationParams["success"][] = "La fiche logicielle a été ajoutée avec succès.";
+                        $notificationParams["success"][] =
+                            "La fiche logicielle a été ajoutée avec succès.";
                         $contentParams["success"] = true;
                     } else {
                         $notificationParams["error"] = [];
-                        $notificationParams["error"][] = "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
+                        $notificationParams["error"][] =
+                            "Une erreur est survenue lors de l'ajout de la fiche logicielle.";
                         $contentParams["success"] = false;
                     }
                 } catch (Exception $e) {
                     $log = new Logger();
-                    $log->debug("Fail to add a software.", ["Exception message" => $e->getMessage()]);
-                    $errorsController = new ErrorsController($this->request, $this->response);
+                    $log->debug("Fail to add a software.", [
+                        "Exception message" => $e->getMessage(),
+                    ]);
+                    $errorsController = new ErrorsController(
+                        $this->request,
+                        $this->response,
+                    );
                     return $errorsController->error503();
                 }
             }
         }
 
-        $this->setPageParam("title", "Ancres Logicielles : Ajouter une fiche logicielle");
+        $this->setPageParam(
+            "title",
+            "Ancres Logicielles : Ajouter une fiche logicielle",
+        );
 
-        $this->setViewComponent("notification", "layouts/notification", $notificationParams, "content");
+        $this->setViewComponent(
+            "notification",
+            "layouts/notification",
+            $notificationParams,
+            "content",
+        );
 
-        $this->setViewComponent("content", "posts/addSoftware", $contentParams, "page");
+        $this->setViewComponent(
+            "content",
+            "posts/addSoftware",
+            $contentParams,
+            "page",
+        );
 
         return $this->getHtmlResponse($this->renderHtmlPage());
     }
@@ -343,7 +457,10 @@ class PostsController extends Controller
         $postModel = new PostModel();
 
         if (!method_exists($postModel, $action)) {
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
@@ -351,13 +468,23 @@ class PostsController extends Controller
             $result = $postModel->$action($idPost);
 
             if (!$result) {
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
-            $log->debug("Fail to get perform action on post.", ["id post" => $idPost, "action" => $action, "Exception message" => $e->getMessage()]);
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $log->debug("Fail to get perform action on post.", [
+                "id post" => $idPost,
+                "action" => $action,
+                "Exception message" => $e->getMessage(),
+            ]);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
@@ -385,23 +512,40 @@ class PostsController extends Controller
 
             if (empty($postStatus)) {
                 $log = new Logger();
-                $log->debug("Fail to update post mod toolbox.", ["id post" => $idPost]);
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $log->debug("Fail to update post mod toolbox.", [
+                    "id post" => $idPost,
+                ]);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
-            $log->debug("Fail to get post status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $log->debug("Fail to get post status.", [
+                "id post" => $idPost,
+                "Exception message" => $e->getMessage(),
+            ]);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
-        $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", ["idPost" => $idPost, "modTools" => $this->getPostModToolsParams($postStatus)]);
+        $part = $this->renderHtmlComponent("layouts/postbox-mod-tools", [
+            "idPost" => $idPost,
+            "modTools" => $this->getPostModToolsParams($postStatus),
+        ]);
 
         if (empty($part)) {
             $log = new Logger();
             $log->debug("Fail to render post mod toolbox.");
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
@@ -433,26 +577,42 @@ class PostsController extends Controller
 
             if (empty($postStatus)) {
                 $log = new Logger();
-                $log->debug("Fail to update software status.", ["id post" => $idPost]);
+                $log->debug("Fail to update software status.", [
+                    "id post" => $idPost,
+                ]);
 
-                $errorsController = new ErrorsController($this->request, $this->response);
+                $errorsController = new ErrorsController(
+                    $this->request,
+                    $this->response,
+                );
                 return $errorsController->error503Json();
             }
         } catch (Exception $e) {
             $log = new Logger();
-            $log->debug("Fail to get software status.", ["id post" => $idPost, "Exception message" => $e->getMessage()]);
+            $log->debug("Fail to get software status.", [
+                "id post" => $idPost,
+                "Exception message" => $e->getMessage(),
+            ]);
 
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
-        $part = $this->renderHtmlComponent("layouts/postbox-status", ["postStatus" => $this->getPostStatusParams($postStatus)]);
+        $part = $this->renderHtmlComponent("layouts/postbox-status", [
+            "postStatus" => $this->getPostStatusParams($postStatus),
+        ]);
 
         if (empty($part)) {
             $log = new Logger();
             $log->debug("Fail to render software status.");
 
-            $errorsController = new ErrorsController($this->request, $this->response);
+            $errorsController = new ErrorsController(
+                $this->request,
+                $this->response,
+            );
             return $errorsController->error503Json();
         }
 
@@ -478,17 +638,17 @@ class PostsController extends Controller
         if ($post["postIsPublished"]) {
             $status[] = [
                 "icon" => "post-published",
-                "title" => "publiée"
+                "title" => "publiée",
             ];
-        } else if ($post["postIsBanned"]) {
+        } elseif ($post["postIsBanned"]) {
             $status[] = [
                 "icon" => "post-banned",
-                "title" => "banni"
+                "title" => "banni",
             ];
         } else {
             $status[] = [
                 "icon" => "post-pending",
-                "title" => "en attente"
+                "title" => "en attente",
             ];
         }
 
@@ -515,7 +675,7 @@ class PostsController extends Controller
             $tools[] = [
                 "action" => "unban",
                 "icon" => "post-unban",
-                "title" => "Rétirer le bannissement"
+                "title" => "Rétirer le bannissement",
             ];
 
             return $tools;
@@ -525,20 +685,20 @@ class PostsController extends Controller
             $tools[] = [
                 "action" => "unpublish",
                 "icon" => "post-unpublish",
-                "title" => "Rétirer la publication"
+                "title" => "Rétirer la publication",
             ];
         } else {
             $tools[] = [
                 "action" => "publish",
                 "icon" => "post-publish",
-                "title" => "Mettre en publication"
+                "title" => "Mettre en publication",
             ];
         }
 
         $tools[] = [
             "action" => "ban",
             "icon" => "post-ban",
-            "title" => "Mettre en bannissement"
+            "title" => "Mettre en bannissement",
         ];
 
         return $tools;

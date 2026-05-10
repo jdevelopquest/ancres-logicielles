@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Src\Controllers;
 
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Models\AccountModel;
-use App\Utils\Logger;
-use App\Utils\SessionManager;
+use App\CoreUtils\Logger\Logger;
+use App\CoreUtils\Session\SessionManager;
+use App\Src\Models\AccountModel;
 use Exception;
 
 class AccountsController extends Controller

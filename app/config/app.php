@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 return [
     "account_suspension_duration" => 3600 * 24,
     "account_suspension_duration_hours" => 24,
