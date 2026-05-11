@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 namespace App\CoreUtils\UserInterface;
 
-use App\CoreUtils\Session\SessionManager;
-
-class Menu
+final class Menu
 {
-    use SessionManager;
-
     private array $menus = [];
     private string $lastSubMenuTag = "submenu";
 

@@ -3,21 +3,14 @@ declare(strict_types=1);
 
 namespace App\Src\Models;
 
-use App\CoreUtils\Database\Database;
+use App\Core\Model;
 use Exception;
 
 /**
  *
  */
-final class GradeModel
+final class GradeModel extends Model
 {
-    private Database $db;
-
-    public function __construct()
-    {
-        $this->db = new Database(DATABASE->getPDO());
-    }
-
     /**
      * @param int $idPost
      * @param int $idAccount

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Src\Models;
 
 use App\Core\Configure;
-use App\CoreUtils\Database\Database;
+use App\Core\Model;
 use Exception;
 
 /**
@@ -12,15 +12,8 @@ use Exception;
  * Provides methods for handling account-related functionality such as
  * deletion, retrieval, authentication, registration, and validation.
  */
-final class AccountModel
+final class AccountModel extends Model
 {
-    private Database $db;
-
-    public function __construct()
-    {
-        $this->db = new Database(DATABASE->getPDO());
-    }
-
     /**
      * Deletes an account from the database based on the provided account ID.
      *

@@ -11,10 +11,9 @@ class Request
     public readonly array $params;
     public readonly mixed $body;
     public readonly array $cookies;
-
     protected readonly array $files;
     protected readonly array $headers;
-    private const string HDR_X_AJAX_REQUEST  = "X-Ajax-Request";
+    private const string HDR_X_AJAX_REQUEST = "X-Ajax-Request";
 
     public function __construct()
     {
@@ -36,7 +35,9 @@ class Request
      */
     public function getParam(string $paramName): string
     {
-        return key_exists($paramName, $this->params) ? $this->params[$paramName] : "";
+        return key_exists($paramName, $this->params)
+            ? $this->params[$paramName]
+            : "";
     }
 
     /**
@@ -46,7 +47,8 @@ class Request
      */
     public function isAjax(): bool
     {
-        return isset($this->headers[self::HDR_X_AJAX_REQUEST]) && $this->headers[self::HDR_X_AJAX_REQUEST] === 'true';
+        return isset($this->headers[self::HDR_X_AJAX_REQUEST]) &&
+            $this->headers[self::HDR_X_AJAX_REQUEST] === "true";
     }
 
     /**

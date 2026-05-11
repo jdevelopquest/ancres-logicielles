@@ -4,21 +4,14 @@ declare(strict_types=1);
 namespace App\Src\Models;
 
 use App\Core\Configure;
-use App\CoreUtils\Database\Database;
+use App\Core\Model;
 use Exception;
 
 /**
  *
  */
-final class PostModel
+final class PostModel extends Model
 {
-    private Database $db;
-
-    public function __construct()
-    {
-        $this->db = new Database(DATABASE->getPDO());
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// status
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
