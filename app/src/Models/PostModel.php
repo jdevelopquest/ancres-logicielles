@@ -363,26 +363,24 @@ final class PostModel extends Model
     }
 
     /**
-     * @param string $softwareName
+     * @param string $anchorUrl
      * @return bool
      */
-    public function isValidAnchorUrl(string $softwareName): bool
+    public function isValidAnchorUrl(string $anchorUrl): bool
     {
-        return preg_match(
-            Configure::get("anchor_url_pattern"),
-            $softwareName,
-        ) === 1;
+        return preg_match(Configure::get("anchor_url_pattern"), $anchorUrl) ===
+            1;
     }
 
     /**
-     * @param string $softwareDescription
+     * @param string $anchorContent
      * @return bool
      */
-    public function isValidAnchorContent(string $softwareDescription): bool
+    public function isValidAnchorContent(string $anchorContent): bool
     {
         return preg_match(
             Configure::get("anchor_content_pattern"),
-            $softwareDescription,
+            $anchorContent,
         ) === 1;
     }
 }
