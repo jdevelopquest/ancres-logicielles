@@ -201,6 +201,8 @@ main {
   .menu__submenu {
     color: var(--color-text);
     background-color: var(--color-background-global); }
+  .menu__item-rightcorner {
+    margin-left: auto; }
 
 .form {
   display: flex;

@@ -397,6 +397,10 @@ main {
         &-clickable {
             @extend %clickable;
         }
+
+        &-rightcorner {
+            margin-left: auto;
+        }
     }
 }
 

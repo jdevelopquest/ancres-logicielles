@@ -28,7 +28,7 @@ $theme = $theme ?? "theme-light";
                     <h1 class="menu__item prominent__text">Ancres Logicielles</h1>
                 </a>
             </nav>
-            <button class="menu__item menu__item-clickable prominent button-menu-hamburger"
+            <button class="menu__item menu__item-rightcorner menu__item-clickable prominent button-menu-hamburger"
                     title="Ouvrir ou fermer le menu hamburger"><span class="prominent__icon icon-menu-hamburger"></span>
             </button>
         </div>
