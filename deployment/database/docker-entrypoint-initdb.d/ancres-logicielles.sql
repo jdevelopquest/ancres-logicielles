@@ -121,13 +121,15 @@ INSERT INTO `Accounts` (`idAccount`, `accountUsername`, `accountPassword`, `acco
 INSERT INTO `Posts` (`idPost`, `postIsBanned`, `postIsPublished`, `idAccount`) VALUES
 (1, 0, 1, 1),
 (2, 0, 1, 1),
-(3, 0, 0, 2);
+(3, 0, 0, 2),
+(4, 0, 0, 2);
 
 /*
     Données initiales pour la table `Softwares`
  */
 INSERT INTO `Softwares` (`idSoftware`, `softwareName`, `softwareAvatar`, `softwareSummary`, `idPost`) VALUES
-(1, 'Blender', NULL, 'Blender est une suite de création 3D gratuite et open source. Elle prend en charge l''ensemble du pipeline 3D : modélisation, rigging, animation, simulation, rendu, compositing et suivi de mouvement, ainsi que le montage vidéo et la création d''actifs pour les jeux. Les utilisateurs avancés utilisent l''API de Blender pour le scripting en Python afin de personnaliser l''application et d''écrire des outils spécialisés ; souvent, ceux-ci sont inclus dans les futures versions de Blender. Blender est bien adapté aux particuliers et aux petits studios qui bénéficient de son pipeline unifié et de son processus de développement réactif. Des exemples de nombreux projets basés sur Blender sont disponibles dans la vitrine. Blender est multiplateforme et fonctionne également bien sur les ordinateurs Linux, Windows et Macintosh. Son interface utilise OpenGL pour offrir une expérience cohérente. Pour confirmer la compatibilité spécifique, la liste des plateformes prises en charge indique celles régulièrement testées par l''équipe de développement.', 1);
+(1, 'Blender', NULL, 'Blender est une suite de création 3D gratuite et open source. Elle prend en charge l''ensemble du pipeline 3D : modélisation, rigging, animation, simulation, rendu, compositing et suivi de mouvement, ainsi que le montage vidéo et la création d''actifs pour les jeux. Les utilisateurs avancés utilisent l''API de Blender pour le scripting en Python afin de personnaliser l''application et d''écrire des outils spécialisés ; souvent, ceux-ci sont inclus dans les futures versions de Blender. Blender est bien adapté aux particuliers et aux petits studios qui bénéficient de son pipeline unifié et de son processus de développement réactif. Des exemples de nombreux projets basés sur Blender sont disponibles dans la vitrine. Blender est multiplateforme et fonctionne également bien sur les ordinateurs Linux, Windows et Macintosh. Son interface utilise OpenGL pour offrir une expérience cohérente. Pour confirmer la compatibilité spécifique, la liste des plateformes prises en charge indique celles régulièrement testées par l''équipe de développement.', 1),
+(2, 'GIMP', NULL, 'GIMP (GNU Image Manipulation Program) est un logiciel libre de retouche d''images et de création graphique. Il est souvent utilisé pour la retouche photo, la composition d''images et la création d''éléments graphiques. GIMP offre une large gamme d''outils et de fonctionnalités, y compris des calques, des filtres, des pinceaux personnalisables et la prise en charge de nombreux formats de fichiers. Il est disponible sur plusieurs plateformes, notamment Linux, Windows et macOS.', 4);
 
 /*
     Données initiales pour la table `Anchors`
