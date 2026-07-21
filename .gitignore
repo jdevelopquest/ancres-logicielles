@@ -17,3 +17,5 @@
 .env.staging.local
 .env.test
 .env.test.local
+
+/.sass-cache
