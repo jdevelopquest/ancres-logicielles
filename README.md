@@ -110,9 +110,11 @@ Points clés techniques :
 
 
 ## Configuration (variables d’environnement)
-Les valeurs par défaut sont définies dans deployment/default.env et injectées dans les services Podman. Variables principales :
+Les services Podman lisent le fichier .env (à créer).
+Les valeurs par défaut sont définies dans default.env. Variables principales :
 - DATABASE_DRIVER: mysql (par défaut)
 - MARIADB_HOST: db (nom du service Podman)
+- MARIADB_PORT: 3306
 - MARIADB_DATABASE: ancres-logicielles
 - MARIADB_USER: al
 - MARIADB_PASSWORD: al-password

@@ -8,7 +8,7 @@ readonly class DatabaseMariaDB
     /*
      * @param string driver
      * @param string $host
-     * @param int $port
+     * @param string $port
      * @param string $name
      * @param string $username
      * @param string $password
