@@ -2,7 +2,8 @@
 
 Ancres Logicielles est une application web communautaire francophone dédiée au partage de liens autour des logiciels. Pensée comme un espace de veille et d’échanges, elle centralise des liens, permet de découvrir des outils, d’évaluer des propositions et de discuter de bonnes pratiques.
 
-Ce dépôt contient une application MVC écrite en PHP, livrée avec un environnement Docker (FrankenPHP + MariaDB) pour faciliter l’exécution locale.
+Ce dépôt contient une application MVC écrite en PHP, livrée avec un environnement Podman (FrankenPHP + MariaDB) pour faciliter l’exécution locale.
+Les tests ont été réalisés avec Podman, ce qui est désormais la référence de cette documentation.
 
 ⚠️ Avertissement
 - Ce projet a un objectif strictement pédagogique et de découverte/apprentissage.
@@ -14,7 +15,7 @@ Ce dépôt contient une application MVC écrite en PHP, livrée avec un environn
 - Fonctionnalités principales
 - Architecture du projet
 - Prérequis
-- Démarrage rapide (Docker)
+- Démarrage rapide (Podman)
 - Rôles, statut invité et comptes de test
 - Configuration (variables d’environnement)
 - Base de données (initialisation)
@@ -46,47 +47,49 @@ Arborescence condensée :
     - index.php (point d’entrée HTTP)
     - css/, js/, img/, fonts/ (actifs front)
   - config/
-    - config.php, paths.php (constantes), routes.php (définition des routes), databases.php (PDO)
+    - app.php, databaseMariaDB.php, paths.php, routes.php (constantes et définition des routes)
+  - core/
+    - Application.php, Router.php, Request.php, Response.php, ViewBuilder.php, etc. (noyau MVC)
+  - core-utils/
+    - Database/, Logger/, Session/, UserInterface/
   - src/
-    - Core/ (noyau MVC : Application, Router, Request, Response, ViewBuilder, etc.)
     - Controllers/ (AccountsController, PostsController, SupportsController, ErrorsController)
     - Models/ (PostModel, AccountModel, GradeModel)
     - Views/ (Vues PHP pour comptes, posts, supports et erreurs; layouts)
-    - Utils/ (Logger, SessionManager, helpers)
   - var/log/
     - messages.log (journal applicatif)
 - deployment/
-  - frankenphp/ (Dockerfile PHP)
-  - database/ (Dockerfile MariaDB + SQL d’initialisation)
+  - frankenphp/ (build PHP)
+  - database/ (build MariaDB + SQL d’initialisation)
   - default.env (variables d’environnement par défaut)
-- compose.yaml (stack Docker)
+- compose.yaml (stack Podman/containers)
 - README.md (ce fichier)
 
 Points clés techniques :
-- Autoload « maison » des classes de l’espace de noms App\ vers app/src.
+- Autoload « maison » des classes de l’espace de noms App\ vers le code applicatif.
 - Gestion d’erreurs centralisée dans app/public/index.php ; affichage des vues d’erreur.
 - Logger applicatif écrivant dans app/var/log/messages.log.
 - Routes déclaratives dans app/config/routes.php (regex sur chemin, requête, méthode, rôle, contrôleur, action et nature Ajax/non-Ajax).
 
 
 ## Prérequis
-- Docker et Docker Compose (v2) installés.
+- Podman et Podman Compose (ou podman-compose) installés.
 - OS compatible (Linux) (à tester macOS, Windows).
 
 
-## Démarrage rapide (Docker)
+## Démarrage rapide (Podman)
 1 : Cloner le dépôt :
 - git clone https://github.com/jdevelopquest/ancres-logicielles.git
 - cd ancres-logicielles
 
-2 : Créer et lancer les conteneurs Docker :
-- docker compose up --build --wait --remove-orphans
+2 : Créer et lancer les conteneurs Podman :
+- podman compose up --build --wait --remove-orphans
 
 3 : Accéder à l’application :
 - https://localhost:8443/ (accepter le certificat auto-signé)
 
 4 : Arrêt et nettoyage du volume database (ATTENTION, supprime les données) :
-- docker compose down -v --remove-orphans
+- podman compose down -v --remove-orphans
 
 
 ## Rôles, statut invité et comptes de test
@@ -107,9 +110,9 @@ Points clés techniques :
 
 
 ## Configuration (variables d’environnement)
-Les valeurs par défaut sont définies dans deployment/default.env et injectées dans les services Docker. Variables principales :
+Les valeurs par défaut sont définies dans deployment/default.env et injectées dans les services Podman. Variables principales :
 - DATABASE_DRIVER: mysql (par défaut)
-- MARIADB_HOST: database (nom du service Docker)
+- MARIADB_HOST: db (nom du service Podman)
 - MARIADB_DATABASE: ancres-logicielles
 - MARIADB_USER: al
 - MARIADB_PASSWORD: al-password
@@ -119,12 +122,12 @@ Vous pouvez dupliquer default.env et adapter les valeurs selon vos besoins (ne p
 
 
 ## Base de données (initialisation)
-- Le service « database » est basé sur l’image MariaDB 12.
+- Le service « db » est basé sur l’image MariaDB 12.
 - Un fichier SQL d’initialisation est copié au build : deployment/database/docker-entrypoint-initdb.d/ancres-logicielles.sql.
 - Au premier démarrage (volume vide), MariaDB initialisera la base avec ce script.
 
 Changer ou rejouer l’initialisation :
-- Supprimer le volume pour forcer une réinitialisation : docker compose down -v && docker compose up --build
+- Supprimer le volume pour forcer une réinitialisation : podman compose down -v && podman compose up --build
 
 
 ## Développement
