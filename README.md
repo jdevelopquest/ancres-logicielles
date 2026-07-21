@@ -110,17 +110,18 @@ Points clés techniques :
 
 
 ## Configuration (variables d’environnement)
-Les services Podman lisent le fichier .env (à créer).
-Les valeurs par défaut sont définies dans default.env. Variables principales :
-- DATABASE_DRIVER: mysql (par défaut)
-- MARIADB_HOST: db (nom du service Podman)
-- MARIADB_PORT: 3306
-- MARIADB_DATABASE: ancres-logicielles
-- MARIADB_USER: al
-- MARIADB_PASSWORD: al-password
-- MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1 (pour l’environnement local)
+Le stack Podman utilise un fichier de configuration d’environnement chargé au démarrage des services. Par défaut, ce projet attend un fichier .env à la racine du dépôt.
 
-Vous pouvez dupliquer default.env et adapter les valeurs selon vos besoins (ne pas commiter des secrets en clair).
+Les valeurs par défaut sont fournies dans le fichier default.env. Les variables principales sont les suivantes :
+- MARIADB_DRIVER: moteur de base de données utilisé par l’application (mysql par défaut)
+- MARIADB_HOST: nom du service de base de données utilisé par le conteneur PHP (db)
+- MARIADB_PORT: port d’écoute interne de MariaDB (3306)
+- MARIADB_DATABASE: nom de la base de données utilisée par l’application (ancres-logicielles)
+- MARIADB_USER: utilisateur principal de la base de données (al)
+- MARIADB_PASSWORD: mot de passe associé à l’utilisateur de base de données
+- MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: autorisation de configuration locale sans mot de passe root (1)
+
+Pour personnaliser votre environnement local, copiez default.env vers .env puis adaptez les valeurs selon vos besoins. Veillez à ne pas versionner de secrets sensibles en clair.
 
 
 ## Base de données (initialisation)
