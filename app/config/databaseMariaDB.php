@@ -4,10 +4,10 @@ declare(strict_types=1);
 use App\CoreUtils\Database\DatabaseMariaDB;
 
 return new DatabaseMariaDB(
-    driver: getenv("DATABASE_DRIVER") ?: "mysql",
-    host: getenv("DATABASE_HOST") ?: "database",
-    port: getenv("DATABASE_PORT") ?: 3306,
-    name: getenv("DATABASE_DATABASE") ?: "ancres-logicielles",
-    password: getenv("DATABASE_PASSWORD") ?: "al-password",
-    username: getenv("DATABASE_USER") ?: "al",
+    driver: getenv("MARIADB_DRIVER") ?: "mysql",
+    host: getenv("MARIADB_HOST") ?: "database",
+    port: getenv("MARIADB_PORT") ?: "3306",
+    name: getenv("MARIADB_DATABASE") ?: "ancres-logicielles",
+    password: getenv("MARIADB_PASSWORD") ?: "al-password",
+    username: getenv("MARIADB_USER") ?: "al",
 );

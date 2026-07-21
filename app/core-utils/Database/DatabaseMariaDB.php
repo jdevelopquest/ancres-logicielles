@@ -16,7 +16,7 @@ readonly class DatabaseMariaDB
     public function __construct(
         public string $driver,
         public string $host,
-        public int $port,
+        public string $port,
         public string $name,
         public string $username,
         #[\SensitiveParameter] public string $password,
